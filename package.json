@@ -1,0 +1,19 @@
+{
+  "name": "hours-to-max-v2",
+  "version": "1.0.0",
+  "description": "Old School Runescape Goal Tool",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
