@@ -1,0 +1,6 @@
+
+#Express Midleware for authentication
+npm i express
+
+#Nodemon, allows the server to boot and run
+npm i nodemon
