@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "connect-mongo": "^5.1.0",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "mongoose": "^8.7.3",
+    "nodemon": "^3.1.7"
+  },
+  "scripts": {
+    "serve": "nodemon tutorial/middleware/app.js",
+    "sserve": "nodemon tutorial/sessions/app.js"
+  }
+}

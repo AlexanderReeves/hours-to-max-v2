@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "express": "^4.21.1",
-    "nodemon": "^3.1.7"
-  },
-  "scripts": {
-    "serve": "nodemon tutorial/middleware/app.js"
-  }
-}
