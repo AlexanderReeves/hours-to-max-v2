@@ -1,0 +1,21 @@
+Tutorial video:
+https://www.youtube.com/watch?v=VavWEtI5T7c&list=WL&index=1&t=1s
+
+Package.json generated:
+npm init -y
+
+Express server manager install:
+npm i express
+
+mongodb database access install:
+npm i mongoose
+
+.env environment manager file:
+npm i dotenv
+
+hbs handlebars for syntax moustaches curly brace use:
+https://www.npmjs.com/package/handlebars
+npm i hbs
+
+nodemon auto restart server on save file:
+npm i --save nodemon
