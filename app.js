@@ -28,18 +28,19 @@ mongoose.connect('mongodb+srv://reevesalexanderj:nala1234@hours-to-max.4jrpf.mon
 const publicDirectory = path.join(__dirname, './public')
 app.use(express.static(publicDirectory));
 
+//Make sure you can grab data from any form
+app.use(express.urlencoded({extended: false}));
+//Parse json as bodies
+app.use(express.json());
+
 //HTML viewing engine
 app.set('view engine', 'hbs');
 
 
-app.get("/", (req, res) => {
-    res.render('index')
-});
-
-
-app.get("/register", (req, res) => {
-    res.render('register')
-});
+//Define routes
+app.use('/', require('./routes/pages'))
+//register
+app.use('/auth', require('./routes/auth'))
 
 function test(){
     console.log("test");
