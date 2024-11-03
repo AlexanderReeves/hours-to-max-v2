@@ -18,7 +18,7 @@ const app = express();
 //Conect via location saved in env file
 const uri = process.env.DBURI;
 //mongoose.connect(uri)
-mongoose.connect('mongodb+srv://reevesalexanderj:nala1234@hours-to-max.4jrpf.mongodb.net/?retryWrites=true&w=majority&appName=hours-to-max')
+const db = mongoose.connect('mongodb+srv://reevesalexanderj:nala1234@hours-to-max.4jrpf.mongodb.net/?retryWrites=true&w=majority&appName=hours-to-max')
 //.then can be used after async processes to do something after a promise is fulfilled.
 //Start listening if db connected
     .then((result) => app.listen(3000) ,console.log("Connected to db!"), test())
