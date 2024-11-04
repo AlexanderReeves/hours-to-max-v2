@@ -19,3 +19,9 @@ npm i hbs
 
 nodemon auto restart server on save file:
 npm i --save nodemon
+
+Morgan error logging:
+npm i morgan
+
+joi used to validate data input to forms:
+npm install @hapi/joi

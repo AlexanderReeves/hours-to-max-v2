@@ -1,0 +1,45 @@
+Jason Web Tokens
+Is encoded (json formatting)
+Is not encrypted (Should not host sensitive data like a password)
+3 parts
+-Header = algorithm used for encoding and token type (jwt)
+-Payload = The relevant information to transfer
+-Signature = Verification that this is safe and unaltered via use of a self decided secret key
+
+Payload contains key value pairs (suggested to includes issuer, expiration time and subject)
+
+Internet Engineering Task Force
+JWT docs
+RFC 7519
+https://datatracker.ietf.org/doc/html/rfc7519
+
+
+
+Process:
+1. Client registers/logs in with user and password
+2. Server sends Access token and Refresh token
+3. For client to access server resources, must send a request and include the access token (As authorisation header)
+4. Server responds with result or 401 if request token expired
+5. if 401, the client will send the refresh token to get a new access token and refresh token
+6. If refresh token is invalid or expired or blacklisted it generates a 403 error
+
+401 = unaothorised, 403 = forbidden
+
+*The refresh token is used to request a new access token and refresh token
+*The access token is used to request data
+*Possibly 1 hour for accesss, 1 year for refresh
+*On log out, remove access and refresh token on client (and from redis token manager on server?)
+
+https://www.youtube.com/watch?v=p9MVxRFF8Z0&t=218s
+guide with packages
+express
+mongoose
+jsonwebtoken
+redis
+@hapi/joi
+bcrypt
+dotenv
+http-errors
+nodemon
+morgan
+NOT passport
