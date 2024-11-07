@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 //Error logging tool
 const morgan = require('morgan');
+console.log("Server booting")
 
 //Env files
 const dotenv = require('dotenv');
@@ -14,8 +15,10 @@ require('./helpers/init_mongodb')
 
 //App is the server
 const app = express();
-//For destructure...
 
+
+//For destructure...
+//
 //Trying to make destructuring work...
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -35,6 +38,7 @@ const uri = process.env.DBURI;
 // //Start listening if db connected
 //     .then((result) => app.listen(3000) ,console.log("Connected to db!"), test())
 //     .catch((err) => console.log(err))
+
 app.listen(3000)
 
 //__dirname is a variable that gives access to the current directory

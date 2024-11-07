@@ -25,3 +25,9 @@ npm i morgan
 
 joi used to validate data input to forms:
 npm install @hapi/joi
+
+bcrypt to hash the passwords
+npm install --save bcrypt
+
+JsonWebToken library
+npm install jsonwebtoken
