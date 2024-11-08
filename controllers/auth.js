@@ -30,7 +30,7 @@ exports.register = async (req, res ) => {
 
         //=====================================================
         const accessToken = await signAccessToken(savedUser.id)
-        res.send(accessToken)
+        res.send({accessToken})
 
     } catch(error){
         console.log(error)
@@ -38,6 +38,33 @@ exports.register = async (req, res ) => {
     }
     //res.send("Form submitted");
 }   
+
+exports.login = async (req, res, next ) => {
+    //console.log(req.body);
+    try{
+        //We can destruct the variables here, using : to separate original and new variable name
+        const { userEmail: email, userPass: password } = req.body;
+        console.log('Login validation values: ' + email + '   ' + password)
+        const result = await authSchema.validateAsync({email,password});
+        console.log(result)
+
+        const user = await User.findOne({email: result.email})
+        if (!user) throw createError.NotFound("Username/Password was not valid")
+        //If user exists, check for valid password via our custom userjs function
+        const isMatch = await user.isValidPassword(result.password)
+        if(!isMatch) throw createError.Unauthorized("Username/Password was not valid")
+
+        //If sign in was okay
+        const accessToken = await signAccessToken(user.id)
+        res.send(accessToken)
+    } catch(error){
+        if(error.isJoi === true) return next(createError.BadRequest("Joi has rejected your input values!"))
+        next(error)
+
+    }
+    //res.send("Form submitted");
+}   
+
 
 
 

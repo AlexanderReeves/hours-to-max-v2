@@ -38,5 +38,16 @@ UserSchema.post('save', async function (next){
   }
 })
 
+//Login check valid password including its encryption
+UserSchema.methods.isValidPassword = async function (password) {
+  try{
+    //return as boolean
+    return await bcrypt.compare(password, this.password)
+  } catch (error){
+    //Use you just use default error messaging if it's not part of a middleware
+    throw error
+  }
+}
+
 const User = mongoose.model('user', UserSchema)
 module.exports = User
