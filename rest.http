@@ -1,0 +1,16 @@
+
+GET http://localhost:3000
+
+###
+GET http://localhost:3000/home
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiU29tZSBQYXlsb2FkIFRleHQiLCJpYXQiOjE3MzExOTU1OTJ9.-m6Si0CRHY5ywbjvtY8_UTT5398ObK_M0jtxGo4lKt8
+
+###
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "userEmail": "user2@website.com",
+    "userPass":"password2"
+}

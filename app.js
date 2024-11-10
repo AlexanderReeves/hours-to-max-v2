@@ -13,6 +13,8 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './.env'});
 require('./helpers/init_mongodb')
 
+const {verifyAccessToken} = require('./helpers/jwt_helper')
+
 //App is the server
 const app = express();
 
@@ -54,7 +56,7 @@ app.set('view engine', 'hbs');
 
 //Define routes
 app.use(express.json())
-app.use('/', require('./routes/pages'))
+app.use('/' ,require('./routes/pages'))
 //register
 app.use('/auth', require('./routes/auth'))
 
