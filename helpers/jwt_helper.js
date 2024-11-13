@@ -1,5 +1,8 @@
 var jwt = require('jsonwebtoken');
 const createError = require('http-errors')
+//Our jwt is stored in cookies, so we need to use the helper to parse it
+const cookieParser = require('../helpers/cookie_parser')
+
 
 
 module.exports = {
@@ -27,16 +30,31 @@ module.exports = {
         })
       },
       verifyAccessToken: (req, res, next) => {
-        if (!req.headers['authorization']) return next(createError.Unauthorized())
-        const authHeader = req.headers['authorization']
-        const bearerToken = authHeader.split(' ')
-        const token = bearerToken[1]
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+        accessToken = getJwtFromCookies(req);
+        //if (!req.headers['authorization']) return next(createError.Unauthorized())
+        //const authHeader = req.headers['authorization']
+        //const bearerToken = authHeader.split(' ')
+        //const token = bearerToken[1]
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
           if(err) {
-            return next(createError.Unauthorized())
+            //return next(createError.Unauthorized())
           }
           req.payload = payload
           next()
         })
       }
+}
+
+function getJwtFromCookies(req) {
+  console.log('Checking for a JWT in cookies!')
+  if(req.headers.cookie){
+    console.log('Cookies found in request')
+    authToken = cookieParser.parseCookies(req)['authorization']
+    console.log('Auth token in cookies is : ' + authToken)
+    return authToken
+  }else{
+    console.log('No cookies found in request')
+      return null;
+  }
+  
 }

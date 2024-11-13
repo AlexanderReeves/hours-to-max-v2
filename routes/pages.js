@@ -1,14 +1,22 @@
 const express = require('express');
 const { verifyAccessToken } = require('../helpers/jwt_helper');
+const cookieParser = require('../helpers/cookie_parser')
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render('index');
+    console.log('req cookies found? ' + req.headers.cookie)
+    if(req.headers.cookie){
+        //If we found a cookie, check if there's a valid and logges in user
+        const userJwt = cookieParser.parseCookies(req)['accessToken']
+        console.log(userJwt)
+    }
+    
+    
+    res.render('index', { title: "Some Username!" });
 });
 
 router.get('/home', verifyAccessToken,(req, res) => {
-    console.log("Auth headers receieved in req: " + req.headers['authorization'])
     res.render('home');
 });
 

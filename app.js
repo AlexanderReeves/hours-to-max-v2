@@ -17,6 +17,8 @@ const {verifyAccessToken} = require('./helpers/jwt_helper')
 
 //App is the server
 const app = express();
+//Enable a folder for public assets and JS files (Non server JS)
+app.use(express.static('public'))
 
 
 //For destructure...

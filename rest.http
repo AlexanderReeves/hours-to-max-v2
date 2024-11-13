@@ -14,3 +14,12 @@ Content-Type: application/json
     "userEmail": "user2@website.com",
     "userPass":"password2"
 }
+
+###
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "userEmail": "test@test.com",
+    "userPass":"test"
+}

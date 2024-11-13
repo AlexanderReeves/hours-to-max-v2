@@ -5,6 +5,9 @@ const createError = require('http-errors')
 const {authSchema} = require('../helpers/validation_schema')
 const {signAccessToken} = require('../helpers/jwt_helper')
 
+//For cookies
+const express = require('express');
+
 exports.register = async (req, res ) => {
     //console.log(req.body);
     try{
@@ -30,7 +33,9 @@ exports.register = async (req, res ) => {
 
         //=====================================================
         const accessToken = await signAccessToken(savedUser.id)
-        res.send({accessToken})
+        console.log('sending cookie')
+        res.cookie('authorization', accessToken)
+        res.send(accessToken)
 
     } catch(error){
         console.log(error)
@@ -56,6 +61,9 @@ exports.login = async (req, res, next ) => {
 
         //If sign in was okay
         const accessToken = await signAccessToken(user.id)
+        
+        console.log('sending cookie')
+        res.cookie('authorization', accessToken)
         res.send(accessToken)
     } catch(error){
         if(error.isJoi === true) return next(createError.BadRequest("Joi has rejected your input values!"))
