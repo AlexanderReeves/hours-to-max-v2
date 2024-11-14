@@ -1,0 +1,657 @@
+* {
+    font-family: myFirstFont;
+    font-size: 16px;
+    margin:0px;
+}
+
+#logoimage {text-align: center; background-image: "logo.png";height:56px;}	
+
+body {color: white; background-color:black}
+
+header {
+ height:60px;
+}
+
+.redbody{
+background: rgb(159,0,0);
+background: linear-gradient(90deg, rgba(159,0,0,1) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(159,0,0,1) 100%);
+}
+
+.greenbody{
+background: rgb(0,159,58);
+background: linear-gradient(90deg, rgba(0,159,58,1) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,159,58,1) 100%);
+}
+
+.bluebody{
+background: rgb(0,139,159);
+background: linear-gradient(90deg, rgba(0,139,159,1) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,139,159,1) 100%);
+}
+
+.row{
+ overflow: hidden;
+}
+
+.OutcomeColA{
+width: 20%;
+display:inline;
+}
+.OutcomeColB{
+width: 30%;
+display:inline;
+}
+.OutcomeColC{
+width: 30%;
+display:inline;
+}
+.OutcomeColD{
+width: 20%;
+display:inline;
+}
+.OutcomeBar{
+width: 60%;
+display:inline;
+}
+
+
+
+.finalMax {
+background-image: url(Max_cape.webp);
+background-repeat: no-repeat;
+background-position: right;
+background-size: 10%;/*13 on mobile, 10 on desktop*/
+/*height:110px;*/
+
+}
+.finalQuest {
+background-image: url(Quest_cape.webp);
+background-repeat: no-repeat;
+background-position: right;
+background-size: 10%;/*13 on mobile, 10 on desktop*/
+/*height:110px;*/
+
+}
+.finalAchievement {
+background-image: url(Achievement_cape.webp);
+background-repeat: no-repeat;
+background-position: right;
+background-size: 10%;/*13 on mobile, 10 on desktop*/
+/*height:110px;*/
+
+}
+
+ 
+
+
+
+.maxw {
+     max-width: 950px;
+     margin-left: auto;
+     margin-right: auto;
+ /*padding: 10px;*/
+ text-align: right;
+      }
+
+.searcharea{
+     background-color: #0000;
+     max-width: 600px;
+     margin-left: auto;
+     margin-right: auto;
+ border-radius: 1px;
+ padding: 10px;
+ text-align: center
+      }
+
+.center {text-align: center}
+
+.righttext{text-align: right; padding-right: 10px;}
+
+@font-face {
+    font-family: myFirstFont;
+    src: url(Roboto-Regular.ttf);
+}
+.ico{
+display: block;
+margin: 0 auto;
+}
+
+.logoarea {
+text-align: center; /* Horizontally center the image */
+height: 100px;
+}
+
+.columnA {
+float: left;
+width: 12%;
+text-align: left;
+}
+.columnB {
+float: left;
+width: 73%;
+
+}
+.columnC {
+width: 12%;
+Padding-top:10px;
+padding-right:10px;
+float:right;
+}
+
+.columnCa {
+width: 45%;
+
+}
+.columnCb {
+width: 45%;
+}
+
+
+.fullw{
+ width: 100%;
+}
+.halfw{
+ width: 49%;
+}
+.tenpad{
+ /*padding: 10px;*/
+}
+
+.smalltext{
+ font-size: 11px;
+}
+
+
+select.minimal {
+/*background-image:
+linear-gradient(45deg, transparent 50%, gray 50%),
+linear-gradient(135deg, gray 50%, transparent 50%),
+linear-gradient(to right, #ccc, #ccc);*/
+background-position:
+calc(100% - 20px) calc(1em + 2px),
+calc(100% - 15px) calc(1em + 2px),
+calc(100% - 2.5em) 0.5em;
+background-size:
+5px 5px,
+5px 5px,
+1px 1.5em;
+background-repeat: no-repeat;
+text-align: center;
+}
+
+select.minimal:focus {
+background-image:
+linear-gradient(45deg, green 50%, transparent 50%),
+linear-gradient(135deg, transparent 50%, green 50%),
+linear-gradient(to right, #ccc, #ccc);
+background-position:
+calc(100% - 15px) 1em,
+calc(100% - 20px) 1em,
+calc(100% - 2.5em) 0.5em;
+background-size:
+5px 5px,
+5px 5px,
+1px 1.5em;
+background-repeat: no-repeat;
+border-color: green;
+outline: 0; 
+}
+
+select:-moz-focusring {
+color: transparent;
+text-shadow: 0 0 0 #000;
+}
+
+select {
+/* styling */
+background-color: white;
+border: thin solid blue;
+border-radius: 0px;
+display: inline-block;
+font: inherit;
+line-height: 1.5em;
+padding: 0.5em 3.5em 0.5em 1em;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+-webkit-appearance: none;
+-moz-appearance: none;
+}
+
+
+
+input[type=text], select {
+width: 100%;
+padding: 12px 20px;
+margin: 8px 0;
+display: inline-block;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+
+footer{
+bottom: 0;
+width: 100%;
+text-align:center;
+margin:0 auto;
+}
+
+/****Switch******/
+.switch {
+position: relative;
+display: inline-block;
+width: 47px;
+height: 20px;
+}
+
+.switch input {display:none;}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 13px;
+width: 13px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+input:checked + .slider {
+background-color: #2196F3;
+}
+
+input:focus + .slider {
+box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+-webkit-transform: translateX(26px);
+-ms-transform: translateX(26px);
+transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+}
+
+.whitefont {
+color: white;
+}
+.bluefont {
+color: blue;
+}
+
+
+
+.max{
+background-image: url("Max_cape.webp");
+width: 33%;
+border-top-left-radius: 15px;
+background-repeat:no-repeat;
+background-position: center center;
+background-size: 10%;
+line-height:11;
+}
+
+.quest{
+background-image: url("quest_cape.webp");
+border-top-right-radius: 15px;
+width: 33%;
+background-repeat:no-repeat;
+background-position: center center;
+background-size: 10%;
+line-height:11;
+}
+.achievement{
+background-image: url("achievement_cape.webp");
+width:34%;
+background-repeat:no-repeat;
+background-position: center center;
+background-size: 10%;
+line-height:11;
+}
+
+
+.typebutton{
+height: 100px;
+border-top: 0px;
+border-bottom: 0px;
+border-left:2px;
+border-right:2px;
+border-color: white;
+background-color: #1a1a1a;
+
+}
+
+
+#maincontent{
+border-top-left-radius: 15px;
+border-top-right-radius: 15px;
+}
+
+.mobileonly{
+display: none;
+}
+.desktoponly{
+display:inline;
+}
+
+.textbox{
+height:50px;
+border-radius: 0px;;
+}
+
+.colorbutton{
+width: 100%;
+color: white;
+padding: 14px 20px;
+margin: 0px;
+border: none;
+border-radius: 0px;
+cursor: pointer;
+height:50px;
+border-radius: 0px;;
+}
+
+/***********END SWITCH*******/
+
+/* progress bar start */
+
+.meter {
+box-sizing: content-box;
+height: 15px; /* Can be anything */
+position: relative;
+margin: 30px 0 20px 0; /* Just for demo spacing */
+background: #555;
+border-radius: 0px;/*rounded progress bar options*/
+padding: 10px;
+box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+}
+.meter > span {
+display: block;
+height: 100%;
+border-top-right-radius: 0px;/*rounded progress bar options*/
+border-bottom-right-radius: 0px; /*rounded progress bar options*/
+border-top-left-radius: 0px; /*rounded progress bar options*/
+border-bottom-left-radius: 0px; /*rounded progress bar options*/
+background-color: rgb(43, 194, 83);
+background-image: linear-gradient(
+center bottom,
+rgb(43, 194, 83) 37%,
+rgb(84, 240, 84) 69%
+);
+box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3),
+inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+position: relative;
+overflow: hidden;
+}
+.meter > span:after,
+.animate > span > span {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+background-image: linear-gradient(
+-45deg,
+rgba(255, 255, 255, 0.2) 25%,
+transparent 25%,
+transparent 50%,
+rgba(255, 255, 255, 0.2) 50%,
+rgba(255, 255, 255, 0.2) 75%,
+transparent 75%,
+transparent
+);
+z-index: 1;
+background-size: 50px 50px;
+animation: move 5s linear infinite;
+border-top-right-radius: 8px;
+border-bottom-right-radius: 8px;
+border-top-left-radius: 20px;
+border-bottom-left-radius: 20px;
+overflow: hidden;
+}
+
+.animate > span:after {
+display: none;
+}
+
+@keyframes move {
+0% {
+background-position: 0 0;
+}
+100% {
+background-position: 50px 50px;
+}
+}
+
+.orange > span {
+background-image: linear-gradient(#f1a165, #f36d0a);
+}
+
+.red > span {
+background-image: linear-gradient(#f0a3a3, #f42323);
+}
+
+.nostripes > span > span,
+.nostripes > span::after {
+background-image: none;
+}
+
+#page-wrap {
+width: 490px;
+margin: 80px auto;
+}
+body {
+background: #333;
+text-align: center;
+color: #eee;
+font-family: system-ui, sans-serif;
+}
+h1 {
+font-size: 42px;
+font-weight: 600;
+margin: 0 0 30px;
+}
+pre {
+background: #000;
+text-align: left;
+padding: 20px;
+margin: 0 auto 30px;
+}
+* {
+box-sizing: border-box;
+}
+
+/*progress bar end*/
+
+
+
+
+
+/*MOBILE CSS*/
+/* its a copy of the above where changes are needed only*/
+
+@media (max-width: 1000px) {
+
+
+ * {
+    font-size: 36px;
+    line-height: 50px;
+}
+
+.mobileonly{
+display: inline;
+}
+.desktoponly{
+display:none;
+}
+
+.meter {
+height: 45px; /* Can be anything */
+}
+
+select {
+/* styling */
+border-radius: 10px;
+}
+
+input[type=text], select {
+padding: 20px 20px;
+}
+
+.textbox{
+height:130px;
+border-radius: 15px;;
+}
+
+.colorbutton{
+height:130px;
+border-radius: 15px;;
+}
+
+
+.smalltext{
+ font-size: 30px;
+}
+
+header {
+ height:130px;
+}
+
+
+#logoimage {height:130px}	
+
+.columnA {
+float: left;
+width: 12%;
+text-align: left;
+}
+.columnB {
+float: left;
+width: 64%;
+
+}
+.columnC {
+float: left;
+width: 24%;
+/*Padding-top:10px;*/
+padding-right:0px;
+}
+
+.OutcomeColA{
+width: 10%;
+display:inline;
+}
+.OutcomeColB{
+width: 40%;
+display:inline;
+}
+.OutcomeColC{
+width: 40%;
+display:inline;
+}
+.OutcomeColD{
+width: 10%;
+display:inline;
+}
+
+.OutcomeBar{
+width: 80%;
+display:inline;
+}
+
+
+
+
+
+ .searcharea{
+     max-width: 100%;
+     margin-left: auto;
+     margin-right: auto;
+ border-radius: 1px;
+ padding: 10px;
+ text-align: center
+}
+
+
+
+     .maxw {
+     max-width: 100%;
+     margin-left: auto;
+     margin-right: auto;
+ border-radius: 0px;
+ /*padding: 10px;*/
+      }
+
+      .logoarea {
+text-align: center; /* Horizontally center the image */
+height: 220px;
+}
+
+
+#maincontent{
+border-top-left-radius: 50px;
+border-top-right-radius: 50px;
+}
+
+
+.max{
+background-image: url("Max_cape.webp");
+width: 33%;
+border-top-left-radius: 50px;
+background-repeat:no-repeat;
+background-position: center center;
+background-size: 20%;
+line-height:11;
+}
+
+.quest{
+background-image: url("quest_cape.webp");
+border-top-right-radius: 50px;
+width: 33%;
+background-repeat:no-repeat;
+background-position: center center;
+background-size: 20%;
+line-height:11;
+}
+.achievement{
+background-image: url("achievement_cape.webp");
+width:34%;
+background-repeat:no-repeat;
+background-position: center center;
+background-size: 20%;
+line-height:11;
+}
+
+
+.typebutton{
+height: 150px;
+border-top: 0px;
+border-bottom: 0px;
+border-left:2px;
+border-right:2px;
+border-color: white;
+}
+
+
+}
+
