@@ -12,28 +12,33 @@ exports.register = async (req, res ) => {
     //console.log(req.body);
     try{
         //We can destruct the variables here, using : to separate original and new variable name
-        const { userEmail: email, userPass: password } = req.body;
-
-        //Add registration to database.
-        //if(!email || !pass) throw createError.BadRequest();
-        console.log('VALIDATOR VALUES: ' + email + '   ' + password )
-        const result = await authSchema.validateAsync({email,password});
+        const { username: username, userEmail: email, userPass: password } = req.body;
+        //Validation the submission against the registration schema
+        console.log('Validating a new user. username: ' + '. email: ' + email + ". password: " + password)
+        const result = await authSchema.validateAsync({username, email, password});
         console.log(result)
         
-        const doesExist = await User.findOne({email: email})
+        //If that email is used in the db, throw an error
+        const emailDoesExist = await User.findOne({email: email})
         if(doesExist) throw createError.Conflict(`${email} is already registered`)
+        //If that username is used in the db, throw an error
+        const usernameDoesExist = await User.findOne({username: username})
+        if(usernameDoesExist) throw createError.Conflict(`${username} is already taken!`)
+        if(emailDoesExist) throw createError.Conflict(`${email} is already in use!`)
         
-        //And we can use the destructed data to creat our new user, setting the dbitemname:currentvariablename syntax
-        //similar to the destruct above
-        const user = new User({email, password: password})
+        
+        //And we can use the destructed data to creat our new user, setting the syntax is like
+        //somedatabaseitemname:currentvariablename
+        const user = new User({username, email, password: password})
 
         const savedUser = await user.save()
         console.log(savedUser)
-        console.log('saved user id = ' + savedUser.id)
+        console.log('A new user was added to the database! user: ' + savedUser.id)
 
         //=====================================================
+        //Once the user is registered, use jwt helper to create a jwt for them
         const accessToken = await signAccessToken(savedUser.id)
-        console.log('sending cookie')
+        console.log('Sending the new user a jwt access token.')
         res.cookie('authorization', accessToken)
         res.send(accessToken)
 
