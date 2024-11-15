@@ -16,7 +16,6 @@ module.exports = {
             issuer: 'hourstomax.com',
             audience: userId,
           }
-          console.log(secret + "SSSSSSSSSSSSSSSSSECRETTTTTTTTTTTT")
           //We should handle errors if we had an error while generating a jwt
           jwt.sign(payload, secret, options, (err, token) => {
             if (err) {

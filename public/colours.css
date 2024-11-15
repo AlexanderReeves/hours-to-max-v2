@@ -1,0 +1,110 @@
+.dark-background {
+		background-color: #222527;
+	 	}
+.light-background {
+	background-color: #006eff;
+}
+
+.whitebg {
+	background-color: white;
+
+}
+.blackbg {
+	background-color: black;
+
+}
+
+
+.themered{
+  background-color: #FB0B50;
+}
+
+
+.themegreen{
+  background-color: #00d659;
+}
+
+.themeblue{
+  background-color: #00d6c7;
+}
+
+
+header {   
+
+    position: sticky;   
+
+    top: 0; 
+
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+
+/* Style the tab */
+.tab {
+  /*overflow: hidden;*/
+  /*border: 1px solid #ccc;*/
+  background-color: black
+  height:90px;
+  width:100%;
+  /*padding:1px;
+  display:inline-block;
+}
+.tablinks{
+	width: 33.33%;
+	height:90px;
+	/*padding:10px;*/
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  color:white;
+  /*background-color: inherit;*/
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  /*padding: 14px 16px;*/
+  transition: 0.3s;
+  height:90px;
+}
+
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #222527;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  /*padding: 6px 12px;*/
+  border: 1px solid #ccc;
+  border-top: none;
+}
+.maxtab{
+	border-top-left-radius: 15px;
+	background-color: #222527;
+}
+.acdtab{
+	background-color: #222527;
+}
+.questtab{
+	border-top-right-radius: 15px;
+	background-color: #222527;
+}
+
+.active{
+  background-color: #222527;
+}

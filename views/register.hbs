@@ -26,15 +26,22 @@
 
             <div class="card-body">
                 <form action="/auth/register" method="POST">
+
+                    <label for="userEmail">Username</label>
+                    <input type="email" class="form-control" id="userEmail" name="userEmail">
+                    <p>This can be different to your in game name.</p>
+
                     <label for="userEmail">Email address</label>
                     <input type="email" class="form-control" id="userEmail" name="userEmail">
+
                     <label for="userPass">Password</label>
                     <input type="password" class="form-control" id="userPass" placeholder="Password" name="userPass">
                     
                     <label for="userPassConfirm">Re-Type Password</label>
                     <input type="password" class="form-control" id="userPassConfirm" placeholder="Confirm Password" name="userPassConfirm">
 
-                    <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+                    <button type="submit" class="btn btn-primary" value="Submit" style="margin-top:10px">Submit</button>
+                    
                 </form>
             </div>
 

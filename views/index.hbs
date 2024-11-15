@@ -1,17 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content=""width=device-width, initial-scale="1.0">
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/hours_style.css">
-  <script type="text/javascript" src="/test.js"></script>
+<html>
 
-  <title>Hours To Max</title>
+	<title>Hours To Max</title>
+	<meta name="description" content="Find how many hours it will take you to max your Old School Runescape Account with training methods that you choose!">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<meta name="keywords" content="Hours, To, Max, Old, School, Runescape, Account, Long, Gp, Time">
+  	<meta name="author" content="Mapex Games">
+  	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+	{{!-- V1 OLD STYLES AND JS REFERENCES
+	<script src="./javascript.js" type="text/javascript"></script>
+	<script src="./tabs.js" type="text/javascript"></script>
+	<script src="./progressbar.js" type="text/javascript"></script> --}}
+
+	{{!-- New Styles and JS --}}
+	<link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/hours_style.css">
+    <script type="text/javascript" src="/test.js"></script>
+	<script type="text/javascript" src="/v1.js"></script>
+	<script type="text/javascript" src="/tab_controls.js"></script>
+
+	<!-- Favicon! -->
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	<!--Fav end -->
+
+<head>
+	<link href="./style.css" rel="stylesheet" type="text/css">
+	<link href="./colours.css" rel="stylesheet" type="text/css">
+
 </head>
-<body>
+
+
+
+<body id="thebody" class="" style="background-color: black;">
+	<!-- <body id="thebody" class="redbody" style="background-color: black;"> -->
 
 	<!-- **********HEADER******* -->
 	<header class="theme themered">
@@ -22,33 +50,852 @@
 			<!-- 	<div class="slider round whitefont" id="lightslider"></div>-->
 			<!-- </label>-->
 		</div>
-        <nav>
-            <h4>Node Mongodb</h4>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
-            </ul>
-        </nav>
-
 	</header>
 	<!-- *************header******-->
 
+	<br><br class="desktoponly">
+	
+
+	<!-- ************* MAIN CONTENT *************-->
+	<div class="maxw dark-background" id="maincontent">
+
+		<!-- ***NAVIGATION TABS *** -->
+		<div class="w3-bar w3-black" style="height:100px;font-size:0px">
+			<button class="typebutton max active" id="max" onclick="setTab('max')" style="background-image: url(icons/Max_cape.webp)">
+			</button>
+			<button class="typebutton achievement" id="achievement" onclick="setTab('achievement')" style="background-image: url(icons/achievement_cape.webp)">
+			</button>
+			<button class="typebutton quest" id="quest" onclick="setTab('quest')" style="background-image: url(icons/quest_cape.webp)">
+			</button>
+		</div>
+		<!-- *****Navigation tabs***** -->
+
+		<!-- *******INTRO TEXT DESCRIPTION*********-->
+		<br>
+		<br class="mobileonly">
+
+		<!-- <h1 id="tabtext" class="center">Max Cape</h1> -->
+		<br>
+		<div class="center " id="intro" style="padding-left:10px;padding-right:10px">
+			PREVIEW VERSION
+			<br>
+			Find many hours until you max in Old School Runescape
+			{{title}}
+			
+
+		</div>
+		<div class="center" id="disclaimer">
+			<br>
+			A personalised osrs maxing calculator.
+			<br>
+			Select your favourite training methods, and find the amount of hours and gp it will take to reach max level.
+			<br>
+			99 melee (Attack, Strength, Defence and Hitpoints) is assumed to be completed via Slayer.
+			<br>
+			See planned features at the bottom of the page.
+			<br>
+		</div>
+		<br>
+		<br class="mobileonly">
+		<!-- *******Intro text description*********-->
+
+		<!-- *************SEARCH  *************-->
+		<div class="searcharea maxw" onsubmit="console.log('You clicked submit.'); SubmitUsername(); return false">
+			<form id="myform" >
+				<input type="text" class="textbox" id="fname" name="firstname" style="text-align:center;" placeholder="Enter your username">
+				<input type="button" class="colorbutton theme themered" value="Submit" onClick="SubmitUsername()">
+			 </form> 
+		</div>
+		<!-- ************* Search *************-->
+
+		<p id="displayUsername" class="center"></p>
+
+		<br>
+		<!-- *************RANGED *************-->
+		<div class="row">
+			<div class="columnA center"><img style="margin-top:10px" height="30" class="ico" class="ico"
+					src="icons/Ranged_icon.webp" alt="Ranged">
+				<p id="raXpDisplay" class="center">0Xp</p>
+			</div>
+
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="radrop" id="radrop" onchange="RaDropdownUpdate()">
+						<option value="1" >90kph Cannon Ice Trolls</option>
+						<option value="2">130kph Pest Control</option>
+						<option value="3">140kph NMZ Venator Bow</option>
+						<option value="4">675kph Chinning Monkeys</option>
+						<option value="5">710kph Chinning Monkeys (red)</option>
+						<option value="6" selected="selected">850kph Chinning Monkeys (black)</option>
+					</select>
+
+				</form>
+			</div>
+			<div class="columnC righttext" id="finalcolumn">
+
+				<div >
+					<nobr>
+						<div id="raCost" class="righttext">? Gp</div>
+					</nobr>
+					<nobr>
+						<div id="raFinal" class="righttext" style="text-align:right;">? Hours</div>
+					</nobr>
+				</div>
 
 
-    <div class="container mt-4">
-        <div class="jumbotron">
-            <h1 class="display-4">Hello, world! Welcome user {{title}}</h1>
-            <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-            <hr class="my-4">
-            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-            </p>
-        </div>
-    </div>
+			</div>
 
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+		</div>
+		<!-- *************RANGED *************-->
+
+
+		<!-- *************Prayer *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Prayer_icon.webp"
+					alt="Prayer">
+				<p id="prXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="prdrop" id="prdrop" onchange="PrDropdownUpdate()">
+						<option value="1" >50kph Big Bones</option>
+						<option value="2">250kph Baby Dragon Bones</option>
+						<option value="3">437kph Wyrm Bones</option>
+						<option value="4">600kph Dragon Bones</option>
+						<option value="5">800kph Lava Dragon Bones</option>
+						<option value="6" selected="selected">1250kph Sup. Dragon Bones</option>
+					</select>
+
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="prCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="prFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- ************* PRAYER *************-->
+
+
+		<!-- *************MAGIC *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Magic_icon.webp" alt="Magic">
+				<p id="maXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="madrop" id="madrop" onchange="MaDropdownUpdate()">
+						<option value="1" >78kph Cast High Level Alchemy</option>
+						<option value="2">150kph Cast Plank Make</option>
+						<option value="3">150kph Casting String Jewellery</option>
+						<option value="4">175kph Stun Alching</option>
+						<option value="5" selected="selected">380kph Ice Barrage Manical Monkeys</option>
+					</select>
+
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="maCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="maFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- ************* MAGIC *************-->
+
+
+
+		<!-- *************Runecraft *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Runecrafting_icon.webp"
+					alt="Runecraft">
+				<p id="ruXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="rudrop" id="rudrop" onchange="RuDropdownUpdate()">
+						<option value="1" >35kph Blood Runes</option>
+						<option value="2">60kph Solo Lava Runes</option>
+						<option value="3">65kph Guardians Of The Rift</option>
+						<option value="4">70kph Ourania Altar</option>
+						<option value="5">80kph Arceeus Library</option>
+						<option value="6" selected="selected">100kph Steam Runes</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="ruCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="ruFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- ************* Runecraft*************-->
+
+
+		<!-- *************Construnction *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Construction_icon.webp"
+					alt="Construction">
+				<p id="coXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="codrop" id="codrop" onchange="CoDropdownUpdate()">
+						<option value="1" >190kph Mahogany Homes</option>
+						<option value="2">400kph Mythical Capes</option>
+						<option value="3">450kph Oak Larders</option>
+						<option value="4">500kph Oak Dungeon Doors</option>
+						<option value="5">580kph Teak Benches</option>
+						<option value="6">850kph Mahogany Tables</option>
+						<option value="7" selected="selected">1000kph Gnome Benches</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="coCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="coFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+
+		</div>
+		<!-- *************Construction *************-->
+
+		<!-- ************* AGILITY*************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Agility_icon.webp"
+					alt="Agility">
+				<p id="agXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="agdrop" id="agdrop" onchange="AgDropdownUpdate()">
+						<option value="1" >45kph Seers Rooftop</option>
+						<option value="2">50kph Wilderness Agility</option>
+						<option value="3">50kph Pollivneach Rooftop</option>
+						<option value="4">55kph Relleka Rooftop</option>
+						<option value="5">65kph Ardougne Rooftop</option>
+						<option value="6">65kph Priffdinas Rooftop</option>
+						<option value="7" selected="selected">90kph Hallowed Sepulchre</option>
+
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="agCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="agFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+		</div>
+		<!-- *************Agility *************-->
+
+
+		<!-- ************* HERBLORE*************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="25" class="ico" src="icons/Herblore_icon.webp"
+					alt="Herblore">
+				<p id="heXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="hedrop" id="hedrop" onchange="HeDropdownUpdate()">
+						<option value="1" >110kph Cast Degrime Torstol</option>
+						<option value="2">170kph Making Irit Tar</option>
+						<option value="3">210kph Making Combat potion</option>
+						<option value="4">400kph Make Magic Potion</option>
+						<option value="5" selected="selected">500kph Make Ancient Brew</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="heCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="heFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- *************Herblore *************-->
+
+
+		<!-- *************THIEVING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Thieving_icon.webp"
+					alt="Thieving">
+				<p id="thXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="thdrop" id="thdrop" onchange="ThDropdownUpdate()">
+						<option value="1" >110kph Master Farmers</option>
+						<option value="2">140kph Elves</option>
+						<option value="3">150kph Vyres</option>
+						<option value="4">210kph Ardy Knights</option>
+						<option value="5">240kph Blackjacking</option>
+						<option value="6">260kph Rogues Castle Chests</option>
+						<option value="7" selected="selected">265kph Pyramid Plunder</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="thCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="thFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- *************Thieving *************-->
+
+		<!-- *************CRAFTING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Crafting_icon.webp"
+					alt="Crafting">
+				<p id="crXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="crdrop" id="crdrop" onchange="CrDropdownUpdate()">
+						<option value="1" >150kph Dragonstone Bracelets</option>
+						<option value="2">220kph Cutting Rubies</option>
+						<option value="3">270kph Cutting Diamonds</option>
+						<option value="4">360kph Cutting Dragonstones</option>
+						<option value="5" selected="selected">415kph Crafting Black D'hide Bodies</option>
+					</select>
+				</form>
+			</div>
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="crCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="crFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+		</div>
+		<!-- *************Crafting *************-->
+
+		<!-- *************FLETCHING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Fletching_icon.webp"
+					alt="Fletching">
+				<p id="flXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="fldrop" id="fldrop" onchange="FlDropdownUpdate()">
+						<option value="1" >1900kph Mithril Darts</option>
+						<option value="2">2250kph Adamant Darts</option>
+						<option value="3">2500kph Rune Darts</option>
+						<option value="4">3000kph Amethyst Darts</option>
+						<option value="5" selected="selected">4000kph Dragon Darts</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="flCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="flFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+		</div>
+		<!-- *************Fletching *************-->
+
+		<!-- *************SLAYER *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Slayer_icon.webp"
+					alt="Slayer">
+				<p id="slXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+
+				<input type="text" style="text-align:center" id="slayerAverage" name="slayerAverage" onchange="SlTextUpdate()"
+					placeholder="Enter your average Slayer XP per hour...">
+
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="slCost" class="righttext">0 Gp</div>
+				</nobr>
+				<nobr>
+					<div id="slFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- ************* Slayer*************-->
+
+
+		<!-- *************HUNTER *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Hunter_icon.webp"
+					alt="Hunter">
+				<p id="huXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="hudrop" id="hudrop" onchange="HuDropdownUpdate()">
+						<option value="1" >80kph Kebbits</option>
+						<option value="2">115kph Red Chinchompas</option>
+						<option value="3">125kph Black Salamanders</option>
+						<option value="4">150kph Herbiboar</option>
+						<option value="5">160kph Black Chinchompas</option>
+						<option value="6" selected="selected">175kph Hunters Rumors</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="huCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="huFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- *************hunter *************-->
+
+		<!-- *************MINING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Mining_icon.webp"
+					alt="Mining">
+				<p id="miXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="midrop" id="midrop" onchange="MiDropdownUpdate()">
+						<option value="1" >25kph Crashed Stars</option>
+						<option value="2">50kph Iron Ore</option>
+						<option value="3">60kph Motherlode Mine</option>
+						<option value="4">69kph Blast Mine</option>
+						<option value="5">70kph Gem Rocks</option>
+						<option value="6">75kph Zalcano</option>
+						<option value="7">78kph Solo Volcanic Mine</option>
+						<option value="8" selected="selected">85kph Volcanic Mine</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="miCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="miFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- *************Mining *************-->
+
+
+		<!-- *************SMITHING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Smithing_icon.webp"
+					alt="Smithing">
+				<p id="smXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="smdrop" id="smdrop" onchange="SmDropdownUpdate()">
+						<option value="1" >200kph Giants Foundry</option>
+						<option value="2">250kph Anvil Smithing</option>
+						<option value="3" selected="selected">350kph Blast Furnace</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="smCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="smFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- *************Smithing *************-->
+
+
+		<!-- *************FISHING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Fishing_icon.webp"
+					alt="Fishing">
+				<p id="fiXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="fidrop" id="fidrop" onchange="FiDropdownUpdate()">
+						<option value="1" >40kph Fly Fishing</option>
+						<option value="2">50kph Barbarian Fishing</option>
+						<option value="3">75kph Tempoross</option>
+						<option value="4" selected="selected">80kph Drift Net Fishing</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="fiCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="fiFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- ************* fishing *************-->
+
+		<!-- *************COOKING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Cooking_icon.webp"
+					alt="Cooking">
+				<p id="ckXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="ckdrop" id="ckdrop" onchange="CkDropdownUpdate()">
+						<option value="1" >150kph Lobster</option>
+						<option value="2">250kph Karambwans</option>
+						<option value="3">300kph Angler Fish</option>
+						<option value="4">450kph Bake Summer Pie Spell</option>
+						<option value="5" selected="selected">900kph 1t Karambawans</option>
+					</select>
+				</form>
+			</div>
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="ckCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="ckFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+		</div>
+		<!-- ************* Cooking *************-->
+
+		<!-- *************FIREMAKING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Firemaking_icon.webp"
+					alt="Firemaking">
+				<p id="fmXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="fmdrop" id="fmdrop" onchange="FmDropdownUpdate()">
+						<option value="1" >250kph Mahogany Logs</option>
+						<option value="2">275kph Yew Logs</option>
+						<option value="3">290kph Wintertodt</option>
+						<option value="4">400kph Magic Logs</option>
+						<option value="5" selected="selected">450kph Redwood logs</option>
+					</select>
+				</form>
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="fmCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="fmFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- *************Firemaking *************-->
+
+		<!-- *************WOODCUTTING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Woodcutting_icon.webp"
+					alt="Woodcutting">
+				<p id="wcXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="wcdrop" id="wcdrop" onchange="WcDropdownUpdate()">
+						<option value="1" >68kph Cutting Redwood Trees</option>
+						<option value="2">75kph Cutting Blisterwood Trees</option>
+						<option value="3">90kph Forrestry at Yews</option>
+						<option value="4">90kph Cutting Teak Trees</option>
+						<option value="5" selected="selected">100kph Cutting Scullicep Trees</option>
+					</select>
+				</form>
+			</div>
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="wcCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="wcFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+		</div>
+		<!-- *************Woodcutting *************-->
+
+		<!-- *************FARMING *************-->
+		<div class="row">
+			<div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Farming_icon.webp"
+					alt="Farming">
+				<p id="faXpDisplay" class="center">0Xp</p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="seeddrop" id="seeddrop" onchange="FaDropdownUpdate()">
+						<option value="1" >3403xp Maple Seed</option>
+						<option value="2">7070xp Yew Seed</option>
+						<option value="3" selected="selected">13768xp Magic Seed</option>
+					</select>
+				</form>
+				<form>
+
+				</form>
+
+			</div>
+
+			<div class="columnC righttext" id="finalcolumn">
+				<nobr>
+					<div id="faCost" class="righttext">? Gp</div>
+				</nobr>
+				<nobr>
+					<div id="faFinal" class="righttext" style="text-align:right;">? hours</div>
+				</nobr>
+			</div>
+
+		</div>
+		<!-- *************farming *************-->
+
+		<!-- *************FARMINGPATCHES *************-->
+		<div class="row">
+			<div class="columnA">
+				<p id=""> &nbsp; </p>
+			</div>
+			<div class="columnB">
+				<form>
+					<select class="fullw minimal" name="patchesdrop" id="patchesdrop" onchange="FaDropdownUpdate()">
+						<option value="1" >1 patch</option>
+						<option value="2">2 patches</option>
+						<option value="3">3 patches</option>
+						<option value="4">4 patches</option>
+						<option value="5" selected="selected">5 patches</option>
+					</select>
+				</form>
+				<form>
+
+				</form>
+
+			</div>
+			<div class="columnC center" id=""> &nbsp; </div>
+		</div>
+		<!-- *************Farming patches *************-->
+
+		<br>
+		<!-- ************* ENd Info *************-->
+<!-- Final Outome Area -->
+<div style="padding:10px;">
+<div style="border-radius:50px;padding-top:50px;">
+		<div>
+			
+			<div class="OutcomeColA" style="float: left; line-height: 70px;">
+				&nbsp;
+			</div>
+			<div id="goalNameDisplay" class="OutcomeColB" style="float: left;text-align:left; font-size:60px;line-height: 70px;">
+				PlayerName
+			</div>
+			<div id="finalCape" class="OutcomeColC finalMax" style="float: left;text-align:right;line-height: 70px;">
+				&nbsp;
+			</div>
+			<div class="OutcomeColD" style="float:left;line-height: 70px;">
+				&nbsp;
+			</div>
+		</div>
+
+
+
+		<br><br>
+
+		<div style="padding-top:10px;">
+			<!-- Final Outome Area -->
+			<div class="OutcomeColA" style="float: left;">
+				&nbsp;
+			</div>
+			<div class="OutcomeColB" style="float: left;text-align:left">
+				Goal
+			</div>
+			<div id="goalCapeDisplay" class="OutcomeColC" style="float: left;text-align:right">
+				Max Cape
+			</div>
+			<div class="OutcomeColD" style="float:left">
+				&nbsp;
+			</div>
+		</div>
+
+		<div >
+			<!-- Final Outome Area -->
+			<div class="OutcomeColA" style="float: left;">
+				&nbsp;
+			</div>
+			<div class="OutcomeColB" style="float: left;text-align:left">
+				Remaining Hours
+			</div>
+			<div id="goalHoursDisplay" class="OutcomeColC" style="float: left;text-align:right">
+				?
+			</div>
+			<div class="OutcomeColD" style="float:left">
+				&nbsp;
+			</div>
+		</div>
+
+
+				<div>
+			<!-- Final Outome Area -->
+			<div class="OutcomeColA" style="float: left;">
+				&nbsp;
+			</div>
+			<div class="OutcomeColB" style="float: left;text-align:left">
+				Million GP Cost
+			</div>
+			<div id="goalGpDisplay" class="OutcomeColC" style="float: left;text-align:right">
+				?
+			</div>
+			<div class="OutcomeColD" style="float:left">
+				&nbsp;
+			</div>
+		</div>
+
+		<div>
+			<!-- Final Outome Area -->
+			<div class="OutcomeColA" style="float: left;">
+				&nbsp;
+			</div>
+			<div class="OutcomeColB" style="float: left;text-align:left">
+				Remaining Levels
+			</div>
+			<div id ="goalLvlsNeededDisplay" class="OutcomeColC" style="float: left;text-align:right">
+				?
+			</div>
+			<div class="OutcomeColD" style="float:left">
+				&nbsp;
+			</div>
+		</div>
+
+
+
+		<div>
+			<!-- Final Outome Area -->
+			<div class="OutcomeColA" style="float: left;">
+				&nbsp;
+			</div>
+			<div class="OutcomeColB" style="float: left;text-align:left">
+				Remaining Farm Runs
+			</div>
+			<div id="goalFarmDisplay" class="OutcomeColC" style="float: left;text-align:right">
+				?
+			</div>
+			<div class="OutcomeColD" style="float:left">
+				&nbsp;
+			</div>
+		</div>
+
+		<div>
+			<!-- Final Outome Area -->
+			<div class="OutcomeColA" style="float: left;">
+				&nbsp;
+			</div>
+			<div class="OutcomeColB" style="float: left;text-align:left">
+				Skills Completed
+			</div>
+			<div id="goalCompleteSkillsDisplay" class="OutcomeColC" style="float: left;text-align:right">
+				?
+			</div>
+			<div class="OutcomeColD" style="float:left">
+				&nbsp;
+			</div>
+		</div>
+
+
+
+
+
+		<br><br>
+		<br><br>
+		<br>
+
+		<div class="OutcomeColA" style="float:left">&nbsp;</div>
+		<div class="OutcomeBar" style="float:left">
+			<div class="meter red" >
+				<span id="progressPercent" style="width: 0%"></span>
+			</div>
+		</div>
+		<div class="OutcomeColD" style="float:left">&nbsp;</div>
+
+
+	</div>
+</div>
+	<!-- end card -->
+	<br><br><br><br><br class="desktoponly"><br class="desktoponly">
+		<div class="maxw searcharea">
+			<input type="button" class="colorbutton theme themered" value="Save!" onClick="SaveAll()">
+		</div>
+		<br><br>
+		<p id="hours" class="center">Bookmark this page to save your choices and automatically update your xp!</p>
+		<!-- *************end info *************-->
+
+		<br><br>
+	</div>
+	<!-- ENd outcome area -->
+</div>
+
+
+	<footer>
+		<div>
+			<br><br>
+
+			<p id="footer">2024 Arrgs (Mapex Games)</p>
+			<p id="footer">reevesgamedev@gmail.com</p>
+			<p id="footer">*Gp per XP estimates from June 2024*</p>
+			<p id="footer">Planned Features</p>
+			<p id="footer">HTTPS Security certificate</p>
+			<p id="footer">Live Gp/XP prices</p>
+			<p id="footer">More Farming Selections</p>
+			<p id="footer">More Training Methods and More Accurate XP Per hour</p>
+		</div>
+	</footer>
 
 </body>
+
 </html>

@@ -20,17 +20,13 @@ const app = express();
 //Enable a folder for public assets and JS files (Non server JS)
 app.use(express.static('public'))
 
-
 //For destructure...
 //
 //Trying to make destructuring work...
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-
 app.use(morgan('dev'))
-
-
 
 //No need for urlParse or UnifiedTopology args as they were removed and deprecated
 //Conect via location saved in env file
