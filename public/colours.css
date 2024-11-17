@@ -37,6 +37,7 @@ header {
 
 }
 
+
 .vertical-center {
   margin: 0;
   position: absolute;
@@ -83,7 +84,7 @@ header {
 
 /* Create an active/current tablink class */
 .tab button.active {
-  background-color: #222527;
+  background-color: white;
 }
 
 /* Style the tab content */
@@ -106,5 +107,5 @@ header {
 }
 
 .active{
-  background-color: #222527;
+  background-color: white;
 }

@@ -4,12 +4,12 @@
     margin:0px;
 }
 
-#logoimage {text-align: center; background-image: "logo.png";height:56px;}	
+#logoimage {text-align: left !important; background-image: "logo.png";height:56px; margin-top: 10px}	
 
-body {color: white; background-color:black}
+body {color: black; background-color:white; border: #1a1a1a;}
 
 header {
- height:60px;
+ height:80px;
 }
 
 .redbody{
@@ -88,7 +88,7 @@ background-size: 10%;/*13 on mobile, 10 on desktop*/
      margin-left: auto;
      margin-right: auto;
  /*padding: 10px;*/
- text-align: right;
+    text-align: right;
       }
 
 .searcharea{
@@ -336,7 +336,6 @@ border-bottom: 0px;
 border-left:2px;
 border-right:2px;
 border-color: white;
-background-color: #1a1a1a;
 
 }
 
@@ -344,6 +343,9 @@ background-color: #1a1a1a;
 #maincontent{
 border-top-left-radius: 15px;
 border-top-right-radius: 15px;
+-webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
 }
 
 .mobileonly{
@@ -457,15 +459,10 @@ background-image: none;
 }
 
 #page-wrap {
-width: 490px;
-margin: 80px auto;
+    width: 490px;
+    margin: 80px auto;
 }
-body {
-background: #333;
-text-align: center;
-color: #eee;
-font-family: system-ui, sans-serif;
-}
+
 h1 {
 font-size: 42px;
 font-weight: 600;
