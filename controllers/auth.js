@@ -15,16 +15,27 @@ exports.register = async (req, res ) => {
         const { username: username, userEmail: email, userPass: password } = req.body;
         //Validation the submission against the registration schema
         console.log('Validating a new user. username: ' + '. email: ' + email + ". password: " + password)
+        if(!username || (username.length < 3)){
+            res.send('Your username must be at least 3 characters!')
+        }
+        if(!email){
+            res.send('Your email field is blank!')
+        }
+        if(!password){
+            res.send('Your password field is blank!')
+        }
         const result = await authSchema.validateAsync({username, email, password});
         console.log(result)
         
         //If that email is used in the db, throw an error
         const emailDoesExist = await User.findOne({email: email})
-        if(doesExist) throw createError.Conflict(`${email} is already registered`)
+        if(emailDoesExist){
+            throw createError.Conflict(`${email} is already registered`)
+
+        } 
         //If that username is used in the db, throw an error
         const usernameDoesExist = await User.findOne({username: username})
         if(usernameDoesExist) throw createError.Conflict(`${username} is already taken!`)
-        if(emailDoesExist) throw createError.Conflict(`${email} is already in use!`)
         
         
         //And we can use the destructed data to creat our new user, setting the syntax is like
@@ -40,7 +51,6 @@ exports.register = async (req, res ) => {
         const accessToken = await signAccessToken(savedUser.id)
         console.log('Sending the new user a jwt access token.')
         res.cookie('authorization', accessToken)
-        res.send(accessToken)
 
     } catch(error){
         console.log(error)
@@ -69,7 +79,7 @@ exports.login = async (req, res, next ) => {
         
         console.log('sending cookie')
         res.cookie('authorization', accessToken)
-        res.send(accessToken)
+        //res.send(accessToken)
     } catch(error){
         if(error.isJoi === true) return next(createError.BadRequest("Joi has rejected your input values!"))
         next(error)
