@@ -9,40 +9,44 @@
 <meta name="author" content="Mapex Games">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
-  <script>
-  $(document).ready(function() {
+<script>
+    $(document).ready(function () {
 
-    $("#myform").submit(function() { // intercepts the submit event
-      console.log('Registration form has been submitted.')
-      $.ajax({ // make an AJAX request
-        type: "POST",
-        url: "/auth/register", // it's the URL of your component B
-        data: $("#myform").serialize(), // serializes the form's elements
-        success: function(data)
-        {
-          // show the data you got from B in result div
-          console.log('Success')
-          $("#result").html(data);
-        }
-      });
-      return false; // avoid to execute the actual submit of the form
+        $("#myform").submit(function () { // intercepts the submit event
+            console.log('Registration form has been submitted.')
+            //clear result message
+            $("#result").html('&nbsp;');
+            $.ajax({ // make an AJAX request
+                type: "POST",
+                url: "/auth/register", // it's the URL of your component B
+                data: $("#myform").serialize(), // serializes the form's elements
+                success: function (data) {
+                    // show the data you got from B in result div
+                    console.log('Success');
+                    $("#result").html('Your registration was successful! Please check your mail.');
+                    $("#result").removeClass("fail");
+                    $("#result").addClass("success");
+                    
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Submit returned errors');
+                    //console.log(textStatus);
+                    //console.log(errorThrown);
+                    jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+                    $("#result").html(jsonErrorMessage);
+                    $("#result").removeClass("success");
+                    $("#result").addClass("fail");
+                }
+
+            });
+            return false; // avoid to execute the actual submit of the form
+        });
+
     });
+</script>
 
-  });
-  </script>
-
-
-
-
-<!-- Favicon! -->
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-<meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
-<!--Fav end -->
+
 
 <head>
     <link rel="stylesheet" href="/style.css">
@@ -62,7 +66,8 @@
             <!-- 	<input onchange="Lightswitch();" type="checkbox" id="lightinput">-->
             <!-- 	<div class="slider round whitefont" id="lightslider"></div>-->
             <!-- </label>-->
-        {{!-- </div> --}}
+            {{!--
+        </div> --}}
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
@@ -101,34 +106,37 @@
         <!-- *******Intro*********-->
 
         <!-- ******REGISTER*******-->
-        
-        <div class="searcharea maxw" >
+
+        <div class="searcharea maxw">
             {{!-- <form action="/auth/register" method="POST" id="myform"> --}}
 
 
-            <form id="myform" onsubmit="return false;">
-                
-                <input type="text" class="textbox" id="username" name="username" style="text-align:left;"
-                    placeholder="Enter your username">
-                    
-                <input type="text" class="textbox" id="userEmail" name="userEmail" style="text-align:left;"
-                    placeholder="Enter your email address">
-                <input type="text" class="textbox" id="userPass" name="userPass" style="text-align:left;"
-                    placeholder="Enter a password">
-                <p style="text-align:left;font-size:14px">Your username can be different to Old School Runescape username.</p>
-                <p style="text-align:left;font-size:14px">Passwords are hashed, but please do not use your Old School Runescape password.</p>
-                
-                <div id="result" style="color: rgb(228, 63, 63);margin-top:10px">&nbsp;</div>
+                <form id="myform" onsubmit="return false;">
 
-                <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Register">
+                    <input type="text" class="textbox" id="username" name="username" style="text-align:left;"
+                        placeholder="Enter your username">
 
-                {{!-- <input type="submit" class="colorbutton theme themered" value="Register"  style="margin-top: 10px"> --}}
-            </form>
+                    <input type="text" class="textbox" id="userEmail" name="userEmail" style="text-align:left;"
+                        placeholder="Enter your email address">
+                    <input type="text" class="textbox" id="userPass" name="userPass" style="text-align:left;"
+                        placeholder="Enter a password">
+                    <p style="text-align:left;font-size:14px">Your username can be different to Old School Runescape
+                        username.</p>
+                    <p style="text-align:left;font-size:14px">Passwords are hashed, but please do not use your Old
+                        School Runescape password.</p>
 
-            
+                    <div id="result" style="margin-top:10px">&nbsp;</div>
+
+                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Register">
+
+                    {{!-- <input type="submit" class="colorbutton theme themered" value="Register"
+                        style="margin-top: 10px"> --}}
+                </form>
 
 
-            
+
+
+
 
         </div>
         <!-- *****End Register*****-->

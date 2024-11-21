@@ -4,6 +4,13 @@
     margin:0px;
 }
 
+.success{
+   color: green; 
+}
+.fail{
+    color: rgb(228, 63, 63); 
+ }
+
 #logoimage {text-align: left !important; background-image: "logo.png";height:56px; margin-top: 10px}	
 
 body {color: black; background-color:white; border: #1a1a1a;}

@@ -1,10 +1,11 @@
 {
   "name": "hours-to-max-v2",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "fixn": " nodemon -e *"
   },
   "keywords": [],
   "author": "",

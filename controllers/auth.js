@@ -6,32 +6,39 @@ const {authSchema} = require('../helpers/validation_schema')
 const {signAccessToken} = require('../helpers/jwt_helper')
 
 //For cookies
-const express = require('express');
+//const express = require('express');
 
-exports.register = async (req, res ) => {
-    //console.log(req.body);
+exports.register = async (req, res , next) => {
+    //Create a Json response for the form to receive
+    res.setHeader('Content-Type', 'application/json');
     try{
         //We can destruct the variables here, using : to separate original and new variable name
         const { username: username, userEmail: email, userPass: password } = req.body;
         //Validation the submission against the registration schema
-        console.log('Validating a new user. username: ' + '. email: ' + email + ". password: " + password)
-        if(!username || (username.length < 3)){
-            res.send('Your username must be at least 3 characters!')
+        console.log('Validating new user: ' + username)
+        result = "empty result"
+        //warning = 'empty warning'
+        console.log('about to run validation')
+        try{
+            result = await authSchema.validateAsync({username, email, password}, {warnings: true});
+
+        } catch(err){
+            //If this fails, result remains unchanged from its original declaration
+            console.log("Joi Error Message: " + err.message)
+            //console.log(Object.getOwnPropertyNames(err))
+            //From here, set a https error code, a message, and return to requester!
+            res.status(422).json({'error': err.message})
+            //If joi validation fails, end function
+            return
         }
-        if(!email){
-            res.send('Your email field is blank!')
-        }
-        if(!password){
-            res.send('Your password field is blank!')
-        }
-        const result = await authSchema.validateAsync({username, email, password});
-        console.log(result)
+        console.log('Joi validation was successful.')
         
         //If that email is used in the db, throw an error
         const emailDoesExist = await User.findOne({email: email})
         if(emailDoesExist){
-            throw createError.Conflict(`${email} is already registered`)
-
+            //throw createError.Conflict(`Sorry! ${email} is already registered`)
+            console.log('continue')
+            res.status(422).json({'error': `${email} is already registered`})
         } 
         //If that username is used in the db, throw an error
         const usernameDoesExist = await User.findOne({username: username})
@@ -51,6 +58,7 @@ exports.register = async (req, res ) => {
         const accessToken = await signAccessToken(savedUser.id)
         console.log('Sending the new user a jwt access token.')
         res.cookie('authorization', accessToken)
+        res.send(JSON.stringify({ success: 'You have been registered!' }))
 
     } catch(error){
         console.log(error)
