@@ -9,6 +9,11 @@ const UserSchema = new Schema({
     lowercase: true,
     unique: true,
   },
+  confirmed: {
+    type: Boolean,
+    retuired: true,
+    default: false,
+  },
   username:{
     type: String,
     required: true,

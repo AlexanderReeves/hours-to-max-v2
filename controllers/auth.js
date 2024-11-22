@@ -2,8 +2,9 @@
 const mongoose = require('mongoose')
 const User = require('../Models/user')
 const createError = require('http-errors')
-const {authSchema} = require('../helpers/validation_schema')
+const {authSchema, loginSchema} = require('../helpers/validation_schema')
 const {signAccessToken} = require('../helpers/jwt_helper')
+
 
 //For cookies
 //const express = require('express');
@@ -47,7 +48,8 @@ exports.register = async (req, res , next) => {
         
         //And we can use the destructed data to creat our new user, setting the syntax is like
         //somedatabaseitemname:currentvariablename
-        const user = new User({username, email, password: password})
+        const confirmed = false
+        const user = new User({username, email, password: password, confirmed})
 
         const savedUser = await user.save()
         console.log(savedUser)
@@ -59,6 +61,13 @@ exports.register = async (req, res , next) => {
         console.log('Sending the new user a jwt access token.')
         res.cookie('authorization', accessToken)
         res.send(JSON.stringify({ success: 'You have been registered!' }))
+
+
+        //Send the registration email######################################
+
+
+    //###################################################################
+
 
     } catch(error){
         console.log(error)
@@ -73,7 +82,9 @@ exports.login = async (req, res, next ) => {
         //We can destruct the variables here, using : to separate original and new variable name
         const { userEmail: email, userPass: password } = req.body;
         console.log('Login validation values: ' + email + '   ' + password)
-        const result = await authSchema.validateAsync({email,password});
+
+        //const result = await authSchema.validateAsync({email,password});
+        const result = await loginSchema.validateAsync({email,password});
         console.log(result)
 
         const user = await User.findOne({email: result.email})
@@ -82,6 +93,11 @@ exports.login = async (req, res, next ) => {
         const isMatch = await user.isValidPassword(result.password)
         if(!isMatch) throw createError.Unauthorized("Username/Password was not valid")
 
+        //Check is the user confirmed their email address already
+        //We shouldn't need to send in any params as it will just chekc the current object
+        console.log('User confirmed status: ' + user.confirmed)
+        if(!user.confirmed) throw createError.Unauthorized("User email has not been confirmed!")
+
         //If sign in was okay
         const accessToken = await signAccessToken(user.id)
         
@@ -89,6 +105,7 @@ exports.login = async (req, res, next ) => {
         res.cookie('authorization', accessToken)
         //res.send(accessToken)
     } catch(error){
+        console.log(error)
         if(error.isJoi === true) return next(createError.BadRequest("Joi has rejected your input values!"))
         next(error)
 
