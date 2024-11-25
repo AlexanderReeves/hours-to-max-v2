@@ -4,6 +4,7 @@ const User = require('../Models/user')
 const createError = require('http-errors')
 const {authSchema, loginSchema} = require('../helpers/validation_schema')
 const {signAccessToken} = require('../helpers/jwt_helper')
+const mailHelper = require('../helpers/mailer')
 
 
 //For cookies
@@ -63,7 +64,10 @@ exports.register = async (req, res , next) => {
         res.send(JSON.stringify({ success: 'You have been registered!' }))
 
 
+
+
         //Send the registration email######################################
+        mailHelper.mailTool()
 
 
     //###################################################################
