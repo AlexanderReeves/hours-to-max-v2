@@ -5,6 +5,7 @@ const createError = require('http-errors')
 const {authSchema, loginSchema} = require('../helpers/validation_schema')
 const {signAccessToken} = require('../helpers/jwt_helper')
 const mailHelper = require('../helpers/mailer')
+const bcrypt = require('bcrypt')
 
 
 //For cookies
@@ -34,6 +35,16 @@ exports.register = async (req, res , next) => {
             return
         }
         console.log('Joi validation was successful.')
+
+        //Try encrypt password early
+        try{
+            hPassword = await encryptPassword(password)
+            console.log("Tried and result:" + hPassword)
+
+        } catch(err){
+            console.log("failed password encryption somehow")
+            return
+        }
         
         //If that email is used in the db, throw an error
         const emailDoesExist = await User.findOne({email: email})
@@ -50,7 +61,7 @@ exports.register = async (req, res , next) => {
         //And we can use the destructed data to creat our new user, setting the syntax is like
         //somedatabaseitemname:currentvariablename
         const confirmed = false
-        const user = new User({username, email, password: password, confirmed})
+        const user = new User({username, email, password: hashedPass, confirmed})
 
         const savedUser = await user.save()
         console.log(savedUser)
@@ -58,8 +69,9 @@ exports.register = async (req, res , next) => {
 
         //=====================================================
         //Once the user is registered, use jwt helper to create a jwt for them
-        const accessToken = await signAccessToken(savedUser.id)
-        console.log('Sending the new user a jwt access token.')
+        //The password should be encrypted before it is added to the jwt.
+        const accessToken = await signAccessToken(savedUser.id, email, hashedPass)
+        console.log('Sending the new user a jwt access token.' + accessToken)
         res.cookie('authorization', accessToken)
         res.send(JSON.stringify({ success: 'You have been registered!' }))
 
@@ -67,7 +79,7 @@ exports.register = async (req, res , next) => {
 
 
         //Send the registration email######################################
-        mailHelper.mailTool()
+        mailHelper.registrationEmail(accessToken, hashedPass)
 
 
     //###################################################################
@@ -117,6 +129,14 @@ exports.login = async (req, res, next ) => {
     //res.send("Form submitted");
 }   
 
+
+async function encryptPassword(password) {
+    console.log('Encrypting a password for the JWT.')
+    salt = await bcrypt.genSalt(10)
+    hashedPass = await bcrypt.hash(password, salt)
+    console.log("hashedPass: type: " + typeof(hashedPass) + " , fina: l" + hashedPass)
+    return hashedPass
+  }
 
 
 

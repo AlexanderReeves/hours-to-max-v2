@@ -27,11 +27,12 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', async function (next){
   try{
-    console.log('New user requested to be saved. Password being encrypted.')
-    const salt = await bcrypt.genSalt(10)
-    console.log(this.email, this.password)
-    const hashedPass = await bcrypt.hash(this.password, salt)
-    this.password = hashedPass
+    //WE are hasing earlier, in the JWT helper instead so we no longer hash on this page
+    // console.log('New user requested to be saved. Password being encrypted.')
+    // const salt = await bcrypt.genSalt(10)
+    // console.log(this.email, this.password)
+    // const hashedPass = await bcrypt.hash(this.password, salt)
+    // this.password = hashedPass
     //exit middleware
     next()
   } catch(error){

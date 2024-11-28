@@ -6,9 +6,13 @@ const cookieParser = require('../helpers/cookie_parser')
 
 
 module.exports = {
-    signAccessToken: (userId) => {
+    signAccessToken: (userId, email, password) => {     
         return new Promise((resolve, reject) => {
           const payload = {
+            "email": email,
+            "somedata": password,
+            "text": "text"
+
           }
           const secret = process.env.ACCESS_TOKEN_SECRET
           const options = {
@@ -57,3 +61,4 @@ function getJwtFromCookies(req) {
   }
   
 }
+
