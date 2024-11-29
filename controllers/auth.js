@@ -1,5 +1,5 @@
 //Mongoose for mongodb
-const mongoose = require('mongoose')
+//const mongoose = require('mongoose')
 const User = require('../Models/user')
 const createError = require('http-errors')
 const {authSchema, loginSchema} = require('../helpers/validation_schema')
@@ -7,14 +7,11 @@ const {signAccessToken} = require('../helpers/jwt_helper')
 const mailHelper = require('../helpers/mailer')
 const bcrypt = require('bcrypt')
 
-
-//For cookies
-//const express = require('express');
-
 exports.register = async (req, res , next) => {
     //Create a Json response for the form to receive
     res.setHeader('Content-Type', 'application/json');
     try{
+        //*********Validation of the user details entered
         //We can destruct the variables here, using : to separate original and new variable name
         const { username: username, userEmail: email, userPass: password } = req.body;
         //Validation the submission against the registration schema
@@ -36,60 +33,37 @@ exports.register = async (req, res , next) => {
         }
         console.log('Joi validation was successful.')
 
-        //Try encrypt password early
-        try{
-            hPassword = await encryptPassword(password)
-            console.log("Tried and result:" + hPassword)
-
-        } catch(err){
-            console.log("failed password encryption somehow")
-            return
-        }
-        
-        //If that email is used in the db, throw an error
+        //Check if that is a confirmed email address in the system
         const emailDoesExist = await User.findOne({email: email})
         if(emailDoesExist){
-            //throw createError.Conflict(`Sorry! ${email} is already registered`)
-            console.log('continue')
             res.status(422).json({'error': `${email} is already registered`})
+            return
         } 
-        //If that username is used in the db, throw an error
+        //Check if the username is available
         const usernameDoesExist = await User.findOne({username: username})
-        if(usernameDoesExist) throw createError.Conflict(`${username} is already taken!`)
-        
-        
-        //And we can use the destructed data to creat our new user, setting the syntax is like
-        //somedatabaseitemname:currentvariablename
+        if(usernameDoesExist){
+            res.status(422).json({'error': `Sorry! ${username} is not available.`})
+        } 
+
+        //If validation passes, and username/email are available, save the user to the database
         const confirmed = false
-        const user = new User({username, email, password: hashedPass, confirmed})
-
+        //Destructed data entered to new user with syntax {somedatabaseitemname:currentvariablename}
+        const user = new User({username, email, password, confirmed})
         const savedUser = await user.save()
-        console.log(savedUser)
-        console.log('A new user was added to the database! user: ' + savedUser.id)
+        console.log('A new user was added to the database! user: ' + savedUser)
 
-        //=====================================================
-        //Once the user is registered, use jwt helper to create a jwt for them
-        //The password should be encrypted before it is added to the jwt.
-        const accessToken = await signAccessToken(savedUser.id, email, hashedPass)
-        console.log('Sending the new user a jwt access token.' + accessToken)
-        res.cookie('authorization', accessToken)
-        res.send(JSON.stringify({ success: 'You have been registered!' }))
-
-
-
-
-        //Send the registration email######################################
-        mailHelper.registrationEmail(accessToken, hashedPass)
-
-
-    //###################################################################
-
+        //Once the user is registered, send verification email, using JWT to confirm validity
+        //const accessToken = await signAccessToken(savedUser.id, email, hashedPass)
+        const registrationToken = await signAccessToken(savedUser.id, email, "1h")
+        console.log('Sending the new user a jwt access token email' + registrationToken)
+        //res.cookie('authorization', accessToken)
+        //res.send(JSON.stringify({ success: 'You have been registered!' }))
+        //Send the registration email
+        mailHelper.registrationEmail(registrationToken)
 
     } catch(error){
         console.log(error)
-
     }
-    //res.send("Form submitted");
 }   
 
 exports.login = async (req, res, next ) => {
@@ -129,6 +103,20 @@ exports.login = async (req, res, next ) => {
     //res.send("Form submitted");
 }   
 
+exports.confirmRegistration = async (req, res, next ) => {
+    //Get the JWT which will contain the email that is being activated
+    const email = req.payload.email;
+    //does not work as string, must be json, also check the user email is not already confirmed
+    const emailFound = await User.findOne({ email })
+    console.log(emailFound)
+    if(emailFound){
+        console.log("There is a match on the unverified email: " + email)
+    }else{
+        console.log("There is NO match on the unverified email: " + email)
+    }
+    next()
+
+}
 
 async function encryptPassword(password) {
     console.log('Encrypting a password for the JWT.')

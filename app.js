@@ -13,7 +13,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './.env'});
 require('./helpers/init_mongodb')
 
-const {verifyAccessToken} = require('./helpers/jwt_helper')
+//const {verifyAccessToken, verifyRegistrationToken} = require('./helpers/jwt_helper')
 
 //App is the server
 const app = express();

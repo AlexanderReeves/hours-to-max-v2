@@ -1,6 +1,8 @@
 const express = require('express');
 const { verifyAccessToken } = require('../helpers/jwt_helper');
-const cookieParser = require('../helpers/cookie_parser')
+const { verifyRegistrationToken } = require('../helpers/jwt_helper');
+const cookieParser = require('../helpers/cookie_parser');
+const { confirmRegistration } = require('../controllers/auth');
 
 const router = express.Router();
 
@@ -22,6 +24,16 @@ router.get('/home', verifyAccessToken,(req, res) => {
 
 router.get('/register', (req, res) => {
     res.render('register');
+});
+
+router.get('/verify', verifyRegistrationToken, confirmRegistration,(req, res) => {
+    //Did the user account verification request contain a token?
+    if(req.query.token){
+        console.log("The provided registration token is :" + req.query.token)
+    }else{
+        console.log("No verification token provided");
+    }
+    res.render('verify', {data: req.payload});
 });
 
 router.get('/login', (req, res) => {

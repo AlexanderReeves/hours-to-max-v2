@@ -6,17 +6,18 @@ const cookieParser = require('../helpers/cookie_parser')
 
 
 module.exports = {
-    signAccessToken: (userId, email, password) => {     
+    signAccessToken: (userId, email, expiryTime) => {     
         return new Promise((resolve, reject) => {
           const payload = {
-            "email": email,
-            "somedata": password,
-            "text": "text"
-
+            "email": email
+          }
+          //Default expiry time if none provided, though this may be settable above in function name
+          if(expiryTime == null){
+            expiryTime = "1h"
           }
           const secret = process.env.ACCESS_TOKEN_SECRET
           const options = {
-            expiresIn: "1h",
+            expiresIn: expiryTime,
             issuer: 'hourstomax.com',
             audience: userId,
           }
@@ -33,15 +34,24 @@ module.exports = {
         })
       },
       verifyAccessToken: (req, res, next) => {
+        console.log("Verifying access token")
         accessToken = getJwtFromCookies(req);
-        //if (!req.headers['authorization']) return next(createError.Unauthorized())
-        //const authHeader = req.headers['authorization']
-        //const bearerToken = authHeader.split(' ')
-        //const token = bearerToken[1]
         jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
           if(err) {
-            //return next(createError.Unauthorized())
+            return next(createError.Unauthorized())
           }
+          req.payload = payload
+          next()
+        })
+      },
+      verifyRegistrationToken: (req, res, next) => {
+        console.log("Verifying registration token")
+        accessToken = req.query.token;
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+          if(err) {
+            return next(createError.Unauthorized())
+          }
+          console.log("PPPPPPAYLOAD" +   JSON.stringify(payload))
           req.payload = payload
           next()
         })
@@ -60,5 +70,9 @@ function getJwtFromCookies(req) {
       return null;
   }
   
+}
+
+function getEmailAddressFromJwt(){
+
 }
 

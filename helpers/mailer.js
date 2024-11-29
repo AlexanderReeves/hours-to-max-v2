@@ -39,13 +39,13 @@ const recipients = [
 
 module.exports = {
 
-  registrationEmail: (accessToken) => {
+  registrationEmail: (registrationToken) => {
     myEmailParams = new EmailParams()
     .setFrom(sentFrom)
     .setTo(recipients)
     .setReplyTo(sentFrom)
     .setSubject("Hours To Max Account Activation.")
-    .setHtml("<p>Welcome to Hours To Max. Follow the link to your new account!</p><br><a href=\"http://localhost:3000/verify?token=" +accessToken+ "\">VERIFY YOUR ACCOUNT</a>")
+    .setHtml("<p>Welcome to Hours To Max. Follow the link to your new account!</p><br><a href=\"http://localhost:3000/verify?token=" +registrationToken+ "\">VERIFY YOUR ACCOUNT</a>")
     .setText("");
   
     mailerSend.email.send(myEmailParams)
