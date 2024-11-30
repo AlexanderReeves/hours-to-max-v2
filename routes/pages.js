@@ -36,6 +36,7 @@ router.get('/verify', verifyRegistrationToken, confirmRegistration,(req, res) =>
     res.render('verify', {data: req.payload});
 });
 
+
 router.get('/login', (req, res) => {
     res.render('login');
 });

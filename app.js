@@ -58,6 +58,24 @@ app.use('/' ,require('./routes/pages'))
 //register
 app.use('/auth', require('./routes/auth'))
 
+//Finally, error handling middleware
+
+//If we have made it to this code without already sending a response, send this message
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500)
+    url = req.url;
+    res.render('problem', {title: 'Invalid Request', url: url });
+  })
+
+//No matching route response runs after all other checks are done
+app.use(function(req, res) {
+    // Invalid request
+    res.status(404)
+    url = req.url;
+    res.render('problem', {title: 'The server couldn\'t find what you were looking for!', url: url });
+});
+
 function test(){
     console.log("test");
 }

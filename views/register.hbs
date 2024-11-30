@@ -26,6 +26,10 @@
                     $("#result").html('Your registration was successful! Please check your mail.');
                     $("#result").removeClass("fail");
                     $("#result").addClass("success");
+
+                    $('#username').attr('readonly', true);
+                    $('#userEmail').attr('readonly', true);
+                    $('#userPass').attr('readonly', true);
                     
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -124,6 +128,7 @@
                         username.</p>
                     <p style="text-align:left;font-size:14px">Passwords are hashed, but please do not use your Old
                         School Runescape password.</p>
+                  
 
                     <div id="result" style="margin-top:10px">&nbsp;</div>
 

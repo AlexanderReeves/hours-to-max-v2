@@ -57,7 +57,7 @@ exports.register = async (req, res , next) => {
         const registrationToken = await signAccessToken(savedUser.id, email, "1h")
         console.log('Sending the new user a jwt access token email' + registrationToken)
         //res.cookie('authorization', accessToken)
-        //res.send(JSON.stringify({ success: 'You have been registered!' }))
+        res.send(JSON.stringify({ success: 'Registration email sent!' }))
         //Send the registration email
         mailHelper.registrationEmail(registrationToken)
 
@@ -107,10 +107,12 @@ exports.confirmRegistration = async (req, res, next ) => {
     //Get the JWT which will contain the email that is being activated
     const email = req.payload.email;
     //does not work as string, must be json, also check the user email is not already confirmed
-    const emailFound = await User.findOne({ email })
-    console.log(emailFound)
-    if(emailFound){
+    const user = await User.findOne({ email })
+    console.log(user)
+    if(user){
         console.log("There is a match on the unverified email: " + email)
+        user.confirmed = true;
+        user.save();
     }else{
         console.log("There is NO match on the unverified email: " + email)
     }
