@@ -67,21 +67,19 @@ exports.register = async (req, res , next) => {
 }   
 
 exports.login = async (req, res, next ) => {
-    //console.log(req.body);
     try{
         //We can destruct the variables here, using : to separate original and new variable name
         const { userEmail: email, userPass: password } = req.body;
         console.log('Login validation values: ' + email + '   ' + password)
 
-        //const result = await authSchema.validateAsync({email,password});
         const result = await loginSchema.validateAsync({email,password});
         console.log(result)
 
         const user = await User.findOne({email: result.email})
-        if (!user) throw createError.NotFound("Username/Password was not valid")
+        if (!user) throw createError.NotFound("email address not found in system")
         //If user exists, check for valid password via our custom userjs function
         const isMatch = await user.isValidPassword(result.password)
-        if(!isMatch) throw createError.Unauthorized("Username/Password was not valid")
+        if(!isMatch) throw createError.Unauthorized("Password was not valid")
 
         //Check is the user confirmed their email address already
         //We shouldn't need to send in any params as it will just chekc the current object
@@ -90,43 +88,50 @@ exports.login = async (req, res, next ) => {
 
         //If sign in was okay
         const accessToken = await signAccessToken(user.id)
+        //On sign in success, send cookie and redirect to home page!
         
         console.log('sending cookie')
         res.cookie('authorization', accessToken)
-        //res.send(accessToken)
+        res.redirect('/home')
     } catch(error){
         console.log(error)
         if(error.isJoi === true) return next(createError.BadRequest("Joi has rejected your input values!"))
         next(error)
 
     }
-    //res.send("Form submitted");
 }   
 
 exports.confirmRegistration = async (req, res, next ) => {
     //Get the JWT which will contain the email that is being activated
     const email = req.payload.email;
     //does not work as string, must be json, also check the user email is not already confirmed
-    const user = await User.findOne({ email })
+    user = await User.findOne({ email, confirmed: false })
+    //user = await User.findOne({ email })
+
+
+    console.log("Confirming regisration for user: ")
     console.log(user)
+
+
+    res.resolution = ""
     if(user){
         console.log("There is a match on the unverified email: " + email)
         user.confirmed = true;
         user.save();
+        res.resolution = " was successfully registered!"
     }else{
-        console.log("There is NO match on the unverified email: " + email)
+        const user = await User.findOne({ email})
+        if(user){
+            console.log("There is a match on the already verified email: " + email)
+            res.resolution = " is already registered!"
+        }else{
+            console.log("There is NO match for this email address: " + email)
+            res.resolution = " is already registered!"
+        }
     }
     next()
 
 }
-
-async function encryptPassword(password) {
-    console.log('Encrypting a password for the JWT.')
-    salt = await bcrypt.genSalt(10)
-    hashedPass = await bcrypt.hash(password, salt)
-    console.log("hashedPass: type: " + typeof(hashedPass) + " , fina: l" + hashedPass)
-    return hashedPass
-  }
 
 
 
