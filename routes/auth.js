@@ -3,8 +3,10 @@ const authController = require('../controllers/auth')
 
 const router = express.Router();
 
+//These are all places a form can submit
 router.post('/register', authController.register );
 router.post('/login', authController.login );
+router.post('/forgot', authController.forgot );
 
 
 module.exports = router;

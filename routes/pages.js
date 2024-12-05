@@ -3,6 +3,8 @@ const { verifyAccessToken } = require('../helpers/jwt_helper');
 const { verifyRegistrationToken } = require('../helpers/jwt_helper');
 const cookieParser = require('../helpers/cookie_parser');
 const { confirmRegistration } = require('../controllers/auth');
+const User = require('../Models/user')
+const createError = require('http-errors')
 
 const router = express.Router();
 
@@ -36,9 +38,32 @@ router.get('/verify', verifyRegistrationToken, confirmRegistration,(req, res) =>
     res.render('verify', {data: req.payload});
 });
 
+router.get('/newpassword', async(req, res, next) => {
+    //Did the reset password request contain a token?
+
+    if(req.query.token){
+        console.log("The provided reset token is " + req.query.token)
+    }else{
+        console.log("No verification token provided");
+    }
+
+    const user = await User.findOne({resetToken: req.query.token})
+    console.log(user)
+    //If it fails, return a create Error, and move to the next error middleware in main
+    if (!user) return next(createError.NotFound("Invalid reset token"))
+    //Otherwise render the pass reset page
+    res.render('newpass', {data: req.payload});
+
+});
+
 
 router.get('/login', (req, res) => {
     res.render('login');
+});
+
+router.get('/forgot', (req, res) => {
+
+    res.render('forgot');
 });
 
 module.exports = router;

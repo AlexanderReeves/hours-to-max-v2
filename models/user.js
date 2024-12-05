@@ -23,6 +23,10 @@ const UserSchema = new Schema({
     type: String,
     required: false,
   },
+  resetToken: {
+    type: String,
+    required: false
+  }
 })
 
 UserSchema.pre('save', async function (next){

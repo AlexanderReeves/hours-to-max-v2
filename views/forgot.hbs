@@ -12,8 +12,8 @@
 <script>
     $(document).ready(function () {
 
-        $("#loginform").submit(function () {
-            console.log("Attempting sign in.")
+        $("#forgotform").submit(function () {
+            console.log("Form submitted.")
             return false;
         });
 
@@ -69,32 +69,27 @@
         <div class="center" id="disclaimer">
             <img src="logo.png" alt="My logo" id="logoimage">
             <br>
-            <h2>Login</h2>
+            <h2>Password Reset</h2>
             <br>
             Find many hours until you max in Old School Runescape.
             <br>
             <br>
-            Log in to your account.
+            Reset your password.
         </div>
         <br>
         <br class="mobileonly">
 
         <div class="searcharea maxw">
-            <form action="/auth/login" method="POST" id="myform">
+            <form action="/auth/forgot" method="POST" id="myform">
                 {{!-- <form id="loginform" onsubmit="return false;"> --}}
 
                     <input type="text" class="textbox" id="userEmail" name="userEmail" style="text-align:left;"
                         placeholder="Enter your email address">
-                    <input type="text" class="textbox" id="userPass" name="userPass" style="text-align:left;"
-                        placeholder="Enter your password">
                   
                     <div id="result" style="margin-top:10px">&nbsp;</div>
 
-                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Login">
+                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Send email">
                 </form>
-
-                <br>
-                <a href="./forgot">Reset your password</a>
 
         </div>
         <br><br>

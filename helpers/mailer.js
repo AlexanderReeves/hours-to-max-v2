@@ -55,5 +55,22 @@ module.exports = {
     .catch(error => {
       console.error("Error sending email:", error);
     })
+  },
+  oopsEmail: (resetToken) => {
+    myEmailParams = new EmailParams()
+    .setFrom(sentFrom)
+    .setTo(recipients)
+    .setReplyTo(sentFrom)
+    .setSubject("Hours To Max Password Reset.")
+    .setHtml("<p>Welcome to Hours To Max. Follow the link to reset your password. If you did not request this reset, you can ignore this email.</p><br><a href=\"http://localhost:3000/newpassword?token=" +resetToken+ "\">RESET YOUR PASSWORD</a>")
+    .setText("");
+  
+    mailerSend.email.send(myEmailParams)
+    .then(response => {
+      console.log("Email sent successfully:", response);
+    })
+    .catch(error => {
+      console.error("Error sending email:", error);
+    })
   }
 }

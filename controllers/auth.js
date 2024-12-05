@@ -6,6 +6,7 @@ const {authSchema, loginSchema} = require('../helpers/validation_schema')
 const {signAccessToken} = require('../helpers/jwt_helper')
 const mailHelper = require('../helpers/mailer')
 const bcrypt = require('bcrypt')
+const crypto = require('crypto');
 
 exports.register = async (req, res , next) => {
     //Create a Json response for the form to receive
@@ -93,7 +94,7 @@ exports.login = async (req, res, next ) => {
         
         console.log('sending cookie')
         res.cookie('authorization', accessToken)
-        //res.send(accessToken)
+        res.redirect('/home')
     } catch(error){
         console.log(error)
         if(error.isJoi === true) return next(createError.BadRequest("Joi has rejected your input values!"))
@@ -113,6 +114,29 @@ exports.confirmRegistration = async (req, res, next ) => {
         console.log("There is a match on the unverified email: " + email)
         user.confirmed = true;
         user.save();
+    }else{
+        console.log("There is NO match on the unverified email: " + email)
+    }
+    next()
+
+}
+
+exports.forgot = async (req, res, next ) => {
+    //Get the JWT which will contain the email that is being activated
+    const email = req.body.userEmail;
+    console.log(email)
+    //does not work as string, must be json, also check the user email is not already confirmed
+    const user = await User.findOne({ email })
+    console.log(user)
+    if(user){
+        console.log("There is a match on the unverified email: " + email)
+        key = crypto.randomBytes(10).toString('hex')
+        console.log("random bytes generated : " + key)
+        //Save the users password reset token to the database
+        user.resetToken = key;
+        user.save();
+        mailHelper.oopsEmail(key)
+        
     }else{
         console.log("There is NO match on the unverified email: " + email)
     }
