@@ -494,7 +494,7 @@ box-sizing: border-box;
 /*MOBILE CSS*/
 /* its a copy of the above where changes are needed only*/
 
-@media (max-width: 1000px) {
+@media (max-width: 980px) {
 
 
  * {

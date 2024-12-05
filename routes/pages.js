@@ -30,12 +30,15 @@ router.get('/register', (req, res) => {
 
 router.get('/verify', verifyRegistrationToken, confirmRegistration,(req, res) => {
     //Did the user account verification request contain a token?
+    console.log('Verification status: ' + res.resolution)
     if(req.query.token){
         console.log("The provided registration token is :" + req.query.token)
     }else{
         console.log("No verification token provided");
     }
-    res.render('verify', {data: req.payload});
+    verifiedEmail = JSON.stringify(req.payload.email)
+    verifiedEmail = verifiedEmail.replace(/(['"])/g, "")
+    res.render('verify', {data: verifiedEmail, response: res.resolution});
 });
 
 router.get('/newpassword', async(req, res, next) => {

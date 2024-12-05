@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt')
 
+
+
 const UserSchema = new Schema({
   email: {
     type: String,
@@ -30,18 +32,22 @@ const UserSchema = new Schema({
 })
 
 UserSchema.pre('save', async function (next){
-  try{
-    //WE are hasing earlier, in the JWT helper instead so we no longer hash on this page
-    // console.log('New user requested to be saved. Password being encrypted.')
-    // const salt = await bcrypt.genSalt(10)
-    // console.log(this.email, this.password)
-    // const hashedPass = await bcrypt.hash(this.password, salt)
-    // this.password = hashedPass
-    //exit middleware
-    next()
-  } catch(error){
-    next(error)
+  //Only hash the password if this is a new object
+  if(this.isNew){
+    try{
+      console.log('New user requested to be saved. Password being encrypted.')
+      console.log(this.email, this.password)
+      const salt = await bcrypt.genSalt(10)
+      const hashedPass = await bcrypt.hash(this.password, salt)
+      this.password = hashedPass
+    } catch(error){
+      console.log("Bad pass middleware")
+      next(error)
+    }
+  }else{
+    console.log("Skipping pre hash of password")
   }
+  next()
 })
 
 UserSchema.post('save', async function (next){
@@ -56,12 +62,17 @@ UserSchema.post('save', async function (next){
 //Login check valid password including its encryption
 UserSchema.methods.isValidPassword = async function (password) {
   try{
-    //return as boolean
-    return await bcrypt.compare(password, this.password)
+    result = await bcrypt.compare(password, this.password)
+    //return await bcrypt.compare(password, this.password)
+    console.log(result)
+    return result
+    
   } catch (error){
     //Use you just use default error messaging if it's not part of a middleware
     throw error
   }
+  console.log("no errors...")
+  next()
 }
 
 const User = mongoose.model('user', UserSchema)
