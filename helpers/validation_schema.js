@@ -15,6 +15,14 @@ const loginSchema = Joi.object({
     password: Joi.string().min(2).required(),
   })
 
+const emailSchema = Joi.object({
+  email: Joi.string().email().lowercase().required()
+})
+
+const passwordSchema = Joi.object({
+  password: Joi.string().min(2).required(),
+})
+
 //It's likely these above two schema's could be consolidated using a Joi functio
 //Hapi Joi has a class extender but I couldn't find one for normal Joi
 
@@ -24,5 +32,7 @@ const loginSchema = Joi.object({
 
   module.exports = {
     authSchema,
-    loginSchema
+    loginSchema,
+    emailSchema,
+    passwordSchema
   }

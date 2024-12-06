@@ -12,9 +12,34 @@
 <script>
     $(document).ready(function () {
 
-        $("#forgotform").submit(function () {
-            console.log("Form submitted.")
-            return false;
+        $("#forgotform").submit(function () { // intercepts the submit event
+            console.log('Forgot password form has been submitted.')
+            //clear result message
+            $("#result").html('&nbsp;');
+            $.ajax({ // make an AJAX request
+                type: "POST",
+                url: "/auth/forgot", // it's the URL of your component B
+                data: $("#forgotform").serialize(), // serializes the form's elements
+                success: function (data) {
+                    // show the data you got from B in result div
+                    console.log('Success');
+                    $("#result").html('A password reset link has been sent to your email.');
+                    $("#result").removeClass("fail");
+                    $("#result").addClass("success");
+                    $('#userEmail').attr('readonly', true);
+                    $('#userPass').attr('readonly', true);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Submit returned errors');
+                    jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+                    $("#result").html(jsonErrorMessage);
+                    $("#result").removeClass("success");
+                    $("#result").addClass("fail");
+                    return false;
+                }
+
+            });
+             // avoid to execute the actual submit of the form
         });
 
     });
@@ -74,22 +99,25 @@
             Find many hours until you max in Old School Runescape.
             <br>
             <br>
-            Reset your password.
+            Send a password reset link to your email address.
         </div>
         <br>
         <br class="mobileonly">
 
         <div class="searcharea maxw">
-            <form action="/auth/forgot" method="POST" id="myform">
-                {{!-- <form id="loginform" onsubmit="return false;"> --}}
+            {{!-- <form action="/auth/login" method="POST" id="myform"> --}}
+                <form id="forgotform" onsubmit="return false;">
 
                     <input type="text" class="textbox" id="userEmail" name="userEmail" style="text-align:left;"
                         placeholder="Enter your email address">
-                  
+
                     <div id="result" style="margin-top:10px">&nbsp;</div>
 
-                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Send email">
+                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Forgot">
                 </form>
+
+                <br>
+                <a href="./forgot">Reset your password</a>
 
         </div>
         <br><br>

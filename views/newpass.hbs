@@ -12,9 +12,36 @@
 <script>
     $(document).ready(function () {
 
-        $("#newpassform").submit(function () {
-            console.log("Form submitted.")
-            return false;
+        $("#newpasswordform").submit(function () { // intercepts the submit event
+            console.log('Registration form has been submitted.');
+            var QueryString = (new URL(location.href)).searchParams.get('token');
+            //clear result message
+            $("#result").html('&nbsp;');
+            $.ajax({ // make an AJAX request
+                type: "POST",
+                url: "/auth/newpassword", // it's the URL of your component B
+                data: $("#newpasswordform").serialize() + '&token=' + QueryString, // serializes the form's elements
+                success: function (data) {
+                    // show the data you got from B in result div
+                    console.log('Success');
+                    $("#result").html('Password reset success, attempting to redirect.');
+                    $("#result").removeClass("fail");
+                    $("#result").addClass("success");
+                    $('#userEmail').attr('readonly', true);
+                    $('#userPass').attr('readonly', true);
+                    window.location = '/';
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Submit returned errors');
+                    jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+                    $("#result").html(jsonErrorMessage);
+                    $("#result").removeClass("success");
+                    $("#result").addClass("fail");
+                    return false;
+                }
+
+            });
+             // avoid to execute the actual submit of the form
         });
 
     });
@@ -69,28 +96,31 @@
         <div class="center" id="disclaimer">
             <img src="logo.png" alt="My logo" id="logoimage">
             <br>
-            <h2>Choose a new password</h2>
+            <h2>Set a new password</h2>
             <br>
             Find many hours until you max in Old School Runescape.
             <br>
             <br>
+            Please enter a new password below.
         </div>
         <br>
         <br class="mobileonly">
 
         <div class="searcharea maxw">
-            <form action="/auth/newpass" method="POST" id="newpassform">
-                {{!-- <form id="loginform" onsubmit="return false;"> --}}
+            {{!-- <form action="/auth/login" method="POST" id="myform"> --}}
+                <form id="newpasswordform" onsubmit="return false">
 
                     <input type="text" class="textbox" id="password" name="password" style="text-align:left;"
-                        placeholder="Enter your new password">
+                        placeholder="Enter a new password">
                     <input type="text" class="textbox" id="confirmPassword" name="confirmPassword" style="text-align:left;"
-                        placeholder="Re-enter your new password">
-                  
+                        placeholder="Re-type the new password">
+
                     <div id="result" style="margin-top:10px">&nbsp;</div>
 
-                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Send email">
+                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Save">
                 </form>
+
+                <br>
 
         </div>
         <br><br>

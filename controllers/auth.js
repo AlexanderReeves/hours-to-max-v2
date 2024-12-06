@@ -2,7 +2,7 @@
 //const mongoose = require('mongoose')
 const User = require('../Models/user')
 const createError = require('http-errors')
-const {authSchema, loginSchema} = require('../helpers/validation_schema')
+const {authSchema, loginSchema, emailSchema, passwordSchema} = require('../helpers/validation_schema')
 const {signAccessToken} = require('../helpers/jwt_helper')
 const mailHelper = require('../helpers/mailer')
 const bcrypt = require('bcrypt')
@@ -73,30 +73,52 @@ exports.login = async (req, res, next ) => {
         const { userEmail: email, userPass: password } = req.body;
         console.log('Login validation values: ' + email + '   ' + password)
 
-        const result = await loginSchema.validateAsync({email,password});
-        console.log(result)
+        //Check the inputs are valid
+        try{
+            const result = await loginSchema.validateAsync({email,password});
+            console.log(result)
+        }catch (err){
+            //If this fails, result remains unchanged from its original declaration
+            console.log("Joi Error Message: " + err.message)
+            //console.log(Object.getOwnPropertyNames(err))
+            //From here, set a https error code, a message, and return to requester!
+            res.status(422).json({'error': "Invalid email/password"})
+            //If joi validation fails, end function
+            return
+        }
+        
+        const user = await User.findOne({email})
+        if(!user){
+            res.status(422).json({'error': "email not found"})
+            return
+        }
 
-        const user = await User.findOne({email: result.email})
-        if (!user) throw createError.NotFound("email address not found in system")
+        
         //If user exists, check for valid password via our custom userjs function
-        const isMatch = await user.isValidPassword(result.password)
-        if(!isMatch) throw createError.Unauthorized("Password was not valid")
+        const isMatch = await user.isValidPassword(password)
+        if(!isMatch){
+            res.status(422).json({'error': "Invalid password"})
+            return
+        }
 
         //Check is the user confirmed their email address already
         //We shouldn't need to send in any params as it will just chekc the current object
         console.log('User confirmed status: ' + user.confirmed)
-        if(!user.confirmed) throw createError.Unauthorized("User email has not been confirmed!")
+        if(!user.confirmed){
+            res.status(422).json({'error': "Please confirm your email address first"})
+            return
+        }
 
-        //If sign in was okay
+        //At this stage, the sign in was successful. Generate a jwt.
         const accessToken = await signAccessToken(user.id)
         //On sign in success, send cookie and redirect to home page!
         
         console.log('sending cookie')
         res.cookie('authorization', accessToken)
-        res.redirect('/home')
+        res.status(200).send('User logged in');
     } catch(error){
+        //Backup fail case that shouldn't ever run
         console.log(error)
-        if(error.isJoi === true) return next(createError.BadRequest("Joi has rejected your input values!"))
         next(error)
 
     }
@@ -138,6 +160,21 @@ exports.forgot = async (req, res, next ) => {
     //Get the JWT which will contain the email that is being activated
     const email = req.body.userEmail;
     console.log(email)
+
+    //Check the email address input was okay
+    try{
+        const result = await emailSchema.validateAsync({email});
+        console.log(result)
+    }catch (err){
+        //If this fails, result remains unchanged from its original declaration
+        console.log("Joi Error Message: " + err.message)
+        //console.log(Object.getOwnPropertyNames(err))
+        //From here, set a https error code, a message, and return to requester!
+        res.status(422).json({'error': "Invalid email format"})
+        //If joi validation fails, end function
+        return
+    }
+
     //does not work as string, must be json, also check the user email is not already confirmed
     const user = await User.findOne({ email })
     console.log(user)
@@ -149,13 +186,74 @@ exports.forgot = async (req, res, next ) => {
         user.resetToken = key;
         user.save();
         mailHelper.oopsEmail(key)
+        res.send(JSON.stringify({ success: 'Password reset email sent.' }))
         
     }else{
         console.log("There is NO match on the unverified email: " + email)
+        res.status(422).json({'error': "Not a valid email"})
     }
-    next()
+    //next()
 
 }
+
+exports.newpassword = async (req, res, next ) => {
+    try{
+        //We can destruct the variables here, using : to separate original and new variable name
+        const { password: password, confirmPassword:confirmPassword, token: token} = req.body;
+        console.log(password)
+        console.log(confirmPassword)
+        console.log(token)
+
+        //Check for match
+        if(password != confirmPassword){
+            res.status(422).json({'error': "Passwords do not match."})
+            return
+        }
+
+        //Check the password input was okay
+        try{
+            const result = await passwordSchema.validateAsync({password});
+            console.log(result)
+        }catch (err){
+            //If this fails, result remains unchanged from its original declaration
+            console.log("Joi Error Message: " + err.message)
+            //console.log(Object.getOwnPropertyNames(err))
+            //From here, set a https error code, a message, and return to requester!
+            res.status(422).json({'error': "Password must contain a letter, number, symbol and at least 8 characters."})
+            //If joi validation fails, end function
+            return
+        }
+        
+        //Check the token belongs to a valid user
+        if(token){
+            console.log("The provided reset token is " + req.query.token)
+        }else{
+            console.log("No verification token provided");
+            res.status(422).json({'error': "No password reset token provided."});
+        }
+
+        const user = await User.findOne({resetToken: token})
+        //If it fails, return a create Error, and move to the next error middleware in main
+        if (!user){
+            res.status(422).json({'error': "The password reset token has expired."});
+            return;
+        }
+        user.password = token;
+        try{
+            user.save();
+        }catch{
+            res.status(422).json({'error': "Save was not successful."});
+            return
+        }
+        //If all success, go to index (Change to home later, we should log them in at this stage with a fresh cookie)
+        console.log("Successfully changed password! Redirecting user.")
+        res.render('index')
+
+    } catch(err){
+        return false
+    }
+ 
+}   
 
 async function encryptPassword(password) {
     console.log('Encrypting a password for the JWT.')

@@ -12,9 +12,35 @@
 <script>
     $(document).ready(function () {
 
-        $("#loginform").submit(function () {
-            console.log("Attempting sign in.")
-            return false;
+        $("#loginform").submit(function () { // intercepts the submit event
+            console.log('Registration form has been submitted.')
+            //clear result message
+            $("#result").html('&nbsp;');
+            $.ajax({ // make an AJAX request
+                type: "POST",
+                url: "/auth/login", // it's the URL of your component B
+                data: $("#loginform").serialize(), // serializes the form's elements
+                success: function (data) {
+                    // show the data you got from B in result div
+                    console.log('Success');
+                    $("#result").html('Login success, attempting to redirect.');
+                    $("#result").removeClass("fail");
+                    $("#result").addClass("success");
+                    $('#userEmail').attr('readonly', true);
+                    $('#userPass').attr('readonly', true);
+                    window.location = '/home';
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Submit returned errors');
+                    jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+                    $("#result").html(jsonErrorMessage);
+                    $("#result").removeClass("success");
+                    $("#result").addClass("fail");
+                    return false;
+                }
+
+            });
+             // avoid to execute the actual submit of the form
         });
 
     });
@@ -80,14 +106,14 @@
         <br class="mobileonly">
 
         <div class="searcharea maxw">
-            <form action="/auth/login" method="POST" id="myform">
-                {{!-- <form id="loginform" onsubmit="return false;"> --}}
+            {{!-- <form action="/auth/login" method="POST" id="myform"> --}}
+                <form id="loginform" onsubmit="return false">
 
                     <input type="text" class="textbox" id="userEmail" name="userEmail" style="text-align:left;"
                         placeholder="Enter your email address">
                     <input type="text" class="textbox" id="userPass" name="userPass" style="text-align:left;"
                         placeholder="Enter your password">
-                  
+
                     <div id="result" style="margin-top:10px">&nbsp;</div>
 
                     <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Login">

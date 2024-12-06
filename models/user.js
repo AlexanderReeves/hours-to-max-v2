@@ -33,7 +33,7 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', async function (next){
   //Only hash the password if this is a new object
-  if(this.isNew){
+  if(this.isNew || this.isModified('password')){
     try{
       console.log('New user requested to be saved. Password being encrypted.')
       console.log(this.email, this.password)
