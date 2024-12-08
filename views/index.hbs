@@ -50,8 +50,14 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
+                {{#if signedin}}
+                    <li><a href="/logout">Logout</a></li>
+
+                {{else }}
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                {{/if}}
+
             </ul>
         </nav>
 
@@ -93,8 +99,17 @@
 
         </div>
         <div class="center" id="disclaimer">
+
+            {{#if signedin}}
+            <br>
+            Welcome, {{username}}, to your personal Old School Runescape goal calculator
+
+            {{else }}
             <br>
             A personalised osrs maxing calculator.
+            {{/if}}
+
+
             <br>
             Select your favourite training methods, and find the amount of hours and gp it will take to reach max level.
             <br>

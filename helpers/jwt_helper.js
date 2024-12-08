@@ -6,10 +6,11 @@ const cookieParser = require('../helpers/cookie_parser')
 
 
 module.exports = {
-    signAccessToken: (userId, email, expiryTime) => {     
+    signAccessToken: (userId, email, username, expiryTime) => {     
         return new Promise((resolve, reject) => {
           const payload = {
-            "email": email
+            "email": email,
+            "username": username,
           }
           //Default expiry time if none provided, though this may be settable above in function name
           if(expiryTime == null){

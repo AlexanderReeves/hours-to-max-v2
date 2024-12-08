@@ -10,18 +10,29 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     console.log('req cookies found? ' + req.headers.cookie)
+    username = "Player"
+    userSignedIn = false
     if(req.headers.cookie){
-        //If we found a cookie, check if there's a valid and logges in user
-        // Use the cookie paser to chech the req for a field called accessToken
-        const userJwt = cookieParser.parseCookies(req)['accessToken']
-        const username = cookieParser.parseCookies(req)['username']
-        console.log(userJwt)
+        //If we found a cookie, check that it belongs to a valid user
+        // Use the cookie paser to chech the req for a field called authorization
+        const userJwt = cookieParser.parseCookies(req)['authorization']
+
+        username = cookieParser.parseCookies(req)['username']
+        console.log("userJwt" + userJwt)
+        if(userJwt){
+            userSignedIn = true
+        }
     }
-    res.render('index', { title: "Some Username!" });
+    res.render('index', { signedin: userSignedIn, username: "username"});
 });
 
 router.get('/home', verifyAccessToken,(req, res) => {
-    res.render('home');
+    res.redirect("/")
+});
+
+router.get('/logout', verifyAccessToken,(req, res) => {
+    res.clearCookie("authorization");
+    res.redirect('/');
 });
 
 router.get('/register', (req, res) => {

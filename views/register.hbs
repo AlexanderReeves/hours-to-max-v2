@@ -30,6 +30,7 @@
                     $('#username').attr('readonly', true);
                     $('#userEmail').attr('readonly', true);
                     $('#userPass').attr('readonly', true);
+                    $('#registerbutton').prop("disabled", true);
                     
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -132,7 +133,7 @@
 
                     <div id="result" style="margin-top:10px">&nbsp;</div>
 
-                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Register">
+                    <input id="registerbutton" type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Register">
 
                     {{!-- <input type="submit" class="colorbutton theme themered" value="Register"
                         style="margin-top: 10px"> --}}

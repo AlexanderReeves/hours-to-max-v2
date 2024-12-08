@@ -35,11 +35,12 @@ UserSchema.pre('save', async function (next){
   //Only hash the password if this is a new object
   if(this.isNew || this.isModified('password')){
     try{
-      console.log('New user requested to be saved. Password being encrypted.')
+      console.log('Password encryption triggered:')
       console.log(this.email, this.password)
       const salt = await bcrypt.genSalt(10)
       const hashedPass = await bcrypt.hash(this.password, salt)
       this.password = hashedPass
+      console.log(hashedPass)
     } catch(error){
       console.log("Bad pass middleware")
       next(error)

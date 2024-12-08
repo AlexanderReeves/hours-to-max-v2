@@ -55,7 +55,7 @@ exports.register = async (req, res , next) => {
 
         //Once the user is registered, send verification email, using JWT to confirm validity
         //const accessToken = await signAccessToken(savedUser.id, email, hashedPass)
-        const registrationToken = await signAccessToken(savedUser.id, email, "1h")
+        const registrationToken = await signAccessToken(savedUser.id,email, username, "1h")
         console.log('Sending the new user a jwt access token email' + registrationToken)
         //res.cookie('authorization', accessToken)
         res.send(JSON.stringify({ success: 'Registration email sent!' }))
@@ -102,7 +102,7 @@ exports.login = async (req, res, next ) => {
         }
 
         //Check is the user confirmed their email address already
-        //We shouldn't need to send in any params as it will just chekc the current object
+        //We shouldn't need to send in any params as it will just check the current object
         console.log('User confirmed status: ' + user.confirmed)
         if(!user.confirmed){
             res.status(422).json({'error': "Please confirm your email address first"})
@@ -110,14 +110,15 @@ exports.login = async (req, res, next ) => {
         }
 
         //At this stage, the sign in was successful. Generate a jwt.
-        const accessToken = await signAccessToken(user.id)
-        //On sign in success, send cookie and redirect to home page!
-        
+        const accessToken = await signAccessToken(user.id, user.email,username, "1h")
+        //On sign in success, send JST cookie and redirect to home page!
         console.log('sending cookie')
         res.cookie('authorization', accessToken)
-        res.status(200).send('User logged in');
+        res.status(200).send('Successful sign in!');
+
     } catch(error){
-        //Backup fail case that shouldn't ever run
+        //Backup fail case that shouldn't ever run, but if it fails it will show the 
+        //default error
         console.log(error)
         next(error)
 
@@ -200,9 +201,6 @@ exports.newpassword = async (req, res, next ) => {
     try{
         //We can destruct the variables here, using : to separate original and new variable name
         const { password: password, confirmPassword:confirmPassword, token: token} = req.body;
-        console.log(password)
-        console.log(confirmPassword)
-        console.log(token)
 
         //Check for match
         if(password != confirmPassword){
@@ -238,16 +236,20 @@ exports.newpassword = async (req, res, next ) => {
             res.status(422).json({'error': "The password reset token has expired."});
             return;
         }
-        user.password = token;
+        user.password = password;
         try{
             user.save();
         }catch{
             res.status(422).json({'error': "Save was not successful."});
             return
         }
-        //If all success, go to index (Change to home later, we should log them in at this stage with a fresh cookie)
-        console.log("Successfully changed password! Redirecting user.")
-        res.render('index')
+        //If all success
+        //On sign in success, send JST cookie and redirect to home page!
+        console.log('User password was updated. Signing user in.')
+        const accessToken = await signAccessToken(user.id)
+        res.cookie('authorization', accessToken)
+        res.status(200).send('Successful sign in!');
+        //res.render('index')
 
     } catch(err){
         return false

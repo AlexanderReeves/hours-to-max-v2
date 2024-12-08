@@ -5,6 +5,8 @@
 	background-color: #006eff;
 }
 
+
+
 .whitebg {
 	background-color: white;
 
@@ -108,4 +110,8 @@ header {
 
 .active{
   background-color: white;
+}
+
+input[type="submit"]:disabled {
+  background: #969696;
 }
