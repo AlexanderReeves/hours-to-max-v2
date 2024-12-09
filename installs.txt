@@ -35,3 +35,6 @@ npm install jsonwebtoken
 Nodemailer for sending emails.
 Also connected to Cloudfare for the website name, and Mailersend for email hosting
 npm install nodemailer
+
+Cookies tools
+npm i js-cookie

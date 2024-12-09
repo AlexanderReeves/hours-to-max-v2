@@ -57,6 +57,8 @@ app.use(express.json())
 app.use('/' ,require('./routes/pages'))
 //register
 app.use('/auth', require('./routes/auth'))
+//find
+app.use('/find', require('./routes/find'))
 
 //Finally, error handling middleware
 

@@ -181,7 +181,8 @@ var goalHoursTotal = 0;
 var goalGpTotal = 0;
 
 window.onload = function(){
-
+    //Pull data from the database
+    findUsername();
     //Pull the values from the URL into the global values
     PullURLVariables();
     RefreshPlayer(); //Refresh the players data from the hiscores website
@@ -209,6 +210,30 @@ window.onload = function(){
     FindCost();
     //Update hours to max
     UpdateMax();
+}
+
+function findUsername() { 
+    console.log('Finding username from the database')
+    username = "No username found";
+    //Get the userid from the cookies
+    var userid = $.cookie("userid");
+    console.log("User id found in cookies: " + userid)
+    //Attempt to find the username of the currently signed in user.
+    $.ajax({ // make an AJAX request
+        type: "POST",
+        url: "/find/user",
+        data: '&userid=' + userid, // serializes the form's elements
+        success: function (data) {
+            // show the data you got from B in result div
+            console.log('Successfully pulled a user from database');
+            console.log(data)
+        },
+        error: function (XMLHttpRequest) {
+            console.log('Submit returned errors');
+            jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+        }
+    });
+    return "Pulled pork"; // avoid to execute the actual submit of the form
 }
 
 $("#myform").keypress(function(e) {

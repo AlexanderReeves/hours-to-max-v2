@@ -8,6 +8,7 @@ const createError = require('http-errors')
 
 const router = express.Router();
 
+// Index page rendering, will have differences if the user is signed in.
 router.get('/', (req, res) => {
     console.log('req cookies found? ' + req.headers.cookie)
     username = "Player"
@@ -16,15 +17,17 @@ router.get('/', (req, res) => {
         //If we found a cookie, check that it belongs to a valid user
         // Use the cookie paser to chech the req for a field called authorization
         const userJwt = cookieParser.parseCookies(req)['authorization']
-
         username = cookieParser.parseCookies(req)['username']
-        console.log("userJwt" + userJwt)
+        console.log("userJwt from cookies: " + userJwt)
+        console.log("username from cookies: " + username)
         if(userJwt){
             userSignedIn = true
         }
     }
-    res.render('index', { signedin: userSignedIn, username: "username"});
+    res.render('index', { signedin: userSignedIn, username: username});
 });
+
+
 
 router.get('/home', verifyAccessToken,(req, res) => {
     res.redirect("/")

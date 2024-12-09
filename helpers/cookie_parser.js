@@ -15,7 +15,8 @@ exports.parseCookies = function(request) {
         if (!value) return;
         list[name] = decodeURIComponent(value);
     });
-    
+    //The only cookie currently saved is the jwt key.
+    //The jwt contains the email and username of the signed in user.
     console.log(list)
     return list;
 }

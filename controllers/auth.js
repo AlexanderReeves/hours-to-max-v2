@@ -110,10 +110,12 @@ exports.login = async (req, res, next ) => {
         }
 
         //At this stage, the sign in was successful. Generate a jwt.
-        const accessToken = await signAccessToken(user.id, user.email,username, "1h")
+        const accessToken = await signAccessToken(user.id, user.email, user.username, "1h")
         //On sign in success, send JST cookie and redirect to home page!
         console.log('sending cookie')
         res.cookie('authorization', accessToken)
+        res.cookie('username', user.username)
+        res.cookie('userid', user.id)
         res.status(200).send('Successful sign in!');
 
     } catch(error){
