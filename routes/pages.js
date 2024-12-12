@@ -33,7 +33,7 @@ router.get('/home', verifyAccessToken,(req, res) => {
     res.redirect("/")
 });
 
-router.get('/logout', verifyAccessToken,(req, res) => {
+router.get('/logout',(req, res) => {
     res.clearCookie("authorization");
     res.redirect('/');
 });

@@ -28,6 +28,86 @@ const UserSchema = new Schema({
   resetToken: {
     type: String,
     required: false
+  },
+  rangedChoice: {
+    type: Number,
+    retuired: false
+  },
+  prayerChoice: {
+    type: Number,
+    retuired: false
+  },
+  magicChoice: {
+    type: Number,
+    retuired: false
+  },
+  runecraftChoice: {
+    type: Number,
+    retuired: false
+  },
+  constructionChoice: {
+    type: Number,
+    retuired: false
+  },
+  agilityChoice: {
+    type: Number,
+    retuired: false
+  },
+  herbloreChoice: {
+    type: Number,
+    retuired: false
+  },
+  thievingChoice: {
+    type: Number,
+    retuired: false
+  },
+  craftingChoice: {
+    type: Number,
+    retuired: false
+  },
+  fletchingChoice: {
+    type: Number,
+    retuired: false
+  },
+  slayerChoice: {
+    type: Number,
+    retuired: false
+  },
+  hunterChoice: {
+    type: Number,
+    retuired: false
+  },
+  miningChoice: {
+    type: Number,
+    retuired: false
+  },
+  smithingChoice: {
+    type: Number,
+    retuired: false
+  },
+  fishingChoice: {
+    type: Number,
+    retuired: false
+  },
+  cookingChoice: {
+    type: Number,
+    retuired: false
+  },
+  firemakingChoice: {
+    type: Number,
+    retuired: false
+  },
+  woodcuttingChoice: {
+    type: Number,
+    retuired: false
+  },
+  seedChoice: {
+    type: Number,
+    retuired: false
+  },
+  farmingPatches: {
+    type: Number,
+    retuired: false
   }
 })
 

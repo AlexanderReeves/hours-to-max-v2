@@ -217,22 +217,27 @@ function findUsername() {
     username = "No username found";
     //Get the userid from the cookies
     var userid = $.cookie("userid");
-    console.log("User id found in cookies: " + userid)
-    //Attempt to find the username of the currently signed in user.
-    $.ajax({ // make an AJAX request
-        type: "POST",
-        url: "/find/user",
-        data: '&userid=' + userid, // serializes the form's elements
-        success: function (data) {
-            // show the data you got from B in result div
-            console.log('Successfully pulled a user from database');
-            console.log(data)
-        },
-        error: function (XMLHttpRequest) {
-            console.log('Submit returned errors');
-            jsonErrorMessage = XMLHttpRequest.responseJSON.error;
-        }
-    });
+    //jwt should be gotten isntead of userid because it's encrypted.
+    if(userid){
+        console.log("User id found in cookies: " + userid)
+        //Attempt to find the username of the currently signed in user.
+        $.ajax({ // make an AJAX request
+            type: "POST",
+            url: "/find/user",
+            data: '&userid=' + userid, // serializes the form's elements
+            success: function (data) {
+                // show the data you got from B in result div
+                console.log('Successfully pulled a user from database');
+                console.log(data)
+            },
+            error: function (XMLHttpRequest) {
+                console.log('Submit returned errors');
+                jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+            }
+        });
+    }else{
+        console.log("no userid found in cookies")
+    }
     return "Pulled pork"; // avoid to execute the actual submit of the form
 }
 
@@ -888,7 +893,7 @@ function RefreshPlayer(fromEnter) {
     //This code runs on page load, or submit username button.
 
 
-    $.getJSON("https://corsproxy.io/?https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
+    $.getJSON("https://corsproxy.io/?url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
         $.each(result, function(i, field) {
 
         	var i = 1;
@@ -1429,6 +1434,10 @@ function UpdateMax() {
 }
 
 function SaveAll() {
+    alert("!Bookmark this page to save your selections, and automatically update your xp next time you visit!");
+}
+
+function SaveToDatabase() {
     alert("!Bookmark this page to save your selections, and automatically update your xp next time you visit!");
 }
 

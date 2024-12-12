@@ -57,8 +57,10 @@ app.use(express.json())
 app.use('/' ,require('./routes/pages'))
 //register
 app.use('/auth', require('./routes/auth'))
-//find
+//find things
 app.use('/find', require('./routes/find'))
+//save things
+app.use('/save', require('./routes/save'))
 
 //Finally, error handling middleware
 
