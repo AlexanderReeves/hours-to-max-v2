@@ -180,11 +180,15 @@ var slHoursTotal = 0;
 var goalHoursTotal = 0;
 var goalGpTotal = 0;
 
+var dbuser = null;
+
 window.onload = function(){
     //Pull data from the database
     findUsername();
+    //Put the downloaded user data into global values
+    SetUserVariables();
     //Pull the values from the URL into the global values
-    PullURLVariables();
+    //PullURLVariables();
     RefreshPlayer(); //Refresh the players data from the hiscores website
     //Update Hours To 99 for each skill
     UpdateXPAndHours("ma", maval);
@@ -229,6 +233,10 @@ function findUsername() {
                 // show the data you got from B in result div
                 console.log('Successfully pulled a user from database');
                 console.log(data)
+                console.log(data.user[0].username)
+                //Save the downloaded user into the database user variable
+                dbuser = data.user[0]
+                console.log(dbuser.username)
             },
             error: function (XMLHttpRequest) {
                 console.log('Submit returned errors');
@@ -258,6 +266,66 @@ $("#fname").keypress(function(e) {
     return false;
   }
 });
+
+
+function SetUserVariables(){
+    //Get user name and dropdown selections from the downloaded db data
+    user = dbuser.username
+    maval = dbuser.magicChoice
+    prval = dbuser.prayerChoice
+    wcval = dbuser.woodcuttingChoice
+    raval = dbuser.rangedChoice
+    ruval = dbuser.magicChoice
+    coval = dbuser.constructionChoice
+    agval = dbuser.agilityChoice
+    heval = dbuser.herbloreChoice
+    thval = dbuser.thievingChoice
+    crval = dbuser.craftingChoice
+    flval = dbuser.fletchingChoice
+    huval = dbuser.hunterChoice
+    mival = dbuser.miningChoice
+    smval = dbuser.smithingChoice
+    fival = dbuser.fishingChoice
+    ckval = dbuser.cookingChoice
+    fmval = dbuser.firemakingChoice
+    treeval = dbuser.farmingPatches
+    seedval = dbuser.seedChoice
+    //lights = urlParams.get('l');
+    //We can get slval to determine slayer xp per hour
+    slXpPerHour = dbuser.slayerChoice
+    //Update the dropdowns to the correct values here?
+    //if(user==null){console.log(user="Player");}
+    //Apply the wcval from url to wcdropdown unless it was null
+    if(raval != null){selectElement('radrop', raval);}else{raval = 6}
+    if(wcval != null){selectElement('wcdrop', wcval);}else{wcval = 5}
+    if(maval != null){selectElement('madrop', maval);}else{maval = 5}
+    if(prval != null){selectElement('prdrop', prval);}else{prval = 6}
+    if(ruval != null){selectElement('rudrop', ruval);}else{ruval = 6}
+    if(coval != null){selectElement('codrop', coval);}else{coval = 7}
+    if(agval != null){selectElement('agdrop', agval);}else{agval = 7}
+    if(heval != null){selectElement('hedrop', heval);}else{heval = 5}
+    if(thval != null){selectElement('thdrop', thval);}else{thval = 7}
+    if(crval != null){selectElement('crdrop', crval);}else{crval = 5}
+    if(flval != null){selectElement('fldrop', flval);}else{flval = 5}
+    if(huval != null){selectElement('hudrop', huval);}else{huval = 6}
+    if(mival != null){selectElement('midrop', mival);}else{mival = 8}
+    if(smval != null){selectElement('smdrop', smval);}else{smval = 3}
+    if(fival != null){selectElement('fidrop', fival);}else{fival = 4}
+    if(ckval != null){selectElement('ckdrop', ckval);}else{ckval = 5}
+    if(fmval != null){selectElement('fmdrop', fmval);}else{fmval = 5}
+    if(treeval != null){selectElement('patchesdrop', treeval);}else{treeval = 5}
+    if(seedval != null){selectElement('seeddrop', seedval);}else{seedval = 3}
+    //if(lights == "true"){lights = true;}else{lights=false}
+    //console.log(lights);
+    //ApplyLightClass();
+    console.log(treeval + ":t   s:" +seedval)
+    //If there is no slayer XP in URL, set slayer XP to 40 000
+    if(slXpPerHour == null){ 	slXpPerHour = 40000; }
+    //Set the slayer input to reflect our slayer xp average
+	selectElement('slayerAverage', slXpPerHour);
+    
+}
+
 
 function PullURLVariables() {
     //Get user name and dropdown selections from the URL parameters

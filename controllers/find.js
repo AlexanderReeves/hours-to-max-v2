@@ -11,7 +11,30 @@ exports.findUser = async (req, res , next) => {
     }
     console.log('Found user ' + userid)
     jsonUser = {
-        "user":[{"username":user.username, "email":user.email}]
+        "user":[{
+            "username":user.username,
+            "email":user.email,
+            "rangedChoice": user.rangedChoice,
+            "magicChoice": user.magicChoice , 
+            "prayerChoice": user.prayerChoice , 
+            "woodcuttingChoice": user.woodcuttingChoice , 
+            "runecraftChoice": user.runecraftChoice , 
+            "constructionChoice": user.constructionChoice , 
+            "agilityChoice": user.agilityChoice , 
+            "herbloreChoice": user.herbloreChoice , 
+            "thievingChoice": user.thievingChoice , 
+            "craftingChoice": user.craftingChoice , 
+            "fletchingChoice": user.fletchingChoice , 
+            "hunterChoice": user.hunterChoice , 
+            "miningChoice": user.miningChoice ,
+            "smithingChoice": user.smithingChoice , 
+            "fishingChoice": user.fishingChoice , 
+            "cookingChoice": user.cookingChoice , 
+            "firemakingChoice": user.firemakingChoice , 
+            "slayerChoice": user.slayerChoice ,
+            "seedChoice": user.seedChoice,
+            "patchesChoice": user.patchesChoice
+        }]
         }
     res.send(jsonUser)
 }
