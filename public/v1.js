@@ -184,7 +184,7 @@ var dbuser = null;
 
 window.onload = function(){
     //Pull data from the database
-    findUsername();
+    requestUserData();
     //Put the downloaded user data into global values
     SetUserVariables();
     //Pull the values from the URL into the global values
@@ -216,37 +216,31 @@ window.onload = function(){
     UpdateMax();
 }
 
-function findUsername() { 
-    console.log('Finding username from the database')
-    username = "No username found";
-    //Get the userid from the cookies
-    var userid = $.cookie("userid");
-    //jwt should be gotten isntead of userid because it's encrypted.
-    if(userid){
-        console.log("User id found in cookies: " + userid)
-        //Attempt to find the username of the currently signed in user.
-        $.ajax({ // make an AJAX request
-            type: "POST",
-            url: "/find/user",
-            data: '&userid=' + userid, // serializes the form's elements
-            success: function (data) {
-                // show the data you got from B in result div
-                console.log('Successfully pulled a user from database');
-                console.log(data)
-                console.log(data.user[0].username)
-                //Save the downloaded user into the database user variable
-                dbuser = data.user[0]
-                console.log(dbuser.username)
-            },
-            error: function (XMLHttpRequest) {
-                console.log('Submit returned errors');
-                jsonErrorMessage = XMLHttpRequest.responseJSON.error;
-            }
-        });
-    }else{
+function requestUserData() {
+    //Request the user db data to load into page via jwt
+    //Get the auth cookie to send to the server
+    var authCode = $.cookie("authorization");
+    //Don't run if an auth code is not in the cookie
+    if(!authCode){
         console.log("no userid found in cookies")
+        return;
     }
-    return "Pulled pork"; // avoid to execute the actual submit of the form
+    //Request all the user info from the server
+    $.ajax({
+        type: "POST",
+        url: "/find/user",
+        data: '&authCode=' + authCode, // serializes the form's elements
+        success: function (data) {
+            //Save all the downloaded user into the database user variable
+            dbuser = data.user[0]
+            console.log(dbuser.username + " player data was pulled from the database")
+        },
+        error: function (XMLHttpRequest) {
+            console.log('Submit returned errors');
+            jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+        }
+    });
+    return; // avoid to execute the actual submit of the form
 }
 
 $("#myform").keypress(function(e) {

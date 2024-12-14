@@ -56,6 +56,19 @@ module.exports = {
           req.payload = payload
           next()
         })
+      },
+      getPayloadFromToken(code){
+        result = false
+        //Converts a jwt to a payload internally
+        console.log("jwt helper is verifying the token....")
+        jwt.verify(code, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+          if(err) {
+            return false
+          }
+          console.log('Successfully read the jwt: ' + JSON.stringify(payload))
+          result = payload
+        })
+        return result
       }
 }
 
@@ -72,8 +85,3 @@ function getJwtFromCookies(req) {
   }
   
 }
-
-function getEmailAddressFromJwt(){
-
-}
-

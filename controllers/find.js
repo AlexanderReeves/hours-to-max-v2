@@ -1,15 +1,25 @@
 //const mongoose = require('mongoose')
 const User = require('../Models/user')
+//Jwt decrypter
+const {getPayloadFromToken} = require('../helpers/jwt_helper')
 
+
+//find/user route
 exports.findUser = async (req, res , next) => {
-    const { userid } = req.body;
-    console.log("/find is finding user " + userid)
-    const user = await User.findById(userid)
-    if(!user){
-        res.status(422).json({'error': `${userid} was not found`})
+    const { authCode } = req.body;
+    console.log("/find is finding user from jwt via auth code: " + authCode)
+    //Get user id from jwt
+    payload = getPayloadFromToken(authCode)
+    console.log("Found user with id: " + payload.aud)
+    if(!payload){
+        res.status(422).json({'error': `token was invalid`})
         return
     }
-    console.log('Found user ' + userid)
+    const user = await User.findById(payload.aud)
+    if(!user){
+        res.status(422).json({'error': `user was not found`})
+        return
+    }
     jsonUser = {
         "user":[{
             "username":user.username,

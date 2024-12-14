@@ -1,11 +1,12 @@
 //const mongoose = require('mongoose')
 const User = require('../Models/user')
+const {getPayloadFromToken} = require('../helpers/jwt_helper')
 
 // route /save/choices
 exports.saveChoices = async (req, res , next) => {
     console.log(req.body)
     const { 
-        userid:userid,
+        auth:auth,
         rangedChoice: rangedChoice,
         magicChoice: magicChoice , 
         prayerChoice: prayerChoice , 
@@ -27,13 +28,18 @@ exports.saveChoices = async (req, res , next) => {
         seedChoice: seedChoice,
         patchesChoice: patchesChoice
     } = req.body;
-    console.log("/find is finding user " + userid)
-    const user = await User.findById(userid)
-    if(!user){
-        res.status(422).json({'error': `${userid} was not found`})
+    //Check the request had valid auth code
+    payload = getPayloadFromToken(auth) //wil return false if not found
+    console.log("Found user with id: " + payload.aud)
+    if(!payload){
+        res.status(422).json({'error': `token was invalid`})
         return
     }
-    console.log('Found user ' + userid)
+    const user = await User.findById(payload.aud)
+    if(!user){
+        res.status(422).json({'error': `user was not found`})
+        return
+    }
     user.rangedChoice = rangedChoice;
     user.magicChoice= magicChoice , 
     user.prayerChoice= prayerChoice , 

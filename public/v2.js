@@ -3,8 +3,8 @@ function SaveChoicesToDatabase() { // intercepts the submit event
     //find the user id contained, so that people dont alter their own cookies to overwite other
     //peoples account data!
 
-    userid = $.cookie("userid");
-    if(userid){
+    auth = $.cookie("authorization");
+    if(auth){
         console.log("I am trying to access raval" + raval)
         console.log('Saving user selections to the databse for user ' +$.cookie("userid"));
         //clear result message
@@ -12,7 +12,7 @@ function SaveChoicesToDatabase() { // intercepts the submit event
         $.ajax({ // make an AJAX request
             type: "POST",
             url: "/save/choices", // it's the URL of your component B
-            data: '&userid=' + userid + 
+            data: '&auth=' + auth + 
             '&rangedChoice=' + raval + 
             '&magicChoice=' + maval + 
             '&prayerChoice=' + prval + 

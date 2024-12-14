@@ -18,8 +18,6 @@ router.get('/', (req, res) => {
         // Use the cookie paser to chech the req for a field called authorization
         const userJwt = cookieParser.parseCookies(req)['authorization']
         username = cookieParser.parseCookies(req)['username']
-        console.log("userJwt from cookies: " + userJwt)
-        console.log("username from cookies: " + username)
         if(userJwt){
             userSignedIn = true
         }
