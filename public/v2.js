@@ -53,7 +53,7 @@ function SaveChoicesToDatabase() { // intercepts the submit event
 
         });
     }else{
-        $("#result").html("Please register in a new tab before saving choices!");
+        $("#result").html("Please register or sign in in a new tab and then you can return here to save your selections! Note: Due to background changes, choices can no longer be saved into the URL Queries/bookmarks.");
         $("#result").removeClass("success");
         $("#result").addClass("fail");
     }

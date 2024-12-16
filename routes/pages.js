@@ -37,8 +37,33 @@ router.get('/logout',(req, res) => {
 });
 
 router.get('/register', (req, res) => {
-    res.render('register');
+    //The registration page shouldn't be seen if the user is currently signed in
+
+    //Prevent the registration page from caching
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+
+    //If the user already signed in, and has a JWT, they should be redirected to the index home page
+    userSignedIn = false
+    if(req.headers.cookie){
+        //If we found a cookie, check that it belongs to a valid user
+        // Use the cookie paser to chech the req for a field called authorization
+        const userJwt = cookieParser.parseCookies(req)['authorization']
+        username = cookieParser.parseCookies(req)['username']
+        if(userJwt){
+            userSignedIn = true
+        }
+    }
+    //If the user is already signed in, go to home page
+    if(userSignedIn){
+        res.redirect('/');
+    }else{
+        //If not signed in, show a fresh login page
+        res.render('register');
+    }
 });
+
 
 router.get('/verify', verifyRegistrationToken, confirmRegistration,(req, res) => {
     //Did the user account verification request contain a token?
@@ -73,12 +98,38 @@ router.get('/newpassword', async(req, res, next) => {
 
 
 router.get('/login', (req, res) => {
-    res.render('login');
+    //The login shouldn't be seen if the user is currently signed in
+    //If the back button is pressed after sign in, a cached version of the login page appears.
+
+    //Prevent the login page from caching
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+
+    //If the user already signed in, and has a JWT, they should be redirected to the index home page
+    userSignedIn = false
+    if(req.headers.cookie){
+        //If we found a cookie, check that it belongs to a valid user
+        // Use the cookie paser to chech the req for a field called authorization
+        const userJwt = cookieParser.parseCookies(req)['authorization']
+        username = cookieParser.parseCookies(req)['username']
+        if(userJwt){
+            userSignedIn = true
+        }
+    }
+    //If the user is already signed in, go to home page
+    if(userSignedIn){
+        res.redirect('/');
+    }else{
+        //If not signed in, show a fresh login page
+        res.render('login');
+    }
 });
 
 router.get('/forgot', (req, res) => {
-
+    //This page can render for both signed in and non signed in users
     res.render('forgot');
 });
 
 module.exports = router;
+
