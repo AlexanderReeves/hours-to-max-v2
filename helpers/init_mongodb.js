@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 //No need for urlParse or UnifiedTopology args as they were removed and deprecated
-const db = mongoose.connect('mongodb+srv://reevesalexanderj:nala1234@hours-to-max.4jrpf.mongodb.net/?retryWrites=true&w=majority&appName=hours-to-max', {
+const db = mongoose.connect(process.env.DBURI, {
     dbName: "hours_to_max"})
 .then(() => {
     console.log('mongodb connected')

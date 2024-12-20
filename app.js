@@ -10,7 +10,16 @@ console.log("Server booting")
 
 //Env files
 const dotenv = require('dotenv');
-dotenv.config({ path: './.env'});
+console.log("env "  + `./.env.${process.env.NODE_ENV}`   );
+dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
+//Set up the dotenv with a path based on the env. + name of environment, specified
+//in npm run start scripts
+dotenv.config({ path: `./.env.development` })
+
+const uri = process.env.DBURI;
+console.log(uri + " uri variable")
+
+
 require('./helpers/init_mongodb')
 
 //const {verifyAccessToken, verifyRegistrationToken} = require('./helpers/jwt_helper')
@@ -30,7 +39,7 @@ app.use(morgan('dev'))
 
 //No need for urlParse or UnifiedTopology args as they were removed and deprecated
 //Conect via location saved in env file
-const uri = process.env.DBURI;
+
 //code below moved to helpers.
 //mongoose.connect(uri)
 // const db = mongoose.connect('mongodb+srv://reevesalexanderj:nala1234@hours-to-max.4jrpf.mongodb.net/?retryWrites=true&w=majority&appName=hours-to-max')

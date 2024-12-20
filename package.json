@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "fixn": " nodemon -e *"
+    "startd": "set NODE_ENV=development && nodemon app.js",
+    "startp": "set NODE_ENV=production && nodemon app.js"
   },
   "keywords": [],
   "author": "",
