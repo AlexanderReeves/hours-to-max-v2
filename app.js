@@ -10,19 +10,10 @@ console.log("Server booting")
 
 //Env files
 const dotenv = require('dotenv');
-console.log("env "  + `./.env.${process.env.NODE_ENV}`   );
 dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
-//Set up the dotenv with a path based on the env. + name of environment, specified
-//in npm run start scripts
-dotenv.config({ path: `./.env.development` })
-
 const uri = process.env.DBURI;
-console.log(uri + " uri variable")
-
-
+console.log(`WORK ENVIRONMENT ${process.env.NODE_ENV}`)
 require('./helpers/init_mongodb')
-
-//const {verifyAccessToken, verifyRegistrationToken} = require('./helpers/jwt_helper')
 
 //App is the server
 const app = express();
@@ -36,17 +27,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(morgan('dev'))
-
-//No need for urlParse or UnifiedTopology args as they were removed and deprecated
-//Conect via location saved in env file
-
-//code below moved to helpers.
-//mongoose.connect(uri)
-// const db = mongoose.connect('mongodb+srv://reevesalexanderj:nala1234@hours-to-max.4jrpf.mongodb.net/?retryWrites=true&w=majority&appName=hours-to-max')
-// //.then can be used after async processes to do something after a promise is fulfilled.
-// //Start listening if db connected
-//     .then((result) => app.listen(3000) ,console.log("Connected to db!"), test())
-//     .catch((err) => console.log(err))
 
 app.listen(3000)
 

@@ -1,109 +1,21 @@
-<!DOCTYPE html>
-<html>
+//Env files
+const dotenv = require('dotenv');
+const environmentString = process.env.NODE_ENV
+console.log("envirostring is " + environmentString +"help")
+//THERES A FUCKING INVISIBLE SPACEBAR HERE
 
-<title>Hours To Max</title>
-<meta name="description"
-    content="Find how many hours it will take you to max your Old School Runescape Account with training methods that you choose!">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<meta name="keywords" content="Hours, To, Max, Old, School, Runescape, Account, Long, Gp, Time">
-<meta name="author" content="Mapex Games">
+console.log("The type of variable is: " + typeof(environmentString))
 
-<script>
-    $(document).ready(function () {
+if(environmentString == "development"){
+    console.log("dev environment loaded")
+    dotenv.config({ path: `./.env.development` })
+}else{
+    console.log("not dev lol")
+}
 
-        $("#forgotform").submit(function () {
-            console.log("Form submitted.")
-            return false;
-        });
+if(environmentString == "production"){
+    dotenv.config({ path: `./.env.production` })
+}
 
-    });
-</script>
-
-<meta name="theme-color" content="#ffffff">
-
-
-<head>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/hours_style.css">
-    <link href="./colours.css" rel="stylesheet" type="text/css">
-</head>
-
-
-
-<body id="thebody">
-
-    <!-- **********HEADER******* -->
-    <header class="theme themered">
-        {{!-- <div class="verticle-center"> --}}
-            <img src="logo.png" alt="My logo" id="logoimage">
-            <!-- <label class="switch" style="margin-top:20px;margin-right:10px;float:right">-->
-            <!-- 	<input onchange="Lightswitch();" type="checkbox" id="lightinput">-->
-            <!-- 	<div class="slider round whitefont" id="lightslider"></div>-->
-            <!-- </label>-->
-            {{!--
-        </div> --}}
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
-            </ul>
-        </nav>
-    </header>
-    <!-- *********header******-->
-
-    <br><br class="desktoponly">
-
-
-    <!-- ************* MAIN CONTENT *************-->
-    <div class="maxw whitebg" id="maincontent">
-
-        <!-- *******INTRO*********-->
-        <br>
-        <br class="mobileonly">
-        <!-- <h1 id="tabtext" class="center">Max Cape</h1> -->
-        <br>
-        <div class="center " id="intro" style="padding-left:10px;padding-right:10px">
-        </div>
-        <div class="center" id="disclaimer">
-            <img src="logo.png" alt="My logo" id="logoimage">
-            <br>
-            <h2>Password Reset</h2>
-            <br>
-            Find many hours until you max in Old School Runescape.
-            <br>
-            <br>
-            Reset your password.
-        </div>
-        <br>
-        <br class="mobileonly">
-
-        <div class="searcharea maxw">
-            <form action="/auth/forgot" method="POST" id="myform">
-                {{!-- <form id="loginform" onsubmit="return false;"> --}}
-
-                    <input type="text" class="textbox" id="userEmail" name="userEmail" style="text-align:left;"
-                        placeholder="Enter your email address">
-                  
-                    <div id="result" style="margin-top:10px">&nbsp;</div>
-
-                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Send email">
-                </form>
-
-        </div>
-        <br><br>
-    </div>
-
-    {{!-- FOOTER --}}
-    <footer>
-        <div>
-            <br><br>
-            <p id="footer">2024 Arrgs (Mapex Games)</p>
-            <p id="footer">reevesgamedev@gmail.com</p>
-        </div>
-    </footer>
-    {{!-- End Footer --}}
-
-</body>
-
-</html>
+const uri = process.env.DBURI;
+console.log(uri + " uri variable")
