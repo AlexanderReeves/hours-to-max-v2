@@ -5,6 +5,7 @@ const cookieParser = require('../helpers/cookie_parser');
 const { confirmRegistration } = require('../controllers/auth');
 const User = require('../Models/user')
 const createError = require('http-errors')
+const {getPayloadFromToken} = require('../helpers/jwt_helper')
 
 const router = express.Router();
 
@@ -17,9 +18,17 @@ router.get('/', (req, res) => {
         //If we found a cookie, check that it belongs to a valid user
         // Use the cookie paser to chech the req for a field called authorization
         const userJwt = cookieParser.parseCookies(req)['authorization']
-        username = cookieParser.parseCookies(req)['username']
-        if(userJwt){
+        //Check for a valid jwt
+        payload = getPayloadFromToken(userJwt)
+        username = payload.username
+        console.log("Cookieparser username is " + username)
+        //username is undefined if cookies auth code was invalid
+        if(username){
             userSignedIn = true
+            console.log("JWT cookies were valid")
+        }else{
+            console.log("JWT cookies were found to be invalid, removing them")
+            res.clearCookie("authorization");
         }
     }
     res.render('index', { signedin: userSignedIn, username: username});
@@ -32,6 +41,7 @@ router.get('/home', verifyAccessToken,(req, res) => {
 });
 
 router.get('/logout',(req, res) => {
+    console.log('Signing out user')
     res.clearCookie("authorization");
     res.redirect('/');
 });
