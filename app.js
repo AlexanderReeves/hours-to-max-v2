@@ -10,9 +10,12 @@ console.log("Server booting")
 
 //Env files
 const dotenv = require('dotenv');
-dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
-const uri = process.env.DBURI;
 console.log(`WORK ENVIRONMENT ${process.env.NODE_ENV}`)
+
+//If the app is in dev, use the dotenv file, otherwise use the environment variables from digitalocean configs
+if(process.env.NODE_ENV == "development"){    
+    dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
+}
 require('./helpers/init_mongodb')
 
 //App is the server
