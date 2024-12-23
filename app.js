@@ -7,7 +7,7 @@ const path = require('path');
 //Error logging tool
 const morgan = require('morgan');
 console.log("Server booting")
-
+console.log(`${process.env.testkey}` + "Is a test env variable")
 //Env files
 const dotenv = require('dotenv');
 console.log(`WORK ENVIRONMENT ${process.env.NODE_ENV}`)
