@@ -8,6 +8,7 @@ const path = require('path');
 const morgan = require('morgan');
 console.log("Server booting")
 console.log(`${process.env.testkey}` + "Is a test env variable")
+console.log("Env variable done")
 //Env files
 const dotenv = require('dotenv');
 console.log(`WORK ENVIRONMENT ${process.env.NODE_ENV}`)
