@@ -7,7 +7,7 @@ const path = require('path');
 //Error logging tool
 const morgan = require('morgan');
 console.log("Server booting")
-console.log(`${process.env.testkey}` + "Is a test env variable")
+
 console.log("Env variable done")
 //Env files
 const dotenv = require('dotenv');
@@ -16,7 +16,10 @@ console.log(`WORK ENVIRONMENT ${process.env.NODE_ENV}`)
 //If the app is in dev, use the dotenv file, otherwise use the environment variables from digitalocean configs
 if(process.env.NODE_ENV == "development"){    
     dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
+}else{
+    console.log("Dev dotenv was skipped.")
 }
+console.log(`${process.env.testkey}` + "Is a test env variable, ")
 require('./helpers/init_mongodb')
 
 //App is the server
