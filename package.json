@@ -4,7 +4,8 @@
   "main": "app.js",
   "scripts": {
     "startd": "set NODE_ENV=development& nodemon app.js",
-    "startp": "set NODE_ENV=production& nodemon app.js"
+    "startp": "set NODE_ENV=production& nodemon app.js",
+    "startpu": "export NODE_ENV=production& nodemon app.js"
   },
   "keywords": [],
   "author": "",
