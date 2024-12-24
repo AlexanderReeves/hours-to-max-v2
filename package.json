@@ -5,7 +5,7 @@
   "scripts": {
     "startd": "set NODE_ENV=development& nodemon app.js",
     "startp": "set NODE_ENV=production& nodemon app.js",
-    "startpu": "cross-env NODE_ENV=production& nodemon app.js"
+    "startpu": "NODE_ENV=production& nodemon app.js"
   },
   "keywords": [],
   "author": "",
