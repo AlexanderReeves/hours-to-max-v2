@@ -38,3 +38,6 @@ npm install nodemailer
 
 Cookies tools
 npm i js-cookie
+
+Cross env to make th enode env work on both ubuntu and windows
+npm i cross-env
