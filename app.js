@@ -21,7 +21,7 @@ console.log(`WORK ENVIRONMENT ${process.env.NODE_ENV}`)
 //     console.log("Dev dotenv was skipped.")
 // }
 
-if(!'${process.env.NODE_ENV}`'){
+if(typeof `${process.env.NODE_ENV}` == 'undefined'){
     console.log("env variable could not be parsed")
     dotenv.config({ path: `./.env.production`  });
 }else{
