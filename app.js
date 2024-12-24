@@ -20,7 +20,14 @@ console.log(`WORK ENVIRONMENT ${process.env.NODE_ENV}`)
 // }else{
 //     console.log("Dev dotenv was skipped.")
 // }
-dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
+
+if(!'${process.env.NODE_ENV}`'){
+    console.log("env variable could not be parsed")
+    dotenv.config({ path: `./.env.production`  });
+}else{
+    console.log("env parsed successfully")
+    dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
+}
 
 console.log(`${process.env.testkey}` + "Is a test env variable.")
 require('./helpers/init_mongodb')
