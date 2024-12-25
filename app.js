@@ -1,62 +1,60 @@
 //Server
+console.log("The Hours To Max web server is starting.")
+
+//Express website hosting
 const express = require('express');
-//Mongoose for mongodb
+//Mongoose for mongodb database
 const mongoose = require('mongoose');
 //File pathing
 const path = require('path');
 //Error logging tool
 const morgan = require('morgan');
-console.log("Server booting")
 //Env files
 const dotenv = require('dotenv');
-console.log("Booting server. Checking work envirnoment.")
-console.log(`WORK ENVIRONMENT ${process.env.NODE_ENV}`)
 
-//If the app is in dev, use the dotenv file, otherwise use the environment variables from digitalocean configs
-// if(process.env.NODE_ENV == "development"){    
-//     dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
-// }else{
-//     console.log("Dev dotenv was skipped.")
-// }
-
+//Load the server in production, unless windows parsed a dev env variable
 if(`${process.env.NODE_ENV}` == 'undefined'){
-    console.log("env variable could not be parsed")
+    console.log("NODE_ENV variable could not be parsed")
+    console.log("Environment: PRODUCTION")
     dotenv.config({ path: `./.env.production`  });
 }else{
     console.log("env parsed successfully")
+    console.log("Environment: DEVELOPMENT")
     dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
 }
+//Check the dotenv variables loaded
+console.log(`${process.env.testkey}` + " Is a test env variable.")
 
-console.log(`${process.env.testkey}` + "Is a test env variable.")
+//Connect to mongodb via the helper tool
 require('./helpers/init_mongodb')
 
-//App is the server
+//Load the app as an express server
 const app = express();
 //Enable a folder for public assets and JS files (Non server JS)
 app.use(express.static('public'))
 
-//For destructure...
-//
-//Trying to make destructuring work...
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
+//Allow json creation and destructuring
+app.use(express.json())
+//Allow express to parse url payloads
+app.use(express.urlencoded({ extended: false }))
+
+//Use morgan for error codes and logging in console
 app.use(morgan('dev'))
 
+//Listen on port 3000 for requests
 app.listen(3000)
 
 //__dirname is a variable that gives access to the current directory
+//Allow public access to assets in public folder
 const publicDirectory = path.join(__dirname, './public')
 app.use(express.static(publicDirectory));
 
-//Make sure you can grab data from any form
-app.use(express.urlencoded({extended: false}));
-
-//HTML viewing engine
+//HTML viewing engine for html rendering
 app.set('view engine', 'hbs');
 
 
-//Define routes
+//Define web traffic routes
 app.use(express.json())
 app.use('/' ,require('./routes/pages'))
 //register
@@ -66,13 +64,17 @@ app.use('/find', require('./routes/find'))
 //save things
 app.use('/save', require('./routes/save'))
 
-//Finally, error handling middleware
+//***Error handling middleware***
 
 //If we have made it to this code without already sending a response, send this message
 app.use((err, req, res, next) => {
+    //log error in console
     console.error(err.stack)
+    //Set error response status message
     res.status(500)
+    //Get the request url
     url = req.url;
+    //Load the error page including invalid url
     res.render('problem', {title: 'Invalid Request', url: url });
   })
 
@@ -80,10 +82,9 @@ app.use((err, req, res, next) => {
 app.use(function(req, res) {
     // Invalid request
     res.status(404)
+    //If route does not exist send the problem page with different message
     url = req.url;
     res.render('problem', {title: 'The server couldn\'t find what you were looking for!', url: url });
 });
 
-function test(){
-    console.log("test");
-}
+console.log("The server has finished loading. Database connection may still be in progress.")
