@@ -41,3 +41,6 @@ npm i js-cookie
 
 Cross env to make th enode env work on both ubuntu and windows
 npm i cross-env
+
+Request rate limiting
+npm i express-rate-limit

@@ -11,6 +11,9 @@ const path = require('path');
 const morgan = require('morgan');
 //Env files
 const dotenv = require('dotenv');
+//Rate limiter to handle spam requests and loading limits, etc
+const rateLimit = require('express-rate-limit')
+
 
 //Load the server in production, unless windows parsed a dev env variable
 if(`${process.env.NODE_ENV}` == 'undefined'){
@@ -41,6 +44,15 @@ app.use(express.urlencoded({ extended: false }))
 
 //Use morgan for error codes and logging in console
 app.use(morgan('dev'))
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+	// store: ... , // Redis, Memcached, etc. See below.
+})
+app.use(limiter)
 
 //Listen on port 3000 for requests
 app.listen(3000)
