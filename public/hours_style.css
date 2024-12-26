@@ -4,6 +4,10 @@
     margin:0px;
 }
 
+#userPass {
+    -webkit-text-security: disc;
+}
+
 .success{
    color: green; 
 }

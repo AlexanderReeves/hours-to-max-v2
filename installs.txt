@@ -44,3 +44,24 @@ npm i cross-env
 
 Request rate limiting
 npm i express-rate-limit
+
+
+#####Linux only
+Enable uff firewall
+https://www.youtube.com/watch?v=SSLhGanxmCg&list=WL&index=1
+
+NGNIX for directing traffic to main port
+sudo apt install nginx
+
+
+##Restart nginx server
+sudo /etc/init.d/apache2 stop
+sudo systemctl restart nginx
+sudo service nginx restart
+
+##
+Cloudflare domain name
+DDos prevention is on by default
+Manually enabled bot defences in settings
+
+
