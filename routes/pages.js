@@ -7,10 +7,32 @@ const User = require('../Models/user')
 const createError = require('http-errors')
 const {getPayloadFromToken} = require('../helpers/jwt_helper')
 
+//Index Page load tally
+const fs = require('node:fs');
+function readWriteAsync(){
+    //readData = ""
+    count = 0
+    readData = fs.readFileSync('./count.txt').toString()
+    console.log("Type of pulled data = " + typeof(readData));
+    console.log("Pulled data " + readData)
+    readData = parseInt(readData)
+    readData ++
+    readData = readData.toString()
+    console.log("New data = : " + readData)
+      
+    fs.writeFile('count.txt', readData, 'utf-8', err2 => {
+    if (err2) {
+        console.log(err2)
+    }
+    })
+}
+
+
 const router = express.Router();
 
 // Index page rendering, will have differences if the user is signed in.
 router.get('/', (req, res) => {
+    readWriteAsync();
     console.log('req cookies found? ' + req.headers.cookie)
     username = "Player"
     userSignedIn = false

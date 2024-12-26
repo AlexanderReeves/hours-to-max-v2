@@ -51,6 +51,7 @@ const limiter = rateLimit({
 	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
 	// store: ... , // Redis, Memcached, etc. See below.
+    message: "Sorry, you have been rate limited. Please try again later."
 })
 app.use(limiter)
 
