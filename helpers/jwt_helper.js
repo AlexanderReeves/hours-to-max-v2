@@ -14,7 +14,7 @@ module.exports = {
           }
           //Default expiry time if none provided, though this may be settable above in function name
           if(expiryTime == null){
-            expiryTime = "1h"
+            expiryTime = "60d"
           }
           const secret = process.env.ACCESS_TOKEN_SECRET
           const options = {

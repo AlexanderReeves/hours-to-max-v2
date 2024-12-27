@@ -11,38 +11,12 @@ const recipients = [
 	new Recipient("reevesdrums@gmail.com", "user")
 ];
 
-// const htmlContent = `
-//   <p>Hello,</p>
-//   <p>Welcome to Hours To Max.</p>
-//   <p>I made this website to as a way to try and decide what training methods I would use to work on my account goals.</p>
-//   <p>There are plenty of calculators and tools available online, but all of them assume you will use the most efficient training methods possible, or 
-//   that you have billions of in game gold lying around to spare.</p>
-//   <br>
-//   <p>This website was designed to let you plan your account but with training methods that you actually enjoy (and that you have the spare gp for).</p>
-//   <p>I have a lot of ideas and customisation planned for this, but for now, thanks for signing up to the website and I hope you find it useful and fun.</p>
-//   <br>
-//   <p>You can email me at reevesgamedev@gmail.com if something is broken or you have a suggestion<p>
-//   <p>The site is in early development, so there's lot's being added each day<p>
-//   <p>Oh, and I am looking for permanent work as a programmer, so if you like the website and are hiring a node coder, please reach out!<p>
-//   <br>
-//   <p>Thanks again,<p>
-//   <p>Alexander<p>
-// `;
-
-// emailParams = new EmailParams()
-// 	.setFrom(sentFrom)
-// 	.setTo(recipients)
-// 	.setReplyTo(sentFrom)
-// 	.setSubject("Welcome! Your free trial is ready.")
-// 	.setHtml(htmlContent)
-// 	.setText("Hey there! Welcome to Your Business, we're happy to have you here! You'll be happy to know that your free trial awaits, all you need to do is head to your account, log in and start playing. Remember to check out our guides and contact support if you need anything. Regards, The Your Business Team");
-
 module.exports = {
 
-  registrationEmail: (registrationToken) => {
+  registrationEmail: (registrationToken, recipientEmail) => {
     myEmailParams = new EmailParams()
     .setFrom(sentFrom)
-    .setTo(recipients)
+    .setTo([new Recipient(recipientEmail)])
     .setReplyTo(sentFrom)
     .setSubject("Hours To Max Account Activation.")
     .setHtml("<p>Welcome to Hours To Max. Follow the link to your new account!</p><br><a href=\"http://localhost:3000/verify?token=" +registrationToken+ "\">VERIFY YOUR ACCOUNT</a>")
@@ -56,10 +30,10 @@ module.exports = {
       console.error("Error sending email:", error);
     })
   },
-  oopsEmail: (resetToken) => {
+  oopsEmail: (resetToken, recipientEmail) => {
     myEmailParams = new EmailParams()
     .setFrom(sentFrom)
-    .setTo(recipients)
+    .setTo([new Recipient(recipientEmail)])
     .setReplyTo(sentFrom)
     .setSubject("Hours To Max Password Reset.")
     .setHtml("<p>Welcome to Hours To Max. Follow the link to reset your password. If you did not request this reset, you can ignore this email.</p><br><a href=\"http://localhost:3000/newpassword?token=" +resetToken+ "\">RESET YOUR PASSWORD</a>")

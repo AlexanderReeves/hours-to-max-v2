@@ -6,7 +6,7 @@ const Joi = require('joi')
 const authSchema = Joi.object({
     username: Joi.string().min(2).required(),
     email: Joi.string().email().lowercase().required(),
-    password: Joi.string().min(2).required(),
+    password: Joi.string().regex(/[ -~]*[a-z][ -~]*/).regex(/[ -~]*[A-Z][ -~]*/).min(8).max(20).required(),
   })
 
 //For sign in

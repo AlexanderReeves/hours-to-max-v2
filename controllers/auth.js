@@ -24,6 +24,9 @@ exports.register = async (req, res , next) => {
             result = await authSchema.validateAsync({username, email, password}, {warnings: true});
 
         } catch(err){
+            if(err.message.includes("pattern")){
+             res.status(422).json({'error': "Password must contain capital and lowercase letters"})
+            }
             //If this fails, result remains unchanged from its original declaration
             console.log("Joi Error Message: " + err.message)
             //console.log(Object.getOwnPropertyNames(err))
@@ -60,7 +63,7 @@ exports.register = async (req, res , next) => {
         //res.cookie('authorization', accessToken)
         res.send(JSON.stringify({ success: 'Registration email sent!' }))
         //Send the registration email
-        mailHelper.registrationEmail(registrationToken)
+        mailHelper.registrationEmail(registrationToken,email)
 
     } catch(error){
         console.log(error)
@@ -110,7 +113,7 @@ exports.login = async (req, res, next ) => {
         }
 
         //At this stage, the sign in was successful. Generate a jwt.
-        const accessToken = await signAccessToken(user.id, user.email, user.username, "1h")
+        const accessToken = await signAccessToken(user.id, user.email, user.username, "60d")
         //On sign in success, send JST cookie and redirect to home page!
         console.log('sending cookie')
         res.cookie('authorization', accessToken)
@@ -188,7 +191,7 @@ exports.forgot = async (req, res, next ) => {
         //Save the users password reset token to the database
         user.resetToken = key;
         user.save();
-        mailHelper.oopsEmail(key)
+        mailHelper.oopsEmail(key, email)
         res.send(JSON.stringify({ success: 'Password reset email sent.' }))
         
     }else{
