@@ -25,7 +25,7 @@ exports.register = async (req, res , next) => {
 
         } catch(err){
             if(err.message.includes("pattern")){
-             res.status(422).json({'error': "Password must contain capital and lowercase letters"})
+             res.status(422).json({'error': "Password must contain a capital, a number, and a special character."})
             }
             //If this fails, result remains unchanged from its original declaration
             console.log("Joi Error Message: " + err.message)
@@ -83,7 +83,6 @@ exports.login = async (req, res, next ) => {
         }catch (err){
             //If this fails, result remains unchanged from its original declaration
             console.log("Joi Error Message: " + err.message)
-            //console.log(Object.getOwnPropertyNames(err))
             //From here, set a https error code, a message, and return to requester!
             res.status(422).json({'error': "Invalid email/password"})
             //If joi validation fails, end function
@@ -92,21 +91,19 @@ exports.login = async (req, res, next ) => {
         
         const user = await User.findOne({email})
         if(!user){
-            res.status(422).json({'error': "email not found"})
+            res.status(422).json({'error': "Invalid email/password"})
             return
         }
 
-        
-        //If user exists, check for valid password via our custom userjs function
+        //If user exists, check for valid password
         const isMatch = await user.isValidPassword(password)
         if(!isMatch){
-            res.status(422).json({'error': "Invalid password"})
+            res.status(422).json({'error': "Invalid email/password"})
             return
         }
 
         //Check is the user confirmed their email address already
         //We shouldn't need to send in any params as it will just check the current object
-        console.log('User confirmed status: ' + user.confirmed)
         if(!user.confirmed){
             res.status(422).json({'error': "Please confirm your email address first"})
             return
@@ -115,7 +112,7 @@ exports.login = async (req, res, next ) => {
         //At this stage, the sign in was successful. Generate a jwt.
         const accessToken = await signAccessToken(user.id, user.email, user.username, "60d")
         //On sign in success, send JST cookie and redirect to home page!
-        console.log('sending cookie')
+        console.log('Valid sign in. Sending cookie to user.')
         res.cookie('authorization', accessToken)
         res.cookie('username', user.username)
         res.cookie('userid', user.id)
@@ -126,7 +123,6 @@ exports.login = async (req, res, next ) => {
         //default error
         console.log(error)
         next(error)
-
     }
 }   
 

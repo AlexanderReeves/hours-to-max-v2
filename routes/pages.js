@@ -7,19 +7,17 @@ const User = require('../Models/user')
 const createError = require('http-errors')
 const {getPayloadFromToken} = require('../helpers/jwt_helper')
 
-//Index Page load tally
+//Log the number of page loads to the count.txt file
 const fs = require('node:fs');
-function readWriteAsync(){
-    //readData = ""
+function CountPageRequests(){
+    //Load total page reads
     count = 0
     readData = fs.readFileSync('./count.txt').toString()
-    console.log("Type of pulled data = " + typeof(readData));
-    console.log("Pulled data " + readData)
     readData = parseInt(readData)
     readData ++
     readData = readData.toString()
-    console.log("New data = : " + readData)
-      
+    console.log("Total index page requests to date : " + readData)
+    //Save updated tally to file
     fs.writeFile('count.txt', readData, 'utf-8', err2 => {
     if (err2) {
         console.log(err2)
@@ -27,17 +25,16 @@ function readWriteAsync(){
     })
 }
 
-
+//Router will direct web requests and results
 const router = express.Router();
 
 // Index page rendering, will have differences if the user is signed in.
 router.get('/', (req, res) => {
-    readWriteAsync();
-    console.log('req cookies found? ' + req.headers.cookie)
+    CountPageRequests();
     username = "Player"
     userSignedIn = false
     if(req.headers.cookie){
-        //If we found a cookie, check that it belongs to a valid user
+        console.log("Request body contained cookies.")
         // Use the cookie paser to chech the req for a field called authorization
         const userJwt = cookieParser.parseCookies(req)['authorization']
         //Check for a valid jwt
@@ -55,8 +52,6 @@ router.get('/', (req, res) => {
     }
     res.render('index', { signedin: userSignedIn, username: username});
 });
-
-
 
 router.get('/home', verifyAccessToken,(req, res) => {
     res.redirect("/")

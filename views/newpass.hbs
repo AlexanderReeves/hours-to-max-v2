@@ -23,12 +23,12 @@
                 success: function (data) {
                     // show the data you got from B in result div
                     console.log('Success');
-                    $("#result").html('Password reset success, attempting to redirect.');
+                    $("#result").html('Password reset success. You can now sign in.');
                     $("#result").removeClass("fail");
                     $("#result").addClass("success");
                     $('#userEmail').attr('readonly', true);
                     $('#userPass').attr('readonly', true);
-                    window.location = '/';
+                    {{!-- window.location = '/'; --}}
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log('Submit returned errors');
