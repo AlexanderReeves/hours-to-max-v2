@@ -1,21 +1,4 @@
-//Env files
-const dotenv = require('dotenv');
-const environmentString = process.env.NODE_ENV
-console.log("envirostring is " + environmentString +"help")
-//THERES A FUCKING INVISIBLE SPACEBAR HERE
-
-console.log("The type of variable is: " + typeof(environmentString))
-
-if(environmentString == "development"){
-    console.log("dev environment loaded")
-    dotenv.config({ path: `./.env.development` })
-}else{
-    console.log("not dev lol")
-}
-
-if(environmentString == "production"){
-    dotenv.config({ path: `./.env.production` })
-}
-
-const uri = process.env.DBURI;
-console.log(uri + " uri variable")
+.env.development
+.env.production
+node_modules/
+count.txt
