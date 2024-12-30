@@ -3,7 +3,7 @@
 const User = require('../Models/user')
 const createError = require('http-errors')
 const {authSchema, loginSchema, emailSchema, passwordSchema} = require('../helpers/validation_schema')
-const {signAccessToken} = require('../helpers/jwt_helper')
+const {signAccessToken,signRefreshToken} = require('../helpers/jwt_helper')
 const mailHelper = require('../helpers/mailer')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto');
@@ -110,10 +110,12 @@ exports.login = async (req, res, next ) => {
         }
 
         //At this stage, the sign in was successful. Generate a jwt.
-        const accessToken = await signAccessToken(user.id, user.email, user.username, "60d")
+        const accessToken = await signAccessToken(user.id, user.email, user.username, "100d")
+        const refreshToken = await signRefreshToken(user.id, user.email, user.username, "1y")
         //On sign in success, send JST cookie and redirect to home page!
         console.log('Valid sign in. Sending cookie to user.')
         res.cookie('authorization', accessToken)
+        res.cookie('refreshAuthorization', refreshToken)
         res.cookie('username', user.username)
         res.cookie('userid', user.id)
         res.status(200).send('Successful sign in!');
@@ -249,7 +251,7 @@ exports.newpassword = async (req, res, next ) => {
         console.log('User password was updated. Signing user in.')
         const accessToken = await signAccessToken(user.id)
         res.cookie('authorization', accessToken)
-        res.status(200).send('Successful sign in!');
+        res.status(200).send('Password updated successfully! You can now sign in.');
         //res.render('index')
 
     } catch(err){

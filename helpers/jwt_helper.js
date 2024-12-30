@@ -34,11 +34,44 @@ module.exports = {
           })
         })
       },
+      signRefreshToken: (userId, email, username, expiryTime) => {     
+        return new Promise((resolve, reject) => {
+          const payload = {
+            "email": email,
+            "username": username,
+          }
+          //Default expiry time if none provided, though this may be settable above in function name
+          if(expiryTime == null){
+            expiryTime = "1y"
+          }
+          const secret = process.env.REFRESH_TOKEN_SECRET
+          const options = {
+            expiresIn: expiryTime,
+            issuer: 'hourstomax.com',
+            audience: userId,
+          }
+          //We should handle errors if we had an error while generating a jwt
+          jwt.sign(payload, secret, options, (err, token) => {
+            if (err) {
+              console.log(err.message)
+              reject(createError.InternalServerError("Sorry! There was an internal error that happened in the server!"))
+            }
+            resolve(token)
+            resolve({"refreshToken": token})
+
+          })
+        })
+      },
       verifyAccessToken: (req, res, next) => {
         console.log("Verifying access token")
-        accessToken = getJwtFromCookies(req);
+        //Find the authorization/jwt from the cookies
+        accessToken = getJwtFromCookies(req,"authorization");
+        refreshToken = getJwtFromCookies(req,"refreshAuthorization");
         jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
           if(err) {
+            //Before sending an Unauthorized error, check if there is a refresh token.
+
+            //User was unahtorized. Send Error.
             return next(createError.Unauthorized())
           }
           req.payload = payload
@@ -72,13 +105,15 @@ module.exports = {
       }
 }
 
-function getJwtFromCookies(req) {
+function getJwtFromCookies(req,field) {
+  //Checks the provided request headers for the specified field
   console.log('Checking for a JWT in cookies!')
   if(req.headers.cookie){
     console.log('Cookies found in request')
-    authToken = cookieParser.parseCookies(req)['authorization']
-    console.log('Auth token in cookies is : ' + authToken)
-    return authToken
+    //Finds the auth code from cookies and returns it
+    result = cookieParser.parseCookies(req)[field]
+    console.log('Cookies result for requested field ' + field + ': ' + result)
+    return result
   }else{
     console.log('No cookies found in request')
       return null;
