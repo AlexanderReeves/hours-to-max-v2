@@ -2,7 +2,7 @@
 //By default all cookies are available in a request header
 
 exports.parseCookies = function(request) {
-    console.log('Cookie Parser results:')
+    //console.log('Cookie Parser results:')
     const list = {};
     const cookieHeader = request.headers?.cookie;
     if (!cookieHeader) return list;
@@ -17,6 +17,6 @@ exports.parseCookies = function(request) {
     });
     //The only cookie currently saved is the jwt key.
     //The jwt contains the email and username of the signed in user.
-    console.log(list)
+    //console.log(list)
     return list;
 }

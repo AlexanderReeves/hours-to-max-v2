@@ -5,7 +5,7 @@ const cookieParser = require('../helpers/cookie_parser');
 const { confirmRegistration } = require('../controllers/auth');
 const User = require('../Models/user')
 const createError = require('http-errors')
-const {getPayloadFromToken} = require('../helpers/jwt_helper')
+const {getPayloadFromAccessToken} = require('../helpers/jwt_helper')
 
 //Log the number of page loads to the count.txt file
 const fs = require('node:fs');
@@ -29,22 +29,15 @@ function CountPageRequests(){
 const router = express.Router();
 
 // Index page rendering, will have differences if the user is signed in.
-router.get('/', (req, res) => {
+router.get('/', verifyAccessToken,(req, res) => {
     CountPageRequests();
     username = "Player"
     userSignedIn = false
-    if(req.headers.cookie){
-        console.log("Request body contained cookies.")
-        // Use the cookie paser to chech the req for a field called authorization
-        const userJwt = cookieParser.parseCookies(req)['authorization']
-        //Check for a valid jwt
-        payload = getPayloadFromToken(userJwt)
-        username = payload.username
-        console.log("Cookieparser username is " + username)
-        //username is undefined if cookies auth code was invalid
+    if(req.verifiedUser){
+        username = req.payload.username
+        console.log("The page was requested from verified user " + username)
         if(username){
             userSignedIn = true
-            console.log("JWT cookies were valid")
         }else{
             console.log("JWT cookies were found to be invalid, removing them")
             res.clearCookie("authorization");
@@ -53,13 +46,14 @@ router.get('/', (req, res) => {
     res.render('index', { signedin: userSignedIn, username: username});
 });
 
-router.get('/home', verifyAccessToken,(req, res) => {
-    res.redirect("/")
-});
+// router.get('/home', verifyAccessToken,(req, res) => {
+//     res.redirect("/")
+// });
 
 router.get('/logout',(req, res) => {
     console.log('Signing out user')
     res.clearCookie("authorization");
+    res.clearCookie("refreshAuthorization");
     res.redirect('/');
 });
 
