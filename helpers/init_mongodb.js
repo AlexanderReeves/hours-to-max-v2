@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 //No need for urlParse or UnifiedTopology args as they were removed and deprecated
 const db = mongoose.connect(process.env.DBURI, {
-    dbName: "hours_to_max"})
+    dbName: process.env.DB_NAME})
 .then(() => {
     console.log('mongodb connected')
 })

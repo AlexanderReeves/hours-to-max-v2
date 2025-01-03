@@ -6,75 +6,24 @@ const cookieParser = require('../helpers/cookie_parser')
 
 
 module.exports = {
-    signAccessToken: (userId, email, username, expiryTime) => {     
-        return new Promise((resolve, reject) => {
-          const payload = {
-            "email": email,
-            "username": username,
-          }
-          //Default expiry time if none provided, though this may be settable above in function name
-          if(expiryTime == null){
-            expiryTime = "60d"
-          }
-          const secret = process.env.ACCESS_TOKEN_SECRET
-          const options = {
-            expiresIn: expiryTime,
-            issuer: 'hourstomax.com',
-            audience: userId,
-          }
-          //We should handle errors if we had an error while generating a jwt
-          jwt.sign(payload, secret, options, (err, token) => {
-            if (err) {
-              console.log(err.message)
-              reject(createError.InternalServerError("Sorry! There was an internal error that happened in the server!"))
-            }
-            resolve(token)
-            resolve({"accessToken": token})
-
-          })
-        })
-      },
-      signRefreshToken: (userId, email, username, expiryTime) => {     
-        return new Promise((resolve, reject) => {
-          const payload = {
-            "email": email,
-            "username": username,
-          }
-          //Default expiry time if none provided, though this may be settable above in function name
-          if(expiryTime == null){
-            expiryTime = "1y"
-          }
-          const secret = process.env.REFRESH_TOKEN_SECRET
-          const options = {
-            expiresIn: expiryTime,
-            issuer: 'hourstomax.com',
-            audience: userId,
-          }
-          //We should handle errors if we had an error while generating a jwt
-          jwt.sign(payload, secret, options, (err, token) => {
-            if (err) {
-              console.log(err.message)
-              reject(createError.InternalServerError("Sorry! There was an internal error that happened in the server!"))
-            }
-            resolve(token)
-            resolve({"refreshToken": token})
-
-          })
-        })
-      },
-
-
-      verifyAccessToken: (req, res, next) => {
-
+    //Both of these functions provide external access to the non exported versions
+    signAccessToken: (userId, email, username, expiryTime) => {
+      //Creates access token for cookies using jwt package
+        return SignAccessToken(userId, email, username, expiryTime)
+    },
+    signRefreshToken: (userId, email, username, expiryTime) => {
+        //created refresh token for cookies using jwt package 
+        return SignRefreshToken(userId,email, username, expiryTime)
+    },
+    verifyAccessToken: (req, res, next) => {
         console.log("Verifying access token")
         //Find the authorization/jwt from the cookies
         accessToken = getJwtFromCookies(req,"authorization");
         refreshToken = getJwtFromCookies(req,"refreshAuthorization");
         if(!accessToken){
-          console.log("No access token found...")
-          next()
+          // console.log("No jwt access token was found.")
+          return next()
         }
-
         jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
           console.log("Jwt helper verification results....")
           if(err) {
@@ -85,7 +34,7 @@ module.exports = {
               console.log("JWT helper found no refresh code")
               // return next(createError.Unauthorized())
               req.verifiedUser = false
-              return false
+              return next()
             }
             //If refresh token is invalid, create error
             jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, payload) => {
@@ -95,7 +44,7 @@ module.exports = {
                 req.verifiedUser = false
                 res.clearCookie("authorization");
                 res.clearCookie("refreshAuthorization");
-                return false
+                return next()
               }else{
                 console.log("Refresh code was valid. Generating new auth and refresh code.")
                 payload = GetPayloadFromRefreshToken(refreshToken)
@@ -123,8 +72,6 @@ module.exports = {
           next()
         })
       },
-
-
       verifyRegistrationToken: (req, res, next) => {
         console.log("Verifying registration token")
         accessToken = req.query.token;
@@ -144,7 +91,7 @@ module.exports = {
 
 function getJwtFromCookies(req,field) {
   //Checks the provided request headers for the specified field
-  console.log('Checking for ' + field+ ' JWT in cookies!')
+  console.log('Checking for ' + field+ ' JWT in cookies.')
   if(req.headers.cookie){
     console.log('Cookies found in request')
     //Finds the auth code from cookies and returns it
@@ -152,7 +99,7 @@ function getJwtFromCookies(req,field) {
     console.log('Cookies result for requested field ' + field + ': ' + result)
     return result
   }else{
-    console.log('No cookies found in request')
+    console.log(field+ ' JWT was not found.')
       return null;
   }
   

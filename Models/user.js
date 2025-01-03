@@ -25,6 +25,10 @@ const UserSchema = new Schema({
     type: String,
     required: false,
   },
+  passwordLinkExipry: {
+    type: Date,
+    required: false,
+  },
   resetToken: {
     type: String,
     required: false

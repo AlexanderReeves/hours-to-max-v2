@@ -28,6 +28,7 @@
                     $("#result").addClass("success");
                     $('#userEmail').attr('readonly', true);
                     $('#userPass').attr('readonly', true);
+                    $('#saveNewPass').prop("disabled", true);
                     {{!-- window.location = '/'; --}}
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -116,7 +117,7 @@
 
                     <div id="result" style="margin-top:10px">&nbsp;</div>
 
-                    <input type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Save">
+                    <input id="saveNewPass" type="submit" class="colorbutton theme themered" style="margin-top: 10px" value="Save">
                 </form>
 
                 <br>
