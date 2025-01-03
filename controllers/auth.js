@@ -43,11 +43,6 @@ exports.register = async (req, res , next) => {
             res.status(422).json({'error': `${email} is already registered`})
             return
         } 
-        //Check if the username is available
-        const usernameDoesExist = await User.findOne({username: username})
-        if(usernameDoesExist){
-            res.status(422).json({'error': `Sorry! ${username} is not available.`})
-        } 
 
         //If validation passes, and username/email are available, save the user to the database
         const confirmed = false
