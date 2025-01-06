@@ -1,10 +1,10 @@
 //The Skill Class
-const Skill = {
-    name: "ranged", // Default value of properties
+class Skill {
+  constructor(name) {
+    this.name = name;
+  }
 
-    //Methods
-    logName() {
-      // Method which will display type of Animal
-      console.log("Skill name is " + this.name);
-    },
-  };
+  LogName(){
+    console.log(this.name)
+  }
+}

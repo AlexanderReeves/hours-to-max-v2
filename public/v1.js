@@ -1,16 +1,29 @@
+//********Alexander Reeves, Hours To Mac V1 Prototype code**********
+
+//**********************************************************************************
+//This code was initially a pure HTML, CSS, Javascript prototype proof of concept.
+//The code was written initially without custom classes
+//I am in the process of rewriting this code to be more class based
+//This should allow for more scalability, expansions, and easier maintenance
+
+//You can read the github logs to see how this code is being adapted and improved.
+//**********************************************************************************
+
 $.ajaxSetup({ //Prevent future code loading before previous code finishes.
     async: false
 });
 
-
-
+//The fefault tab is for players wanting the goal of a "Max"
+//level Old School Runescape account.
 var currentTab = "max";
 
-//Set variables
-//XP Per Hour based on training method
+//****Default Variables****
+
+//The XP Per Hour based on training method for each of the training methods
 var raXpArray = [90000, 130000, 140000, 675000, 710000, 850000];
-//Cost per XP
+//The "GP" (curency) cost per experience point for each of the training methods
 var raGpArray = [0,0,0,0,0,0];
+//Repeat for each available skill
 var prXpArray = [50000, 250000, 437000, 600000, 800000, 1250000];
 var prGpArray = [0,0,0,0,0,0]
 var maXpArray = [78000, 150000, 150000, 175000, 380000];
@@ -43,45 +56,65 @@ var fmXpArray = [250000,275000,290000,400000,450000];
 var fmGpArray = [0,0,0,0,0];
 var wcXpArray = [68000, 75000, 90000, 90000, 100000];
 var wcGpArray = [0,0,0,0,0];
+//The number of tree patches a player has available to train farming
 var treePatchesArray = [1,2,3,4,5];
+//The XP gained per each successful seed planted in a tree patch
 var seXpArray = [3043,7070,13768];
 var faGpArray = [0,0,0];
+//The an array containing the total cost in "GP" for each skill to reach the goal level
 var totalCostArray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
-//Dynamic multi layer array variables... I guess they are objects? 24 data points
+//The shorthand code to reference each of the available skills quickly in this code base
 var shorthandArray = ["ov","at","de","st","hi","ra","pr","ma","ck","wc"
 	,"fl","fi","fm","cr","sm","mi","he","ag","th","sl","fa","ru","hu"
 	,"co"];
+
+//The xp required to reach the goal level for every skill if attempting to obtain a
+//quest cape rather than a max cape
 var questXpGoalArray = [0,0,0,0,0,273742,101333,1210421,737627,814445
     ,273742,333804,1210421,737627,737627,899257,737627,737627,737627,668051,814445,273742,737627
     ,737627];
+//The xp required to reach the goal level for every skill if attempting to obtain an
+//achievement cape rather than a max cape
 var achievementXpGoalArray = [0,0,0,0,0,737627,3258594,9684577,3258594,5346332
     ,8771558,9684577,3258594,3258594,5902831,3258594,5346332,5346332,5902831,8771558,5902831,5902831,737627
     ,1629200];
+//The players current level in each skill
 var lvlArray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+//The level requiered for each skill to obtain an achievment cape
 var achLvlArray = [0,0,0,0,0,70,85,96,95,90
     ,95,96,85,85,91,85,90,90,91,95,91,91,70
     ,78];
+//The level requiered for each skill to obtain a quest cape
 var questLvlArray = [0,0,0,0,0,60,50,75,70,71
     ,60,62,75,70,70,72,70,70,70,69,70,60,70
     ,70];
+//The level requiered for each skill to obtain an max cape
 var maxLvlArray = [0,99,99,99,99,99,99,99,99,99
     ,99,99,99,99,99,99,99,99,99,99,99,99,99
     ,99];
+//How many hours of training each skill currently is from reaching the players goal
 var zeroToGoalHoursArray = [0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,
     0,0,0]; 
 
 
-
+//The xp required for a maximum level in any skill
 var ninetyNine = 13034431;
+//The current username of the website user
 var user = "";
 
+//The variables for each skill are as follows
+//Curent xp in a skill
 var maXp = 0;
+//Hours of training to reach a goal in that skill
 var maHoursTotal = 0;
+//Xp that would be gained per hour for the selected training method
 var maXpPerHour = 0;
+//The training method number from the available dropdown for that skill
 var maval = null;
 
+//Repeat for each skill
 var prXp = 0;
 var prHoursTotal = 0
 var prXpPerHour = 0;
@@ -183,6 +216,8 @@ var goalGpTotal = 0;
 var dbuser = null;
 
 window.onload = function(){
+    //Initialise the Runescape skills that each dropdown is based on
+    InitialiseSkills();
     //Pull the values from the URL into the global values
     SetDropdownDefaults();
     //Overwrite these values if the user is logged in
@@ -216,6 +251,35 @@ window.onload = function(){
     //Update hours to max
     UpdateMax();
 }
+
+function InitialiseSkills(){
+    let skills = [
+        new Skill("ranged"),
+        new Skill("magic"),
+        new Skill("prayer"),
+        new Skill("woodcutting"),
+        new Skill("runecraft"),
+        new Skill("construction"),
+        new Skill("agility"),
+        new Skill("herblore"),
+        new Skill("thieving"),
+        new Skill("crafting"),
+        new Skill("fletching"),
+        new Skill("hunter"),
+        new Skill("mining"),
+        new Skill("smithing"),
+        new Skill("fishing"),
+        new Skill("cooking"),
+        new Skill("firemaking"),
+        new Skill("seed"),
+        new Skill("patches"),
+        new Skill("slayer")
+    ]
+    skills.forEach(element => {
+        element.LogName();
+    })
+}
+
 
 function requestUserData() {
     //Request the user db data to load into page via jwt
