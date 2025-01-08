@@ -30,6 +30,7 @@ const router = express.Router();
 
 // Index page rendering, will have differences if the user is signed in.
 router.get('/', verifyAccessToken,(req, res) => {
+    console.log("ATTEMPTING TO LOAD INDEX PAGE")
     CountPageRequests();
     username = "Player"
     userSignedIn = false
@@ -46,9 +47,6 @@ router.get('/', verifyAccessToken,(req, res) => {
     res.render('index', { signedin: userSignedIn, username: username});
 });
 
-// router.get('/home', verifyAccessToken,(req, res) => {
-//     res.redirect("/")
-// });
 
 router.get('/logout',(req, res) => {
     console.log('Signing out user')
@@ -75,12 +73,16 @@ router.get('/register', (req, res) => {
         if(userJwt){
             userSignedIn = true
         }
+        //If the jwt token found was invalid, user is not logged in
+        if(!username){
+            userSignedIn = false
+        }
     }
     //If the user is already signed in, go to home page
     if(userSignedIn){
         res.redirect('/');
     }else{
-        //If not signed in, show a fresh login page
+        //If not signed in, show a fresh registration page
         res.render('register');
     }
 });
@@ -119,6 +121,7 @@ router.get('/newpassword', async(req, res, next) => {
 
 
 router.get('/login', (req, res) => {
+    console.log("LOADING LOGIN PAGE")
     //The login shouldn't be seen if the user is currently signed in
     //If the back button is pressed after sign in, a cached version of the login page appears.
 
@@ -134,12 +137,18 @@ router.get('/login', (req, res) => {
         // Use the cookie paser to chech the req for a field called authorization
         const userJwt = cookieParser.parseCookies(req)['authorization']
         username = cookieParser.parseCookies(req)['username']
+        console.log("USERNAME IS " + username)
         if(userJwt){
             userSignedIn = true
+        }
+        //If the jwt token found was invalid, user is not logged in
+        if(!username){
+            userSignedIn = false
         }
     }
     //If the user is already signed in, go to home page
     if(userSignedIn){
+        console.log("REDIRECTING TO INDEX")
         res.redirect('/');
     }else{
         //If not signed in, show a fresh login page

@@ -36,7 +36,24 @@ module.exports = {
     .setTo([new Recipient(recipientEmail)])
     .setReplyTo(sentFrom)
     .setSubject("Hours To Max Password Reset.")
-    .setHtml("<p>Welcome to Hours To Max. Follow the link to reset your password. If you did not request this reset, you can ignore this email.</p><br><a href=\"http://localhost:3000/newpassword?token=" +resetToken+ "\">RESET YOUR PASSWORD</a>")
+    .setHtml("<p>Hello. Follow the link to reset your password. If you did not request this reset, you can ignore this email.</p><br><a href=\"http://localhost:3000/newpassword?token=" +resetToken+ "\">RESET YOUR PASSWORD</a>")
+    .setText("");
+  
+    mailerSend.email.send(myEmailParams)
+    .then(response => {
+      console.log("Email sent successfully:", response);
+    })
+    .catch(error => {
+      console.error("Error sending email:", error);
+    })
+  },
+  passwordChangedEmail: (recipientEmail) => {
+    myEmailParams = new EmailParams()
+    .setFrom(sentFrom)
+    .setTo([new Recipient(recipientEmail)])
+    .setReplyTo(sentFrom)
+    .setSubject("Hours To Max Password Changed.")
+    .setHtml("<p>Your Hours To Max password has been successfully updated. If you did not request this change, please reach out to the developer at reevesgamedev@gmail.com</p>")
     .setText("");
   
     mailerSend.email.send(myEmailParams)

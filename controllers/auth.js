@@ -43,11 +43,6 @@ exports.register = async (req, res , next) => {
             res.status(422).json({'error': `${email} is already registered`})
             return
         } 
-        //Check if the username is available
-        const usernameDoesExist = await User.findOne({username: username})
-        if(usernameDoesExist){
-            res.status(422).json({'error': `Sorry! ${username} is not available.`})
-        } 
 
         //If validation passes, and username/email are available, save the user to the database
         const confirmed = false
@@ -188,6 +183,11 @@ exports.forgot = async (req, res, next ) => {
         console.log("random bytes generated : " + key)
         //Save the users password reset token to the database
         user.resetToken = key;
+        currentDateTime = new Date();
+        //1 hour link expiry
+        // currentDateTime += (60 * 60 * 1000);
+        currentDateTime.setHours(currentDateTime.getHours() + 1);
+        user.passwordLinkExipry = currentDateTime
         user.save();
         mailHelper.oopsEmail(key, email)
         res.send(JSON.stringify({ success: 'Password reset email sent.' }))
@@ -236,10 +236,19 @@ exports.newpassword = async (req, res, next ) => {
         const user = await User.findOne({resetToken: token})
         //If it fails, return a create Error, and move to the next error middleware in main
         if (!user){
+            res.status(422).json({'error': "The password reset token is invalid."});
+            return;
+        }
+        currentDateTime = new Date()
+        console.log("current date time" + currentDateTime)
+        console.log("expiry date time" + user.passwordLinkExipry)
+        if( currentDateTime > user.passwordLinkExipry){
             res.status(422).json({'error': "The password reset token has expired."});
             return;
         }
         user.password = password;
+        //Invalidate the current reset token expiry time
+        user.passwordLinkExipry = 0;
         try{
             user.save();
         }catch{
@@ -249,6 +258,7 @@ exports.newpassword = async (req, res, next ) => {
         //If all success
         //On sign in success, send JST cookie and redirect to home page!
         console.log('User password was updated. Signing user in.')
+        mailHelper.passwordChangedEmail(user.email)
         const accessToken = await signAccessToken(user.id)
         res.cookie('authorization', accessToken)
         res.status(200).send('Password updated successfully! You can now sign in.');

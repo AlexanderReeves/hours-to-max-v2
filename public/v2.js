@@ -1,3 +1,8 @@
+window.addEventListener('load', function() {
+    //The event listener waits for the page load event to complete
+  });
+  
+
 function SaveChoicesToDatabase() { // intercepts the submit event
     //Instead of getting a public userid, we should get the encrypted JWT and 
     //find the user id contained, so that people dont alter their own cookies to overwite other
