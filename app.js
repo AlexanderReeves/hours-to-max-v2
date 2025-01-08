@@ -26,7 +26,7 @@ if(`${process.env.NODE_ENV}` == 'undefined'){
     dotenv.config({ path: `./.env.${process.env.NODE_ENV}`  });
 }
 //Check the dotenv variables loaded
-// console.log(`${process.env.testkey}` + " Is a test env variable.")
+console.log(`${process.env.testkey}` + " Is a test env variable.")
 
 //Connect to mongodb via the helper tool
 require('./helpers/init_mongodb')

@@ -11,6 +11,7 @@ const crypto = require('crypto');
 exports.register = async (req, res , next) => {
     //Create a Json response for the form to receive
     res.setHeader('Content-Type', 'application/json');
+    console.log("registering new user")
     try{
         //*********Validation of the user details entered
         //We can destruct the variables here, using : to separate original and new variable name
@@ -40,6 +41,7 @@ exports.register = async (req, res , next) => {
         //Check if that is a confirmed email address in the system
         const emailDoesExist = await User.findOne({email: email})
         if(emailDoesExist){
+            console.log("Found user was already in db")
             res.status(422).json({'error': `${email} is already registered`})
             return
         } 
