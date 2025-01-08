@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const db = mongoose.connect(process.env.DBURI, {
     dbName: process.env.DB_NAME})
 .then(() => {
-    console.log('mongodb connected')
+    console.log('mongodb connected to ' + process.env.DB_NAME)
 })
 .catch(err => console.log(err.message))
 
