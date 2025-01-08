@@ -356,6 +356,7 @@ function SetUserVariables(){
         //if(user==null){console.log(user="Player");}
     }
     //Apply the wcval from url to wcdropdown unless it was null
+    console.log("Starting raval is " + raval)
     if(raval != null){selectElement('radrop', raval);}else{raval = 6}
     if(wcval != null){selectElement('wcdrop', wcval);}else{wcval = 5}
     if(maval != null){selectElement('madrop', maval);}else{maval = 5}
