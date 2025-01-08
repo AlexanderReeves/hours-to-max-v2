@@ -114,8 +114,8 @@ exports.login = async (req, res, next ) => {
         const refreshToken = await signRefreshToken(user.id, user.email, user.username, "1y")
         //On sign in success, send JST cookie and redirect to home page!
         console.log('Valid sign in. Sending cookie to user.')
-        res.cookie('authorization', accessToken)
-        res.cookie('refreshAuthorization', refreshToken)
+        res.cookie('authorization', accessToken, { maxAge: 365 * 24 * 60 * 60 * 1000, httpOnly: false})
+        res.cookie('refreshAuthorization', refreshToken, { maxAge: 365 * 24 * 60 * 60 * 1000, httpOnly: false})
         res.cookie('username', user.username)
         res.cookie('userid', user.id)
         res.status(200).send('Successful sign in!');
