@@ -19,7 +19,7 @@ module.exports = {
     .setTo([new Recipient(recipientEmail)])
     .setReplyTo(sentFrom)
     .setSubject("Hours To Max Account Activation.")
-    .setHtml("<p>Welcome to Hours To Max. Follow the link to your new account!</p><br><a href=\"http://localhost:3000/verify?token=" +registrationToken+ "\">VERIFY YOUR ACCOUNT</a>")
+    .setHtml("<p>Welcome to Hours To Max. Follow the link to your new account!</p><br><a href=\"http://hourstomax.com/verify?token=" +registrationToken+ "\">VERIFY YOUR ACCOUNT</a>")
     .setText("");
   
     mailerSend.email.send(myEmailParams)
@@ -36,7 +36,7 @@ module.exports = {
     .setTo([new Recipient(recipientEmail)])
     .setReplyTo(sentFrom)
     .setSubject("Hours To Max Password Reset.")
-    .setHtml("<p>Hello. Follow the link to reset your password. If you did not request this reset, you can ignore this email.</p><br><a href=\"http://localhost:3000/newpassword?token=" +resetToken+ "\">RESET YOUR PASSWORD</a>")
+    .setHtml("<p>Hello. Follow the link to reset your password. If you did not request this reset, you can ignore this email.</p><br><a href=\"http://hourstomax.com/newpassword?token=" +resetToken+ "\">RESET YOUR PASSWORD</a>")
     .setText("");
   
     mailerSend.email.send(myEmailParams)
