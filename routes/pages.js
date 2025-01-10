@@ -161,5 +161,10 @@ router.get('/forgot', (req, res) => {
     res.render('forgot');
 });
 
+router.get('/projects', (req, res) => {
+    //This page can render for both signed in and non signed in users
+    res.render('projects');
+});
+
 module.exports = router;
 
