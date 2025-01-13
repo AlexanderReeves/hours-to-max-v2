@@ -20,9 +20,8 @@ var currentTab = "max";
 //****Default Variables****
 
 //The XP Per Hour based on training method for each of the training methods
-var raXpArray = [90000, 130000, 140000, 675000, 710000, 850000];
+
 //The "GP" (curency) cost per experience point for each of the training methods
-var raGpArray = [0,0,0,0,0,0];
 //Repeat for each available skill
 var prXpArray = [50000, 250000, 437000, 600000, 800000, 1250000];
 var prGpArray = [0,0,0,0,0,0]
@@ -215,6 +214,11 @@ var goalGpTotal = 0;
 
 var dbuser = null;
 
+//Start reworking code into re-usable classes.
+//Skills class contains an array of skills.
+var skills = [];
+
+
 window.onload = function(){
     //Initialise the Runescape skills that each dropdown is based on
     InitialiseSkills();
@@ -229,7 +233,7 @@ window.onload = function(){
     //Update Hours To 99 for each skill
     UpdateXPAndHours("ma", maval);
     UpdateXPAndHours("wc", wcval);
-    UpdateXPAndHours("ra", raval);
+    UpdateXPAndHours("ranged", raval);
     UpdateXPAndHours("pr", prval);
     UpdateXPAndHours("ru", ruval);
     UpdateXPAndHours("co", coval);
@@ -253,31 +257,32 @@ window.onload = function(){
 }
 
 function InitialiseSkills(){
-    let skills = [
-        new Skill("ranged"),
-        new Skill("magic"),
-        new Skill("prayer"),
-        new Skill("woodcutting"),
-        new Skill("runecraft"),
-        new Skill("construction"),
-        new Skill("agility"),
-        new Skill("herblore"),
-        new Skill("thieving"),
-        new Skill("crafting"),
-        new Skill("fletching"),
-        new Skill("hunter"),
-        new Skill("mining"),
-        new Skill("smithing"),
-        new Skill("fishing"),
-        new Skill("cooking"),
-        new Skill("firemaking"),
-        new Skill("seed"),
-        new Skill("patches"),
-        new Skill("slayer")
-    ]
+    //Add each skill to the array of skills
+    skills.push( new Skill("ranged", [90000, 130000, 140000, 675000, 710000, 850000], [0,-0.1,-0.2,-3.2,-4.7,-8.4], 6));
+    skills.push( new Skill("magic", [78000, 150000, 150000, 175000, 380000], [0,0,0,0,0], 5));
+    skills.push( new Skill("prayer", [50000, 250000, 437000, 600000, 800000, 1250000], [0,0,0,0,0,0], 6));
+    skills.push( new Skill("woodcutting", [68000, 75000, 90000, 90000, 100000], [0,0,0,0,0],5 ));
+    skills.push( new Skill("runecraft", [35000, 60000, 65000, 70000, 80000, 100000], [0,0,0,0,0,0],6 ));
+    skills.push( new Skill("construction", [190000, 400000, 450000, 500000, 580000, 850000, 1000000], [0,0,0,0,0,0,0],7 ));
+    skills.push( new Skill("agility", [45000, 50000, 50000, 55000, 65000, 65000, 90000], [0,0,0,0,0,0,0],7 ));
+    skills.push( new Skill("herblore", [110000, 170000, 210000, 400000, 500000], [0,0,0,0,0],5 ));
+    skills.push( new Skill("thieving", [110000, 140000, 150000, 210000, 240000, 260000, 265000], [0,0,0,0,0,0,0],7 ));
+    skills.push( new Skill("crafting", [150000,220000,270000,360000,415000], [0,0,0,0,0], 5));
+    skills.push( new Skill("fletching", [1900000,2250000,2500000,3000000,4000000], [0,0,0,0,0],5 ));
+    skills.push( new Skill("hunter", [80000,115000,125000,150000,160000,175000], [0,0,0,0,0,0],6 ));
+    skills.push( new Skill("mining", [25000,50000,60000,69000,70000,75000,78000,85000], [0,0,0,0,0,0,0,0],8 ));
+    skills.push( new Skill("smithing", [200000,250000,350000], [0,0,0],3 ));
+    skills.push( new Skill("fishing", [40000,50000,75000,80000], [0,0,0,0],4 ));
+    skills.push( new Skill("cooking", [150000,250000,300000,450000,900000], [0,0,0,0,0],5 ));
+    skills.push( new Skill("firemaking", [250000,275000,290000,400000,450000], [0,0,0,0,0],5 ));
+
+
+    //Not featured: Farming and slayer related skills
+    
     skills.forEach(element => {
-        element.LogName();
-    })
+        // console.log(element.name);
+        // console.log(element.xpRates);
+    });
 }
 
 
@@ -329,9 +334,27 @@ $("#fname").keypress(function(e) {
 
 function SetUserVariables(){
     //Get user name and dropdown selections from the downloaded db data
+    //If we have downloaded a logged in user....
+    console.log("Setting user variables and choices.")
     if(dbuser){
+        //Set all the variables to match the downloaded data
         user = dbuser.username;
+        //The val variables are the selections from the dropdowns
         maval = dbuser.magicChoice;
+
+
+        skills.forEach(element => {
+            if(element.name == "magic"){
+                console.log("Setting magic object dropdown selection");
+                element.dropdownSelection = dbuser.magicChoice;
+            }
+        })
+        skills.forEach(element => {
+            console.log(element.name);
+            console.log(element.xpRates);
+        })
+
+
         prval = dbuser.prayerChoice;
         wcval = dbuser.woodcuttingChoice;
         raval = dbuser.rangedChoice;
@@ -386,30 +409,15 @@ function SetUserVariables(){
 
 
 function SetDropdownDefaults() {
+    
     //Update the dropdowns to the correct values here?
-    raval = 6;
-    wcval = 5;
-    maval = 5;
-    prval = 6;
-    ruval = 6;
-    coval = 7;
-    agval = 7;
-    heval = 5;
-    thval = 7;
-    crval = 5;
-    flval = 5;
-    huval = 6;
-    mival = 8;
-    smval = 3;
-    fival = 4;
-    ckval = 5;
-    fmval = 5;
     treeval = 5;
     seedval = 3;
     //If there is no slayer XP in URL, set slayer XP to 40 000
     slXpPerHour = 40000; 
     //Set the slayer input to reflect our slayer xp average
 	selectElement('slayerAverage', slXpPerHour);
+
 }
 
 
@@ -423,6 +431,31 @@ function selectElement(id, valueToSelect) {
 }
 
 //*****Code for manual changes to dropdowns*****
+
+//Class version
+function DropdownUpdate(skillName){
+    //This runs on and dropdown change
+    //Find the dropdown element with an ID that matched the input skill name
+    console.log("Looking for dropdown value of " + skillName + "Dropdown");
+    var changedDropdown = document.getElementById(skillName+"Dropdown");
+    //Get the value of the choice clicked from that dropdown
+    var dropdownValue = changedDropdown.value
+    console.log("The dropdown value was " + dropdownValue);
+    //Go through each skill, and find one with a matching name
+    skills.forEach(element => {
+        console.log(element.name)
+        if(element.name == skillName){
+            console.log(element.name)
+            //Set the dropdown value of that skill to match the choice
+            element.dropdownSelection = dropdownValue;
+        }
+    });
+    //Update the xp and hours left for that skill and choice
+    UpdateXPAndHours(skillName, dropdownValue);
+    //FindCost();
+    //UpdateMax();
+
+}
 
 function MaDropdownUpdate() {
     //Get the value selected
@@ -447,14 +480,7 @@ function WcDropdownUpdate() {
     
 }
 
-function RaDropdownUpdate() {
-    var raDrop = document.getElementById("radrop");
-    raval = raDrop.value;
-    UpdateXPAndHours("ra", raval);
-    FindCost();
-    UpdateMax();
-    
-}
+
 
 function PrDropdownUpdate() {
     var prDrop = document.getElementById("prdrop");
@@ -599,10 +625,10 @@ function UpdateFarmingXpAndHours(){
 	console.log("Updating Numer Of Farm Runs");
 	treeval = document.getElementById("patchesdrop").value;
 	seedval = document.getElementById("seeddrop").value;
-	console.log("Tree drop: " + treeval + ". " + "Seed drop: " + seedval + ".");
+	//console.log("Tree drop: " + treeval + ". " + "Seed drop: " + seedval + ".");
 	var patches = treePatchesArray[treeval - 1];
 	var seedXp = seXpArray[seedval - 1];
-	console.log("Tree patches: " + patches + ". " + "Xp per seed: " + seedXp + ".");
+	//console.log("Tree patches: " + patches + ". " + "Xp per seed: " + seedXp + ".");
 	var xpPerRun = patches * seedXp;
 	var remainingFarmingXp = ninetyNine - faXp;
 	if(remainingFarmingXp <= 0 ||  isNaN(remainingFarmingXp)){
@@ -627,6 +653,8 @@ function UpdateXPAndHours(shortHand) {
     //Find which dropdown specifically was altered
 
 
+
+
     switch (shortHand) {
         //If Woodcutting drop was altered, check the xp in the array
         case "wc":
@@ -636,11 +664,6 @@ function UpdateXPAndHours(shortHand) {
         case "ma":
             newXpPerHour = maXpArray[maval-1];
             currentXp = maXp;
-            break;
-
-        case "ra":
-            newXpPerHour = raXpArray[raval-1];
-            currentXp = raXp;
             break;
 
         case "pr":
@@ -707,10 +730,26 @@ function UpdateXPAndHours(shortHand) {
         	newXpPerHour = slXpPerHour;
         	currentXp = slXp;
         	break;
+
         default:
             console.log("Error updating XP in switch")
             break;
+        
+        
+        
     }
+
+    //Class version of switch above:
+    skills.forEach(element => {
+        console.log("Current xp for " + element.name + " is " + element.currentXp);
+        if(element.name == shortHand){
+            //We must set vars for newXpPerHour and currentXp
+            newXpPerHour = element.xpRates[ (element.dropdownSelection -1)];
+            currentXp = element.currentXp;
+            console.log("Current xp for " + element.name + " is " + element.currentXp);
+        }
+    });
+
     //console.log("Current xp for " + shortHand + " is " + currentXp + ". Xp per hour is " + newXpPerHour + "from drop val ");
     
     //Find out the goal xp for that skill
@@ -849,7 +888,7 @@ function SubmitUsername() {
 		//Update Hours To 99 for each skill
 		UpdateXPAndHours("ma", maval);
 		UpdateXPAndHours("wc", wcval);
-		UpdateXPAndHours("ra", raval);
+		UpdateXPAndHours("ranged", raval);
 		UpdateXPAndHours("pr", prval);
 		UpdateXPAndHours("ru", ruval);
 		UpdateXPAndHours("co", coval);
@@ -1087,38 +1126,24 @@ function shorthandToXpGoal(shorthand){
 
 function FindCost(){
     console.log("Finding cost of selected methods")
-
     var xpGoal = 0;
-
-    //raGpArray shows the cost per XP point
-    //Cannoning ice trolls is free
-    raGpArray[0] = 0;
-    //Pest control is 1 gp per XP? where a rune arrow has 20% chance to break, at 75 coins value
-    raGpArray[1] = -0.1; 
-    //Venator bow 9 coins per attack, attack is maybe 40 xp each? 9/40 
-    raGpArray[2] = -0.2; 
-    //Gp/Xp according to wiki
-    raGpArray[3] = -3.2;
-    raGpArray[4] = -4.7;
-    raGpArray[5] = -8.4;
-
 
     //Calculate the total final cost
     //Find the remaing Ranged XP based on current goal.
-    var remaningRangedXp = shorthandToXpGoal("ra") - raXp;
+    //var remaningRangedXp = shorthandToXpGoal("ranged") - raXp;
     
     //If less than 0, we set it to 0 so we don't get negative cost
-    if (remaningRangedXp < 0){remaningRangedXp = 0;}
-    //Cost = Xp * Cost per Xp
-    racost = raGpArray[raval-1] * remaningRangedXp;  
-    //Round it down  
-    racost = Math.floor(racost);
-    //Divide by 1 m
-    racost = racost/1000000;
-    //Show only 2 decimal places
-    racost = Math.round(racost * 10) / 10;
-    //Display result
-    document.getElementById('raCost').innerText = racost + "m GP";
+    // if (remaningRangedXp < 0){remaningRangedXp = 0;}
+    // //Cost = Xp * Cost per Xp
+    // racost = raGpArray[raval-1] * remaningRangedXp;  
+    // //Round it down  
+    // racost = Math.floor(racost);
+    // //Divide by 1 m
+    // racost = racost/1000000;
+    // //Show only 2 decimal places
+    // racost = Math.round(racost * 10) / 10;
+    // //Display result
+    // document.getElementById('rangedCost').innerText = racost + "m GP";
 
 
     //Pray xp per gp estimations
