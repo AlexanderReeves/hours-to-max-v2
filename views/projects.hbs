@@ -5,6 +5,7 @@
 <meta name="description"
     content="Find how many hours it will take you to max your Old School Runescape Account with training methods that you choose!">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="/projects.js"></script>
 <meta name="keywords" content="Hours, To, Max, Old, School, Runescape, Account, Long, Gp, Time">
 <meta name="author" content="Mapex Games">
 
@@ -60,40 +61,70 @@
             <p>These are projects which I have worked on in software in the past.</p>
             <p>Some are still running today, such as the Miscorosft Powerapps business tools, and others have been discontinued.</p>
             <p>I'll be adding more details about these projects in the future.</p>
+            <p>You can also see information about me here at <a href="/author">hourstomax.com.author</a></p>
             <br>
 
             <div id="projects">
                 <h2>Node JS and Express</h2>
                 <br>
 
-                <div class="card">
+                <div class="card"  onclick="ExpandSection('hourstomax')">
                     <img src="projectHoursToMax.jpg" alt="Avatar">
                     <div class="container">
                         <h4><b>Hours To Max</b></h4>
                         <p>Creator and Full Stack Developer</p>
                     </div>
+
+
+
+
+
+
+
+                    
+                    
                 </div>
+
+
+                                <div id="hourstomax" class="expandedcard hidden">
+                    Hours To Max the website you are currently browsing.
+                    I created this website from scratch starting in 2024, and am contining to work and expand on it currently.
+
+                    It was developed as a goal calculator for the game Old School Runescape.
+
+                    The website was created with express, on a NodeJS server, and can be viewed in detail at github here:
+                    <a href="https://github.com/AlexanderReeves/hours-to-max-v2/">View this website on Github</a>
+
+                    The website was developed as a full-stack projects, from design to implementation, and uses the following technologies:
+                    -NodeJS
+                    -Express
+                    -Linux via DigitalOcean
+                    -Github
+                    -MongoDB
+                    -NPM
+
+                    Please feel free to play around with the tools on and features on this website and I would be glad to hear your feedback.
+
+                </div>
+
+
                 <br>
-
-                <div class="expandedcard">
-                    This is an expanded card
-                </div>
-
                 <br>
                 <br>
 
                 <h2>University Of New England</h2>
                 <br>
 
-                <div class="card">
-                <img src="projectMachineLearning.jpg" alt="Avatar">
-                <div class="container">
-                    <h4><b>Machine Learning</b></h4>
-                    <p>With Python and Matplotlib</p>
-                </div>
+                <div class="card" onclick="ExpandSection('machinelearning')" id="machinelearningmobile">
+                    <img src="projectMachineLearning.jpg" alt="Avatar">
+                    <div class="container">
+                        <h4><b>Machine Learning</b></h4>
+                        <p>With Python and Matplotlib</p>
+                    </div>
                 </div>
 
-                <div class="card">
+
+                <div class="card" onclick="ExpandSection('project2dgame')">
                 <img src="project2dGame.jpg" alt="Avatar">
                 <div class="container">
                     <h4><b>Processing 2d Game</b></h4>
@@ -101,7 +132,7 @@
                 </div>
                 </div>
 
-                <div class="card">
+                <div class="card" onclick="ExpandSection('petwebsite')">
                 <img src="projectPetWebsite.jpg" alt="Avatar">
                 <div class="container">
                     <h4><b>Pet Adoption Agency Website</b></h4>
@@ -110,6 +141,25 @@
                 </div>
 
                 <br>
+
+                <div id="machinelearningdesktop">
+                    {{!-- Put in expanded cards when on desktop, else they load beneath the item --}}
+                    <div id="machinelearning" class="expandedcard hidden">
+                    During my studies at the University Of New England, I used a range of Machine Learning algorythms to make predictions on data sets.
+
+                    Technologies used:
+                    - Python
+                    - Jupyter Notebook/Google Collab
+                    - Matplotlib
+                    - Numpy
+
+                    </div>
+
+
+                </div>
+
+
+
                 <br>
                 <br>
 
