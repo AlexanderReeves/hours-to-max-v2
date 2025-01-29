@@ -4,17 +4,16 @@ function ExpandSection(sectionName){
     var $window = $(window);
     var windowsize = $window.width();
     if (windowsize > 980) {
-        $("#machinelearning").appendTo($("machinelearningdesktop"));
-        console.log("Hello big");
+        $("#" + sectionName + "desktop").toggleClass("hidden");
     }else{
-        $("#machinelearning").appendTo($("machinelearningmobile"));
-        console.log("Hello small");
+        $("#" + sectionName + "mobile").toggleClass("hidden");
     }
     //If on desktop the item should appear after it's section
 
 
     //Hide or unhide the item
     $("#" + sectionName).toggleClass("hidden");
+    console.log(sectionName);
 
     
 }
