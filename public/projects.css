@@ -8,37 +8,159 @@
     margin-right: 11px;
   }
 
-  /* #projects{
+  .expandedcard {
+    /* Add shadows to create the "card" effect  */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 95%;
+    display:inline-block;
+    margin-top:15px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: left;
-  } */
-
-  /* h2{
-    margin-left: 10px;
-  } */
+    padding-left:15px;
+    padding-right:15px;
+    white-space: pre-line;
+    overflow: hidden;
   
+  }
+
   /* On mouse-over, add a deeper shadow */
-  .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
+}
+
+
+  /******************************************************************
+  Expandable project detail sections appear when a card is clicked
+
+  The height must be entered manually to allow the animation to work when transitioning
+  between 0 and X pixels.
+
+  E>G If attempting to transition from 0px to height:100% it wont work. 
+  It NEEDS a 0px to 100px to do the transition. 
+
+  That means each expando-card needs to manually specify the content height
+
+  AND also each section has a desktop and mobile version
+
+  In Mobile, the expando section appears below a card.
+  In Desktop the expando section appears below the group.
+
+  Excluding the first expando card, each card must be formatted as follows...
+
+  Sectionnamemobile: with it's exact mobile contents height
+  sectionnamemobile.hidden: With 0 px for the transition
+  sectionnamedesktop: with it's exact height
+  sectionnamemobile.hidden: with 0 px for transition
+
+  lastly mobileonly needs no display by default
+  If on mobile, that gets swapped to inlineblock by default
+  ********************************************************************/
+#hourstomax{
+    height:550px;
   }
-  
-  /* Add some padding inside the card container */
-  .container {
-    padding: 2px 16px;
-  }
+
+#hourstomax.hidden{
+  height: 0px;
+}
+
+/* ******MACHINE LEARNING******* */
+#machinelearningmobile{
+  height:2000px;
+}
+
+#machinelearningmobile.hidden{
+height: 0px;
+}
+
+#machinelearningdesktop{
+  height: 1100px;
+}
+
+#machinelearningdesktop.hidden{
+  height: 0px;
+}
+
+/* *********2D GAME************** */
+#project2dgamemobile{
+  height:1300px;
+}
+
+#project2dgamemobile.hidden{
+height: 0px;
+}
+
+#project2dgamedesktop{
+  height: 650px;
+}
+
+#project2dgamedesktop.hidden{
+  height: 0px;
+}
+
+/* *********PET WEBSITE****** */
+#pettestmobile{
+  height:1300px;
+}
+
+#pettestmobile.hidden{
+height: 0px;
+}
+
+#pettestdesktop{
+  height: 800px;
+}
+
+#pettestdesktop.hidden{
+  height: 0px;
+}
+
+.mobileonly{
+  display: none;
+}
 
 
-
+/* MOBILE DISPLAY */
   @media (max-width: 980px) {
+    /* The cards display differently on mobile */
     .card{
         min-width: 112%;
         margin-left: 50px;
         margin-right: 50px;
         margin-bottom: 50px;
     }
+    .expandedcard{
+      min-width: 112%;
+      margin-left: 50px;
+      margin-right: 50px;
+      margin-bottom: 50px;
+    }
+    /* Only this project runs of slightly varied JS, thought it should be changed for consistency */
+    #hourstomax{
+      height:1300px;
+    }
+  
+    #hourstomax.hidden{
+    height: 0px;
+    width:0px;
+    }
+
     #projects, img{
         width:80%;
       }
     #logoimage{
         width: 50%;
     }
+
+    .mobileonly{
+      display:inline-block;
+    }
+
+
   }

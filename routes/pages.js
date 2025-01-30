@@ -166,5 +166,13 @@ router.get('/projects', (req, res) => {
     res.render('projects');
 });
 
+router.get('/author', (req, res) => {
+    //This page can render for both signed in and non signed in users
+    res.render('author');
+});
+
+router.get('/download-file', (req, res) => {
+    res.download("./public/download/AlexanderReevesResume2025.pdf")
+});
 module.exports = router;
 

@@ -5,6 +5,7 @@
 <meta name="description"
     content="Find how many hours it will take you to max your Old School Runescape Account with training methods that you choose!">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="/projects.js"></script>
 <meta name="keywords" content="Hours, To, Max, Old, School, Runescape, Account, Long, Gp, Time">
 <meta name="author" content="Mapex Games">
 
@@ -59,20 +60,50 @@
             <br>
             <p>These are projects which I have worked on in software in the past.</p>
             <p>Some are still running today, such as the Miscorosft Powerapps business tools, and others have been discontinued.</p>
-            <p>You can click on any project to learn more about my contributions.</p>
+            <p>This section is still under development, though you can click on some of the items to get details about that project.</p>
+            <p>You can also see information about me here at <a href="/author">hourstomax.com.author</a></p>
             <br>
 
             <div id="projects">
                 <h2>Node JS and Express</h2>
                 <br>
 
-                <div class="card">
-                <img src="projectHoursToMax.jpg" alt="Avatar">
-                <div class="container">
-                    <h4><b>Hours To Max</b></h4>
-                    <p>Creator and Full Stack Developer</p>
+                <div class="card"  onclick="ExpandSection('hourstomax')">
+                    <img src="projectHoursToMax.jpg" alt="Avatar">
+                    <div class="container">
+                        <h4><b>Hours To Max</b></h4>
+                        <p>Creator and Full Stack Developer</p>
+                    </div>
                 </div>
+
+                  <div id="hourstomax" class="expandedcard hidden">
+                    Hours To Max the website you are currently browsing.
+                    I created this website from scratch starting in 2024, and am contining to work and expand on it currently.
+
+                    It was developed as a goal calculator for the game Old School Runescape.
+
+                    The website was created with express, on a NodeJS server, and can be viewed in detail at github here:
+                    <a href="https://github.com/AlexanderReeves/hours-to-max-v2/">View this website on Github</a>
+
+                    The website was developed as a full-stack projects, from design to implementation, and uses the following technologies:
+                    -NodeJS
+                    -Express
+                    -Linux via DigitalOcean
+                    -Github
+                    -MongoDB
+                    -NPM
+
+                    While writing this website, I have not used any AI tools, and I have kept the amount of npm packages to a minimum.
+                    In this way I can have a deeper understanding of the language, the website, and how and why it works.
+                    It also means that I don't have to continually update libraries and lowers the risk of including libraries with security flaws.
+
+                    While I can appreciate the power and ability of generative AI tools, I believe code is best written by the developer and explored with other professionals,
+                     rather than something like AI which has such high potential to generate mistakes, and can stunt learning in some cases.
+
+                    Please feel free to play around with the tools on and features on this website and I would be glad to hear your feedback.
+
                 </div>
+
                 <br>
                 <br>
                 <br>
@@ -80,31 +111,123 @@
                 <h2>University Of New England</h2>
                 <br>
 
-                <div class="card">
-                <img src="projectMachineLearning.jpg" alt="Avatar">
-                <div class="container">
-                    <h4><b>Machine Learning</b></h4>
-                    <p>With Python and Matplotlib</p>
-                </div>
+                <div class="card" onclick="ExpandSection('machinelearning')" id="machinelearning">
+                    <img src="projectMachineLearning.jpg" alt="Avatar">
+                    <div class="container">
+                        <h4><b>Machine Learning</b></h4>
+                        <p>With Python and Matplotlib</p>
+                    </div>
                 </div>
 
-                <div class="card">
+                {{!-- Put in expanded cards when on desktop, else they load beneath the item --}}
+                <div id="machinelearningmobile" class="expandedcard hidden mobileonly">
+                During my studies at the University Of New England, I used a range of Machine Learning algorythms to make predictions on data sets.
+
+                Technologies used:
+                - Python
+                - Jupyter Notebook/Google Collab
+                - Matplotlib
+                - Numpy
+
+                In my final group project, we were able to use Machine Learning to make preditions on data of a person performing excercise by a gyroscope and pedometer.
+                We were able to make predictions with the following level of accuracy:
+                Best F1 score was: 0.8892518205429938, using max_depth of 8.
+                Corresponding precision: 0.892774410139148.
+                Corresponding recall: 0.8890977443609023.
+
+                Image: A 2d representation of the Machine learning decision boundaries on predicting an excercise performed based on 2 data points.
+                <img src="images/machinelearning.jpg" alt="A 2d diagram of a machine learning algorythm which makes prediciton on excercise data">
+
+
+                </div>
+
+
+
+                <div class="card" onclick="ExpandSection('project2dgame')">
                 <img src="project2dGame.jpg" alt="Avatar">
-                <div class="container">
-                    <h4><b>Processing 2d Game</b></h4>
-                    <p>Lead develpoer and art</p>
-                </div>
+                    <div class="container">
+                        <h4><b>Processing 2d Game</b></h4>
+                        <p>Lead develpoer and art</p>
+                    </div>
                 </div>
 
-                <div class="card">
-                <img src="projectPetWebsite.jpg" alt="Avatar">
-                <div class="container">
-                    <h4><b>Pet Adoption Agency Website</b></h4>
-                    <p>Designer and Developer</p>
+                <div id="project2dgamemobile" class="expandedcard hidden mobileonly">
+                During my studies at the University Of New England, I developed a 2d city defence game
+                within the IDE processing.
+
+                As I had a large amount of prior programmming experience, I decided to set myself a challenge
+                of incorporating some more complex maths for my missile trajectory.
+
+                I used a Sine wave to add some curve to the trajactory and came up with this design:
+                <img src="images/gameRocketDiagram.jpg" alt="A 2d diagram of a game where a rockets trajectory is determined">
+
                 </div>
+
+
+                <div class="card" onclick="ExpandSection('pettest')">
+                <img src="projectPetWebsite.jpg" alt="Avatar">
+                    <div class="container">
+                        <h4><b>Pet Adoption Agency Website</b></h4>
+                        <p>Designer and Developer</p>
+                    </div>
+                </div>
+
+                <div id="pettestmobile" class="expandedcard hidden mobileonly">
+                A simple HTML, Javascript, CSS website I made while studying for an assignment.
+                I set a goal of making my code as clean and simple as possible while meeting every requirement for the project.
+
+                You can view the code here:
+                <a href="https://github.com/AlexanderReeves/COSC260Javascript">Simple Pet Test Site on Github</a>
+                <img src="images/pettest.jpg" style="width:100%" alt="A simple serverless website.">
                 </div>
 
                 <br>
+
+
+                {{!-- Put in expanded cards when on desktop, else they load beneath the item --}}
+                <div id="machinelearningdesktop" class="expandedcard hidden">
+                During my studies at the University Of New England, I used a range of Machine Learning algorythms to make predictions on data sets.
+
+                Technologies used:
+                - Python
+                - Jupyter Notebook/Google Collab
+                - Matplotlib
+                - Numpy
+
+                In my final group project, we were able to use Machine Learning to make preditions on data of a person performing excercise by a gyroscope and pedometer.
+                We were able to make predictions with the following level of accuracy:
+                Best F1 score was: 0.8892518205429938, using max_depth of 8.
+                Corresponding precision: 0.892774410139148.
+                Corresponding recall: 0.8890977443609023.
+
+                Image: A 2d representation of the Machine learning decision boundaries on predicting an excercise performed based on 2 data points.
+                <img src="images/machinelearning.jpg" alt="A 2d diagram of a machine learning algorythm which makes prediciton on excercise data">
+
+
+                </div>
+
+                <div id="project2dgamedesktop" class="expandedcard hidden">
+                During my studies at the University Of New England, I developed a 2d city defence game
+                within the IDE processing.
+
+                As I had a large amount of prior programmming experience, I decided to set myself a challenge
+                of incorporating some more complex maths for my missile trajectory.
+
+                I used a Sine wave to add some curve to the trajactory and came up with this design:
+                <img src="images/gameRocketDiagram.jpg"  style="width:50%"alt="A 2d diagram of a game where a rockets trajectory is determined">
+                
+                </div>
+
+                <div id="pettestdesktop" class="expandedcard hidden">
+                A simple HTML, Javascript, CSS website I made while studying for an assignment.
+                I set a goal of making my code as clean and simple as possible while meeting every requirement for the project.
+
+                You can view the code here:
+                <a href="https://github.com/AlexanderReeves/COSC260Javascript">Simple Pet Test Site on Github</a>
+                <img src="images/pettest.jpg" style="width:100%" alt="A simple serverless website.">
+                </div>
+
+
                 <br>
                 <br>
 

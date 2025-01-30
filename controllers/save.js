@@ -1,6 +1,6 @@
 //const mongoose = require('mongoose')
 const User = require('../Models/user')
-const {getPayloadFromToken} = require('../helpers/jwt_helper')
+const {getPayloadFromAccessToken} = require('../helpers/jwt_helper')
 
 // route /save/choices
 exports.saveChoices = async (req, res , next) => {
@@ -29,7 +29,9 @@ exports.saveChoices = async (req, res , next) => {
         patchesChoice: patchesChoice
     } = req.body;
     //Check the request had valid auth code
-    payload = getPayloadFromToken(auth) //wil return false if not found
+    payload = getPayloadFromAccessToken(auth) //wil return false if not found
+    //Or it can crash here if an invalid access token runs that is in the process of being refreshed.
+    //WE need an escape here for invalid tokens
     console.log("Found user with id: " + payload.aud)
     if(!payload){
         res.status(422).json({'error': `token was invalid`})
