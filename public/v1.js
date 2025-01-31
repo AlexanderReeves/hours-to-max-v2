@@ -16,6 +16,7 @@ $.ajaxSetup({ //Prevent future code loading before previous code finishes.
 //The Default tab is for players wanting the goal of a "Max" cape
 //level Old School Runescape account.
 var currentTab = "max";
+var hoursToGoal = 0;
 
 //****Default Variables****
 
@@ -29,8 +30,7 @@ var questXpGoalArray = [0,0,0,0,0,273742,101333,1210421,737627,814445
 var achievementXpGoalArray = [0,0,0,0,0,737627,3258594,9684577,3258594,5346332
     ,8771558,9684577,3258594,3258594,5902831,3258594,5346332,5346332,5902831,8771558,5902831,5902831,737627
     ,1629200];
-//The players current level in each skill
-var lvlArray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
 //The level requiered for each skill to obtain an achievment cape
 var achLvlArray = [0,0,0,0,0,70,85,96,95,90
     ,95,96,85,85,91,85,90,90,91,95,91,91,70
@@ -59,10 +59,9 @@ window.onload = function(){
 function InitialiseSkills(){
     //Add each skill to the array of skills
     //Each skills default selection should match the one in the html page
-    skills.push( new Skill("ranged", [90000, 130000, 140000, 675000, 710000, 850000], [0,-0.1,-0.2,-3.2,-4.7,-8.4], 6,));
-    skills.push( new Skill("magic", [78000, 150000, 150000, 175000, 380000], [0,0,0,0,0], 5));
+    skills.push( new Skill("ranged", [90000, 130000, 140000, 675000, 710000, 850000], [0,-0.1,-0.2,-3.2,-4.7,-8.4], 6));
     skills.push( new Skill("prayer", [50000, 250000, 437000, 600000, 800000, 1250000], [0,0,0,0,0,0], 6));
-    skills.push( new Skill("woodcutting", [68000, 75000, 90000, 90000, 100000], [0,0,0,0,0],5 ));
+    skills.push( new Skill("magic", [78000, 150000, 150000, 175000, 380000], [0,0,0,0,0], 5));
     skills.push( new Skill("runecraft", [35000, 60000, 65000, 70000, 80000, 100000], [0,0,0,0,0,0],6 ));
     skills.push( new Skill("construction", [190000, 400000, 450000, 500000, 580000, 850000, 1000000], [0,0,0,0,0,0,0],7 ));
     skills.push( new Skill("agility", [45000, 50000, 50000, 55000, 65000, 65000, 90000], [0,0,0,0,0,0,0],7 ));
@@ -76,13 +75,44 @@ function InitialiseSkills(){
     skills.push( new Skill("fishing", [40000,50000,75000,80000], [0,0,0,0],4 ));
     skills.push( new Skill("cooking", [150000,250000,300000,450000,900000], [0,0,0,0,0],5 ));
     skills.push( new Skill("firemaking", [250000,275000,290000,400000,450000], [0,0,0,0,0],5 ));
-
-    //Not featured: Farming and slayer related skills
+    skills.push( new Skill("woodcutting", [68000, 75000, 90000, 90000, 100000], [0,0,0,0,0],5 ));
+    //Slayer is different because it does not have a set list of options, only a custom selection
+    skills.push( new Skill("slayer", [0], [0],0 ));
+    //Farming also works via doing xp per farm run, rather than xp per hour
+    skills.push( new Skill("farming", [0], [0],0 ));
+    
+    //Different code will apply for 3 selectors (Slayer, Farming, Seed Value) as they don't have typical training methods
+    //Apply the default selections to each of the dropdowns
     skills.forEach(element => {
-        element.SelectDefaultTrainingMethod();
-        console.log("Setting default selection for " + element.name);
-        // console.log(element.name);
-        // console.log(element.xpRates);
+        if(element.name!="farming" && element.name != "slayer"){
+            element.SelectDefaultTrainingMethod();
+        }
+    });
+}
+
+function DropdownUpdate(clickedDropdown){
+    skillName = clickedDropdown.name;
+    skillDropValue = clickedDropdown.value;
+    //Get the name of the skill from the dropdown, and find the corresponding object from the skills array
+    skills.forEach(element => {
+        if(element.name==skillName){
+            //Set the skill object to match the selected dropdown value
+            element.UpdateTrainingMethod(skillDropValue);
+        }
+    });
+
+    //Calculate the new total hours to max based on xp of all skills
+    UpdateRemainingHours();
+}
+
+function UpdateRemainingHours(){
+    //Calculate and add remaining hours for each skill (excluding slayer and farming)
+    hoursToGoal = 0;
+    skills.forEach(element => {
+        if(element.name!="farming" && element.name != "slayer"){
+            //calculate and add hours to goal in that skill
+            hoursToGoal += (element.goalXp/element.xpRates[element.dropdownSelection])
+        }
     });
 }
 
