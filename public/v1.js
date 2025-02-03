@@ -169,18 +169,18 @@ function DropdownWasChanged(clickedDropdown){
     });
 
     //Calculate the new total hours to max based on xp of all skills
-    UpdateRemainingHours();
+    FindTotalHoursToGoal();
 }
 
 
 
-function UpdateRemainingHours(){
+function FindTotalHoursToGoal(){
     //Calculate and add remaining hours for each skill (excluding slayer and farming)
     hoursToGoal = 0;
     skills.forEach(element => {
         if(element.name!="farming" && element.name != "slayer"){
             //calculate and add hours to goal in that skill
-            hoursToGoal += (element.goalXp/element.xpRates[element.dropdownSelection])
+            hoursToGoal += element.GetRemainingHours();
         }
     });
 }
