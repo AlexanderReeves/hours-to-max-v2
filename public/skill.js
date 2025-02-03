@@ -11,6 +11,8 @@ class Skill {
   gpPerXpRates = []; //The cost per xp for each training method
   customXpRate = 0; //A custom Xp per hour rate
 
+  remainingHours = 0;
+
 
   
   constructor(name, xpRates, gpPerXpRates, defaultSelection, dropdownName) {
@@ -30,8 +32,8 @@ class Skill {
     console.log(this.name)
   }
 
-  SelectDefaultTrainingMethod(){
-    //sets the corresponding dropdown to the default training method
+  UpdateDropdown(){
+    //sets the corresponding dropdown to the currently active training method
     //Each skill has a corresponding dropdown with name being skillnamedropdown
     $('#' + this.name +'Dropdown :nth-child('+ this.dropdownSelection +')').prop('selected', true);
   }
@@ -39,7 +41,17 @@ class Skill {
   UpdateTrainingMethod(index){
     //Runs when a dropdown value is changed, triggered from v1js
     //takes in the index of the training method and updates the xp rates and gp per cost
+    this.dropdownSelection = index;
+    this.DisplayRemainingHours();
+  }
 
+  GetRemainingHours(){
+    //Find the current number of hours remaining to train this skill to the goal
+    return (this.goalXp / this.xpRates[this.dropdownSelection])
+  }
+
+  DisplayRemainingHours(){
+    $('#' + this.name + 'Final').html(this.GetRemainingHours() + "hrs");
   }
 
 }

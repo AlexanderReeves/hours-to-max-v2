@@ -43,7 +43,7 @@ var questLvlArray = [0,0,0,0,0,60,50,75,70,71
 //The xp required for a maximum level in any skill
 var ninetyNine = 13034431;
 //The current username of the website user
-var user = "";
+var user = "test";
 
 //Start reworking code into re-usable classes.
 //Skills class contains an array of skills.
@@ -54,11 +54,17 @@ window.onload = function(){
     //As soon as the page has finished loading, perform each task once.
     //Initialise the Runescape skills that each dropdown is based on
     InitialiseSkills();
+    //Override the values if there is anything stored in the db
+    PullFromDatabase();
+    //Display the remaining hours of training for each skill
+    DisplayAllRemainingHours();
 }
 
 function InitialiseSkills(){
-    //Add each skill to the array of skills
+    //Create each skill and add to the array.
+
     //Each skills default selection should match the one in the html page
+    //Setting dropdown to index 0 in the future should be for custom inputs...
     skills.push( new Skill("ranged", [90000, 130000, 140000, 675000, 710000, 850000], [0,-0.1,-0.2,-3.2,-4.7,-8.4], 6));
     skills.push( new Skill("prayer", [50000, 250000, 437000, 600000, 800000, 1250000], [0,0,0,0,0,0], 6));
     skills.push( new Skill("magic", [78000, 150000, 150000, 175000, 380000], [0,0,0,0,0], 5));
@@ -81,29 +87,92 @@ function InitialiseSkills(){
     //Farming also works via doing xp per farm run, rather than xp per hour
     skills.push( new Skill("farming", [0], [0],0 ));
     
+    UpdateAllSkillDropdowns();
+
+}
+
+function UpdateAllSkillDropdowns(){
     //Different code will apply for 3 selectors (Slayer, Farming, Seed Value) as they don't have typical training methods
     //Apply the default selections to each of the dropdowns
     skills.forEach(element => {
         if(element.name!="farming" && element.name != "slayer"){
-            element.SelectDefaultTrainingMethod();
+            element.UpdateDropdown();
         }
     });
 }
 
-function DropdownUpdate(clickedDropdown){
-    skillName = clickedDropdown.name;
+function PullFromDatabase(){
+    //Request the user db data to load into page via jwt
+    //Get the auth cookie to send to the server
+    var authCode = $.cookie("authorization");
+    //Don't run if an auth code is not in the cookie
+    if(!authCode){
+        console.log("no userid found in cookies")
+        return;
+    }
+    //Request all the user info from the server
+    $.ajax({
+        type: "POST",
+        url: "/find/user",
+        data: '&authCode=' + authCode, // serializes the form's elements
+        success: function (data) {
+            //Save all the downloaded user into the database user variable
+            dbuser = data.user[0];
+            console.log(dbuser.username + " player data was pulled from the database");
+            //Save the new username to variable, and update it in searchbox
+            user = dbuser.username;
+            $('#usernameInput').val(user);
+        },
+        error: function (XMLHttpRequest) {
+            console.log('Submit returned errors');
+            jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+        }
+    });
+
+    if(dbuser){
+        //If a user was pulled, put their data into the skills array
+        //Loop through each skill in the array (Excluding farming and slayer)
+        skills.forEach(element => {
+            if(element.name != 'farming' && element.name != 'slayer'){
+                //We want to find data where the name matches the current skill
+                //e.g rangedChoice
+                desiredKey = element.name.concat('Choice');
+                //Loop through each pulled data element looking for the match
+                for(key in dbuser) {
+                    if(key == desiredKey) {
+                        //If match found, update the skill in the array
+                        var value = dbuser[key];
+                        element.dropdownSelection = value;
+                    }
+                }
+            }
+        });
+        //Update the dropdowns to reflect the pulled data
+        UpdateAllSkillDropdowns();
+    }
+    
+    return; // avoid to execute the actual submit of the form
+}
+
+function DropdownWasChanged(clickedDropdown){
+    //Runs when a dropdown value is changed
+    skillDropName = clickedDropdown.name;
+    skillName = skillDropName.replace('Dropdown','');
     skillDropValue = clickedDropdown.value;
     //Get the name of the skill from the dropdown, and find the corresponding object from the skills array
     skills.forEach(element => {
-        if(element.name==skillName){
+        if(element.name==skillName && skillName != 'farming' && skillName != 'slayer'){
             //Set the skill object to match the selected dropdown value
             element.UpdateTrainingMethod(skillDropValue);
+            console.log("Updaing training method for " + skillName+ " to index " + skillDropValue);
         }
     });
 
     //Calculate the new total hours to max based on xp of all skills
     UpdateRemainingHours();
 }
+
+
 
 function UpdateRemainingHours(){
     //Calculate and add remaining hours for each skill (excluding slayer and farming)
@@ -114,6 +183,20 @@ function UpdateRemainingHours(){
             hoursToGoal += (element.goalXp/element.xpRates[element.dropdownSelection])
         }
     });
+}
+
+function DisplayAllRemainingHours(){
+    console.log("Displaying all remaining hours...")
+    skills.forEach(element => {
+        if(element.name!="farming" && element.name != "slayer"){
+            console.log("Displaying for " + element.name);
+            element.DisplayRemainingHours();
+        }
+    });
+}
+
+function SubmitUsername(){
+    user = $('#usernameInput').val();
 }
 
 

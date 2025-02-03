@@ -10,11 +10,11 @@ function SaveChoicesToDatabase() {
         console.log('Saving user selections to the databse.');
 
         //Create data for an ajax post, containing each skill name and corresponding selection
-        var postData = '&auth=' + auth
+        var postData = '&auth=' + auth + '&username=' + user
         skills.forEach(element => {
-            postData = postData.concat('&' + element.name + '=' + element.dropdownSelection +'Choice');
+            postData = postData.concat('&' + element.name + 'Choice=' + element.dropdownSelection);
         });
-        console.log("Attempint to post this data string... " + postData);
+        console.log("Attemping to post this data string... " + postData);
 
         //clear result message
         $("#result").html('&nbsp;');

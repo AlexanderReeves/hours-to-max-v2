@@ -127,7 +127,7 @@
         <!-- *************SEARCH  *************-->
         <div class="searcharea maxw" onsubmit="console.log('You clicked submit.'); SubmitUsername(); return false">
             <form id="myform">
-                <input type="text" class="textbox" id="fname" name="firstname" style="text-align:center;"
+                <input type="text" class="textbox" id="usernameInput" name="usernameInput" style="text-align:center;"
                     placeholder="Enter your username">
                 <input type="button" class="colorbutton theme themered" value="Submit" onClick="SubmitUsername()">
             </form>
@@ -146,7 +146,7 @@
 
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="rangedDropdown" id="rangedDropdown" onchange="DropdownUpdate(this);">
+                    <select class="fullw minimal" name="rangedDropdown" id="rangedDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">90kph Cannon Ice Trolls</option>
                         <option value="2">130kph Pest Control</option>
                         <option value="3">140kph NMZ Venator Bow</option>
@@ -183,7 +183,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="prdrop" id="prayerDropdown" onchange="DropdownUpdate(this);">
+                    <select class="fullw minimal" name="prayerDropdown" id="prayerDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">50kph Big Bones</option>
                         <option value="2">250kph Baby Dragon Bones</option>
                         <option value="3">437kph Wyrm Bones</option>
@@ -216,7 +216,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="madrop" id="magicDropdown" onchange="DropdownUpdate(this);">
+                    <select class="fullw minimal" name="magicDropdown" id="magicDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">78kph Cast High Level Alchemy</option>
                         <option value="2">150kph Cast Plank Make</option>
                         <option value="3">150kph Casting String Jewellery</option>
@@ -249,7 +249,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="rudrop" id="runecraftDropdown" onchange="RuDropdownUpdate()">
+                    <select class="fullw minimal" name="runecraftDropdown" id="runecraftDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">35kph Blood Runes</option>
                         <option value="2">60kph Solo Lava Runes</option>
                         <option value="3">65kph Guardians Of The Rift</option>
@@ -281,7 +281,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="codrop" id="codrop" onchange="CoDropdownUpdate()">
+                    <select class="fullw minimal" name="constructionDropdown" id="constructionDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">190kph Mahogany Homes</option>
                         <option value="2">400kph Mythical Capes</option>
                         <option value="3">450kph Oak Larders</option>
@@ -314,7 +314,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="agdrop" id="agdrop" onchange="AgDropdownUpdate()">
+                    <select class="fullw minimal" name="agilityDropdown" id="agilityDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">45kph Seers Rooftop</option>
                         <option value="2">50kph Wilderness Agility</option>
                         <option value="3">50kph Pollivneach Rooftop</option>
@@ -347,7 +347,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="hedrop" id="hedrop" onchange="HeDropdownUpdate()">
+                    <select class="fullw minimal" name="herbloreDropdown" id="herbloreDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">110kph Cast Degrime Torstol</option>
                         <option value="2">170kph Making Irit Tar</option>
                         <option value="3">210kph Making Combat potion</option>
@@ -378,7 +378,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="thdrop" id="thdrop" onchange="ThDropdownUpdate()">
+                    <select class="fullw minimal" name="thievingDropdown" id="thievingDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">110kph Master Farmers</option>
                         <option value="2">140kph Elves</option>
                         <option value="3">150kph Vyres</option>
@@ -410,7 +410,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="crdrop" id="crdrop" onchange="CrDropdownUpdate()">
+                    <select class="fullw minimal" name="craftingDropdown" id="craftingDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">150kph Dragonstone Bracelets</option>
                         <option value="2">220kph Cutting Rubies</option>
                         <option value="3">270kph Cutting Diamonds</option>
@@ -438,7 +438,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="fldrop" id="fldrop" onchange="FlDropdownUpdate()">
+                    <select class="fullw minimal" name="fletchingDropdown" id="fletchingDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">1900kph Mithril Darts</option>
                         <option value="2">2250kph Adamant Darts</option>
                         <option value="3">2500kph Rune Darts</option>
@@ -493,7 +493,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="hudrop" id="hudrop" onchange="HuDropdownUpdate()">
+                    <select class="fullw minimal" name="hunterDropdown" id="hunterDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">80kph Kebbits</option>
                         <option value="2">115kph Red Chinchompas</option>
                         <option value="3">125kph Black Salamanders</option>
@@ -524,7 +524,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="midrop" id="midrop" onchange="MiDropdownUpdate()">
+                    <select class="fullw minimal" name="miningDropdown" id="miningDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">25kph Crashed Stars</option>
                         <option value="2">50kph Iron Ore</option>
                         <option value="3">60kph Motherlode Mine</option>
@@ -558,7 +558,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="smdrop" id="smdrop" onchange="SmDropdownUpdate()">
+                    <select class="fullw minimal" name="smithingDropdown" id="smithingDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">200kph Giants Foundry</option>
                         <option value="2">250kph Anvil Smithing</option>
                         <option value="3" selected="selected">350kph Blast Furnace</option>
@@ -587,7 +587,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="fidrop" id="fidrop" onchange="FiDropdownUpdate()">
+                    <select class="fullw minimal" name="fishingDropdown" id="fishingDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">40kph Fly Fishing</option>
                         <option value="2">50kph Barbarian Fishing</option>
                         <option value="3">75kph Tempoross</option>
@@ -616,7 +616,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="ckdrop" id="ckdrop" onchange="CkDropdownUpdate()">
+                    <select class="fullw minimal" name="cookingDropdown" id="cookingDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">150kph Lobster</option>
                         <option value="2">250kph Karambwans</option>
                         <option value="3">300kph Angler Fish</option>
@@ -644,7 +644,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="fmdrop" id="fmdrop" onchange="FmDropdownUpdate()">
+                    <select class="fullw minimal" name="firemakingDropdown" id="firemakingDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">250kph Mahogany Logs</option>
                         <option value="2">275kph Yew Logs</option>
                         <option value="3">290kph Wintertodt</option>
@@ -674,7 +674,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="wcdrop" id="wcdrop" onchange="WcDropdownUpdate()">
+                    <select class="fullw minimal" name="woodcuttingDropdown" id="woodcuttingDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">68kph Cutting Redwood Trees</option>
                         <option value="2">75kph Cutting Blisterwood Trees</option>
                         <option value="3">90kph Forrestry at Yews</option>
@@ -702,7 +702,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="seeddrop" id="seeddrop" onchange="FaDropdownUpdate()">
+                    <select class="fullw minimal" name="seeddrop" id="seeddrop" onchange="DropdownWasChanged(this);">
                         <option value="1">3403xp Maple Seed</option>
                         <option value="2">7070xp Yew Seed</option>
                         <option value="3" selected="selected">13768xp Magic Seed</option>
@@ -733,7 +733,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="patchesdrop" id="patchesdrop" onchange="FaDropdownUpdate()">
+                    <select class="fullw minimal" name="patchesdrop" id="patchesdrop" onchange="FaDropdownWasChanged()">
                         <option value="1">1 patch</option>
                         <option value="2">2 patches</option>
                         <option value="3">3 patches</option>

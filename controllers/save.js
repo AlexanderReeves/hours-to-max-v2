@@ -7,6 +7,7 @@ exports.saveChoices = async (req, res , next) => {
     console.log(req.body)
     const { 
         auth:auth,
+        username:username,
         rangedChoice: rangedChoice,
         magicChoice: magicChoice , 
         prayerChoice: prayerChoice , 
@@ -42,6 +43,7 @@ exports.saveChoices = async (req, res , next) => {
         res.status(422).json({'error': `user was not found`})
         return
     }
+    user.username = username,
     user.rangedChoice = rangedChoice;
     user.magicChoice= magicChoice , 
     user.prayerChoice= prayerChoice , 
