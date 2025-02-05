@@ -104,6 +104,23 @@ height: 0px;
   height: 0px;
 }
 
+/* *********PA HOME************** */
+#pahomemobile{
+  height:1800px;
+}
+
+#pahomemobile.hidden{
+height: 0px;
+}
+
+#pahomedesktop{
+  height: 1000px;
+}
+
+#pahomedesktop.hidden{
+  height: 0px;
+}
+
 /* *********PET WEBSITE****** */
 #pettestmobile{
   height:1300px;
