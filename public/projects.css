@@ -104,6 +104,92 @@ height: 0px;
   height: 0px;
 }
 
+/* *********PA HOME************** */
+#pahomemobile{
+  height:2000px;
+}
+
+#pahomemobile.hidden{
+height: 0px;
+}
+
+#pahomedesktop{
+  height: 1000px;
+}
+
+#pahomedesktop.hidden{
+  height: 0px;
+}
+
+/* *********PA BOOKINGS************** */
+#pabookingsmobile{
+  height:1850px;
+}
+
+#pabookingsmobile.hidden{
+height: 0px;
+}
+
+#pabookingsdesktop{
+  height: 850px;
+}
+
+#pabookingsdesktop.hidden{
+  height: 0px;
+}
+
+/* *********PA FLOW / POWER AUTOMATE************** */
+#paflowmobile{
+  height:1700px;
+}
+
+#paflowmobile.hidden{
+height: 0px;
+}
+
+#paflowdesktop{
+  height: 850px;
+}
+
+#paflowdesktop.hidden{
+  height: 0px;
+}
+
+/* *********MINECRAFT ZOMBIE CART************** */
+#zcmobile{
+  height:1700px;
+}
+
+#zcmobile.hidden{
+height: 0px;
+}
+
+#zcdesktop{
+  height: 850px;
+}
+
+#zcdesktop.hidden{
+  height: 0px;
+}
+
+/* *********MINECRAFT TEXTY************** */
+#textymobile{
+  height:1900px;
+}
+
+#textymobile.hidden{
+height: 0px;
+}
+
+#textydesktop{
+  height: 850px;
+}
+
+#textydesktop.hidden{
+  height: 0px;
+}
+
+
 /* *********PET WEBSITE****** */
 #pettestmobile{
   height:1300px;

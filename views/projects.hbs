@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 
+    {{!-- NOTE:
+    THE HEIGHT OF EACH DETAILS CARD MUST BE MANUALLY SET IN THE PROJECTS.CSS PAGE, AS THE ANIMATIONS WILL NOT WORK UNLESS THE SPECIFI HEIGHT
+    IS GIVEN FOR EACH ITEM, IN BOTH MOBILE AND DESKTOP PX. SEE CSS FOR MORE DETAILS --}}
+
 <title>Hours To Max</title>
 <meta name="description"
     content="Find how many hours it will take you to max your Old School Runescape Account with training methods that you choose!">
@@ -132,8 +136,8 @@
                 In my final group project, we were able to use Machine Learning to make preditions on data of a person performing excercise by a gyroscope and pedometer.
                 We were able to make predictions with the following level of accuracy:
                 Best F1 score was: 0.8892518205429938, using max_depth of 8.
-                Corresponding precision: 0.892774410139148.
-                Corresponding recall: 0.8890977443609023.
+                Corresponding precision: 0.892
+                Corresponding recall: 0.889
 
                 Image: A 2d representation of the Machine learning decision boundaries on predicting an excercise performed based on 2 data points.
                 <img src="images/machinelearning.jpg" alt="A 2d diagram of a machine learning algorythm which makes prediciton on excercise data">
@@ -197,8 +201,8 @@
                 In my final group project, we were able to use Machine Learning to make preditions on data of a person performing excercise by a gyroscope and pedometer.
                 We were able to make predictions with the following level of accuracy:
                 Best F1 score was: 0.8892518205429938, using max_depth of 8.
-                Corresponding precision: 0.892774410139148.
-                Corresponding recall: 0.8890977443609023.
+                Corresponding precision: 0.892
+                Corresponding recall: 0.889
 
                 Image: A 2d representation of the Machine learning decision boundaries on predicting an excercise performed based on 2 data points.
                 <img src="images/machinelearning.jpg" alt="A 2d diagram of a machine learning algorythm which makes prediciton on excercise data">
@@ -236,7 +240,7 @@
                 <h2>Microsoft Powerapps and Powerautomate</h2>
                 <br>
 
-                <div class="card">
+                <div class="card" onclick="ExpandSection('pahome')">
                 <img src="projectHomeSafety.jpg" alt="Avatar">
                 <div class="container">
                     <h4><b>Home Safety Inspections App</b></h4>
@@ -244,21 +248,151 @@
                 </div>
                 </div>
 
-                <div class="card">
-                <img src="projectBookings.jpg" alt="Avatar">
-                <div class="container">
-                    <h4><b>Vehicle Bookings App</b></h4>
-                    <p>Lead designer and lead developer</p>
-                </div>
+
+                <div id="pahomemobile" class="expandedcard hidden mobileonly">
+                A Microsoft Powerapps system for performing safety checks of resedential houses.
+
+                I created this app from scratch on request from management.
+
+                They asked for a way to perform inspections, to ensure that our staff would only perform work in
+                houses that we had verified as safe environments.
+
+                The app connects to sharepoint lists as data storage.
+                (Chosen as it was the cheapest option due to already being part of our 365 subscription).
+
+                A main checklist can be configured by administrators, and when an inspection is performed, it
+                creates a copy of the main checklist for users to perform the inspections with.
+
+                It also has automatic and manual email reporting tools, as well as extra functions and features
+                for sorting and responding to tasks assigned to any user.
+
+                Additionally, the app was built entirely scalable, to work seamlessly on both desktop ant mobile devices,
+                while still appearing visually pleasing.
+
+                <img src="images/powerappsHome.png" alt="A dynamically generated checklist page.">
+
+
                 </div>
 
-                <div class="card">
-                <img src="projectPowerAutomate.jpg" alt="Avatar">
-                <div class="container">
-                    <h4><b>Home Safety Inspections Automations</b></h4>
-                    <p>Lead designer and lead developer</p>
+
+
+                <div class="card" onclick="ExpandSection('pabookings')">
+                    <img src="projectBookings.jpg" alt="Avatar" >
+                    <div class="container">
+                        <h4><b>Vehicle Bookings App</b></h4>
+                        <p>Lead designer and lead developer</p>
+                    </div>
                 </div>
+
+                <div id="pabookingsmobile" class="expandedcard hidden mobileonly">
+                A Microsoft Powerapps system for short term resource allocating.
+
+                I used Microsoft Powerapps to create an app which allows users to loan resources (Vehicles, Rooms, Equipment etc).
+                The company had previously been using an excel sheet for vehicle loans, and a calendar per room to book.
+
+                I moved these booking processes onto a powerapp system so that users could more easily access the booking systems,
+                and more easily find the correct resource to book.
+
+                The system was chose to be done on Powerapps due to the rest of our system already being integrated into Microsoft 365.
+                This meant that our Powerapps licensing and usage was a 0 cost solution, apart from the development time.
+
+                Users simply selected their requirements (Vehicle type, number of seats, wheelchair appropriate, tow bar etc), and the desired booking date.
+                From there the app would show users which vehicles were available for use, and reserve the item.
+
+                <img src="images/pabookings.jpg" alt="A resource bookings page.">
+
+
                 </div>
+
+
+                <div class="card" onclick="ExpandSection('paflow')">
+                    <img src="projectPowerAutomate.jpg" alt="Avatar" >
+                    <div class="container">
+                        <h4><b>Home Safety Inspections Automations</b></h4>
+                        <p>Lead designer and lead developer</p>
+                    </div>
+                </div>
+
+                <div id="paflowmobile" class="expandedcard hidden mobileonly">
+                I've created many automations in Microsoft Power Automate.
+                Some are additional tools for my Power Apps, and some are entirely unique tools.
+
+                I take special care to leave detailed notes in Power Automate, so that each code block is explained thoroughly.
+
+                Here are some of examples of automations that I have created.
+
+                 - Automatic email reminders, detailing all tasks that are assigned to a staff member each month
+                 - Daily email summaries of all the changes made to a Microsoft list page, collated and sent to each team
+                 - Reports for tables and tools from other systems
+                 - Alerts when tasks or items are assigned to a party or individual
+
+                <img src="images/paflow.jpg" alt="My most recent auomations.">
+                </div>
+
+
+                <div id="pahomedesktop" class="expandedcard hidden">
+                A Microsoft Powerapps system for performing safety checks of resedential houses.
+
+                I created this app from scratch on request from management.
+
+                They asked for a way to perform inspections, to ensure that our staff would only perform work in
+                houses that we had verified as safe environments.
+
+                The app connects to sharepoint lists as data storage.
+                (Chosen as it was the cheapest option).
+
+                A main checklist can be configured by administrators, and when an inspection is performed, it
+                creates a copy of the main checklist for users to perform the inspections with.
+
+                It also has automatic and manual email reporting tools, as well as extra functions and features
+                for sorting and responding to tasks assigned to any user.
+
+                Additionally, the app was built entirely scalable, to work seamlessly on both desktop ant mobile devices,
+                while still appearing visually pleasing.
+                
+                <img src="images/powerappsHome.png" style="width:100%" alt="A dynamically generated checklist page.">
+
+
+                </div>
+
+                <div id="pabookingsdesktop" class="expandedcard hidden">
+                A Microsoft Powerapps system for short term resource allocating.
+
+                I used Microsoft Powerapps to create an app which allows users to loan resources (Vehicles, Rooms, Equipment etc).
+                The company had previously been using an excel sheet for vehicle loans, and a calendar per room to book.
+
+                I moved these booking processes onto a powerapp system so that users could more easily access the booking systems,
+                and more easily find the correct resource to book.
+
+                The system was chose to be done on Powerapps due to the rest of our system already being integrated into Microsoft 365.
+                This meant that our Powerapps licensing and usage was a 0 cost solution, apart from the development time.
+
+                Users simply selected their requirements (Vehicle type, number of seats, wheelchair appropriate, tow bar etc), and the desired booking date.
+                From there the app would show users which vehicles were available for use, and reserve the item.
+
+                <img src="images/pabookings.jpg" alt="A resource bookings page.">
+
+
+                </div>
+
+                <div id="paflowdesktop" class="expandedcard hidden">
+                I've created many automations in Microsoft Power Automate.
+                Some are additional tools for my Power Apps, and some are entirely unique tools.
+
+                I take special care to leave detailed notes in Power Automate, so that each code block is explained thoroughly.
+
+                Here are some of examples of automations that I have created.
+
+                 - Automatic email reminders, detailing all tasks that are assigned to a staff member each month
+                 - Daily email summaries of all the changes made to a Microsoft list page, collated and sent to each team
+                 - Reports for tables and tools from other systems
+                 - Alerts when tasks or items are assigned to a party or individual
+
+                <img src="images/paflow.jpg" alt="My most recent auomations.">
+
+
+                </div>
+
 
                 <br>
                 <br>
@@ -270,7 +404,7 @@
                 <h2>Minecraft Marketplace</h2>
                 <br>
 
-                <div class="card">
+                <div class="card" onclick="ExpandSection('zc')">
                 <img src="projectZombieCart.jpg" alt="Avatar">
                 <div class="container">
                     <h4><b>Zombie Cart</b></h4>
@@ -278,12 +412,116 @@
                 </div>
                 </div>
 
-                <div class="card">
+                <div id="zcmobile" class="expandedcard hidden mobileonly">
+                From 2019 to 2021, I spent time creating mini-games and experiences for Microsofts Minecraft Marketplace.
+                I worked as a contractor for GOE:CRAFT, an Iranian based company, specialising in games of education.
+
+                The mini games took the Minecraft game engine, and were re-worked to create new experiences and ways to experience the game.
+
+                Zombie Cart involved turning Minecraft into a "rail shooter" style game, where players explored an egyptian themed world.
+
+                The game used a variety of languages, technologies and tools including:
+                 - MCFUNCTION Language which was very restricted and required many creative workarounds. (I found it to be reminscent of Assembly)
+                 - JSON for scripting, data storage, and modelling
+                 - Javascript for some server-side automations
+                 - Custom world creation tools
+                 - Blockbench for custom modelling and art
+
+                 You can view the trailer for the video on Youtube:
+
+                 <iframe width="560" height="315" src="https://www.youtube.com/embed/Hbi2FeGa9Qw?si=8mj1prNwf5CHmG1-" 
+                 title="YouTube video player" frameborder="0" 
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                </div>
+
+
+
+                <div class="card" onclick="ExpandSection('texty')">
                 <img src="projectTexty.jpg" alt="Avatar">
                 <div class="container">
                     <h4><b>Texty In A 3D World</b></h4>
                     <p>Lead designer and lead developer</p>
                 </div>
+                </div>
+
+                <div id="textymobile" class="expandedcard hidden mobileonly">
+                From 2019 to 2021, I spent time creating mini-games and experiences for Microsofts Minecraft Marketplace.
+                I worked as a contractor for GOE:CRAFT, an Iranian based company, specialising in games of education.
+
+                The mini games took the Minecraft game engine, and were re-worked to create new experiences and ways to experience the game.
+
+                Texty In A 3D World was a game I made where I pushed the limits of Minecrafts game engine, to create a side scroller style game.
+                I took the first person style game, reworked the camera, and created the illusion that the character was based in a hybrid 2d/3d environment.
+
+                The game used a variety of languages, technologies and tools including:
+                 - MCFUNCTION Language which was very restricted and required many creative workarounds. (I found it to be reminscent of Assembly)
+                 - JSON for scripting, data storage, and modelling
+                 - Javascript for some server-side automations
+                 - Custom world creation tools
+                 - Blockbench for custom modelling and art
+
+                 You can view the trailer for the video on Youtube:
+
+                 <iframe width="560" height="315" 
+                 src="https://www.youtube.com/embed/c2nahebUYWw?si=PxGC8Dc0IY6dgczP" 
+                 title="YouTube video player" frameborder="0" 
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                </div>
+
+
+
+                <div id="zcdesktop" class="expandedcard hidden">
+                From 2019 to 2021, I spent time creating mini-games and experiences for Microsofts Minecraft Marketplace.
+                I worked as a contractor for GOE:CRAFT, an Iranian based company, specialising in games of education.
+
+                The mini games took the Minecraft game engine, and were re-worked to create new experiences and ways to experience the game.
+
+                Zombie Cart involved turning Minecraft into a "rail shooter" style game, where players explored an egyptian themed world.
+
+                The game used a variety of languages, technologies and tools including:
+                 - MCFUNCTION Language which was very restricted and required many creative workarounds. (I found it to be reminscent of Assembly)
+                 - JSON for scripting, data storage, and modelling
+                 - Javascript for some server-side automations
+                 - Custom world creation tools
+                 - Blockbench for custom modelling and art
+
+                 You can view the trailer for the video on Youtube:
+
+                 <iframe width="560" height="315" src="https://www.youtube.com/embed/Hbi2FeGa9Qw?si=8mj1prNwf5CHmG1-" 
+                 title="YouTube video player" frameborder="0" 
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                </div>
+
+                <div id="textydesktop" class="expandedcard hidden">
+                From 2019 to 2021, I spent time creating mini-games and experiences for Microsofts Minecraft Marketplace.
+                I worked as a contractor for GOE:CRAFT, an Iranian based company, specialising in games of education.
+
+                The mini games took the Minecraft game engine, and were re-worked to create new experiences and ways to experience the game.
+
+                Texty In A 3D World was a game I made where I pushed the limits of Minecrafts game engine, to create a side scroller style game.
+                I took the first person style game, reworked the camera, and created the illusion that the character was based in a hybrid 2d/3d environment.
+
+                The game used a variety of languages, technologies and tools including:
+                 - MCFUNCTION Language which was very restricted and required many creative workarounds. (I found it to be reminscent of Assembly)
+                 - JSON for scripting, data storage, and modelling
+                 - Javascript for some server-side automations
+                 - Custom world creation tools
+                 - Blockbench for custom modelling and art
+
+                 You can view the trailer for the video on Youtube:
+
+                 <iframe width="560" height="315" 
+                 src="https://www.youtube.com/embed/c2nahebUYWw?si=PxGC8Dc0IY6dgczP" 
+                 title="YouTube video player" frameborder="0" 
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
                 </div>
 
             </div>
