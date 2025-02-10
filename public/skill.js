@@ -47,11 +47,26 @@ class Skill {
 
   GetRemainingHours(){
     //Find the current number of hours remaining to train this skill to the goal
-    return (this.goalXp / this.xpRates[this.dropdownSelection])
+    return (this.goalXp / this.xpRates[this.dropdownSelection -1])
+  }
+  GetRemainingCost(){
+    //Find the cost in gp to reach the players current goal for this skill
+    return (this.gpPerXpRates[this.dropdownSelection -1] *  this.GetRemainingHours());
   }
 
+
   DisplayRemainingHours(){
-    $('#' + this.name + 'Final').html(this.GetRemainingHours() + "hrs");
+    //Displays the remainng number of hours of training for a skill
+    var remainingHoursTwoDecimal = this.GetRemainingHours();
+    remainingHoursTwoDecimal = remainingHoursTwoDecimal.toFixed(1);
+    $('#' + this.name + 'Final').html(remainingHoursTwoDecimal + " hrs");
+  }
+
+  DisplayRemainingCost(){
+    //Displays the remainng number of hours of training for a skill
+    var remainingCostTwoDecimal = this.GetRemainingCost();
+    remainingCostTwoDecimal = remainingCostTwoDecimal.toFixed(1);
+    $('#' + this.name + 'Cost').html(remainingCostTwoDecimal + " Gp");
   }
 
 }

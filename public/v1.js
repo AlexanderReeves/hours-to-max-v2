@@ -58,6 +58,8 @@ window.onload = function(){
     PullFromDatabase();
     //Display the remaining hours of training for each skill
     DisplayAllRemainingHours();
+    //Display the remaining cost of training each skill
+    DisplayAllRemainingCost();
 }
 
 function InitialiseSkills(){
@@ -86,7 +88,7 @@ function InitialiseSkills(){
     skills.push( new Skill("slayer", [0], [0],0 ));
     //Farming also works via doing xp per farm run, rather than xp per hour
     skills.push( new Skill("farming", [0], [0],0 ));
-    
+    //Reflect the default selections in the dropdowns
     UpdateAllSkillDropdowns();
 
 }
@@ -186,13 +188,31 @@ function FindTotalHoursToGoal(){
 }
 
 function DisplayAllRemainingHours(){
-    console.log("Displaying all remaining hours...")
+    //Display the remaining hours for each skill
+    //Also get a total for the final display
+    var totalRemainingHours = 0;
     skills.forEach(element => {
         if(element.name!="farming" && element.name != "slayer"){
-            console.log("Displaying for " + element.name);
+            totalRemainingHours += element.GetRemainingHours();
             element.DisplayRemainingHours();
         }
     });
+    //Display the final result
+    $('#goalHoursDisplay').html(totalRemainingHours.toFixed(2));
+}
+
+function DisplayAllRemainingCost(){
+    //Display the remaining cost for each skill
+    //Also get a total for the final display
+    var totalRemainingCost = 0;
+    skills.forEach(element => {
+        if(element.name!="farming" && element.name != "slayer"){
+            totalRemainingCost += element.GetRemainingCost();
+            element.DisplayRemainingCost();
+        }
+    });
+    //Display the final result
+    $('#goalGpDisplay').html(totalRemainingCost.toFixed(2));
 }
 
 function SubmitUsername(){
