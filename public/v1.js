@@ -43,7 +43,7 @@ var questLvlArray = [0,0,0,0,0,60,50,75,70,71
 //The xp required for a maximum level in any skill
 var ninetyNine = 13034431;
 //The current username of the website user
-var user = "test";
+var user = "";
 
 //Start reworking code into re-usable classes.
 //Skills class contains an array of skills.
@@ -56,6 +56,8 @@ window.onload = function(){
     InitialiseSkills();
     //Override the values if there is anything stored in the db
     PullFromDatabase();
+    //Get the current xp and levels from Jagex if a player is signed in
+    if(user != ""){PullFromJagex();}
     //Display the remaining hours of training for each skill
     DisplayAllRemainingHours();
     //Display the remaining cost of training each skill
@@ -156,6 +158,42 @@ function PullFromDatabase(){
     return; // avoid to execute the actual submit of the form
 }
 
+function PullFromJagex(){
+    //Get whatever name is currently in the username box
+    username = document.getElementById('usernameInput').value;
+    console.log("Attempting to pull player data for " + username + " from Jagex.");
+    //Cancel if no valid username is being searched
+    if(!username){
+        return false;
+    }
+
+    //Attempt to pull player from the Jagex API
+    $.getJSON("https://corsproxy.io/?url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
+        console.log(result);
+        $.each(result, function(i, field) {
+            //Jagex will return 24 items in an array, including the skills
+        	for(let i = 0; i <24; i++) {
+                //If theres xp, it means we got all the data desired.
+        		if (field[i].xp != null) {
+                    //Get the specific parts of data that are useful to us
+                    console.log(field[i].name)
+                    console.log(field[i].xp)
+                    var pulledSkillName = field[i].name.toLowerCase();
+                    var pulledSkillXp = field[i].xp;
+                    var pulledSkillLevel = field[i].level;
+                    //Apply the pulled data into the local skills
+                    skills.forEach(element => {
+                        if(element.name == pulledSkillName){
+                            element.currentXp = pulledSkillXp;
+                            element.currentLevel = pulledSkillLevel;
+                        }
+                    });
+        		}
+        	}
+        });
+    });
+}
+
 function DropdownWasChanged(clickedDropdown){
     //Runs when a dropdown value is changed
     skillDropName = clickedDropdown.name;
@@ -170,35 +208,38 @@ function DropdownWasChanged(clickedDropdown){
         }
     });
 
-    //Calculate the new total hours to max based on xp of all skills
-    FindTotalHoursToGoal();
+    //Re-Run calculations for reaching the players goals
+    //Display the remaining hours of training for each skill
+    DisplayAllRemainingHours();
+    //Display the remaining cost of training each skill
+    DisplayAllRemainingCost();
 }
 
 
 
-function FindTotalHoursToGoal(){
-    //Calculate and add remaining hours for each skill (excluding slayer and farming)
-    hoursToGoal = 0;
-    skills.forEach(element => {
-        if(element.name!="farming" && element.name != "slayer"){
-            //calculate and add hours to goal in that skill
-            hoursToGoal += element.GetRemainingHours();
-        }
-    });
-}
 
 function DisplayAllRemainingHours(){
     //Display the remaining hours for each skill
     //Also get a total for the final display
     var totalRemainingHours = 0;
+    var totalHoursFromZero = 0;
     skills.forEach(element => {
         if(element.name!="farming" && element.name != "slayer"){
             totalRemainingHours += element.GetRemainingHours();
+            totalHoursFromZero += element.GetHoursFromZero();
             element.DisplayRemainingHours();
         }
     });
     //Display the final result
+    var hoursCompleted = totalHoursFromZero - totalRemainingHours;
+
     $('#goalHoursDisplay').html(totalRemainingHours.toFixed(2));
+    console.log("total hours remaining " + totalRemainingHours)
+    console.log("total hours from scratch " + totalHoursFromZero)
+    var percentOfGoal = hoursCompleted/totalHoursFromZero * 100;
+    console.log("Percent Completed " + percentOfGoal);
+    //percentCompleted = (Math.round(percentCompleted * 100) / 100).toFixed(2);
+    document.getElementById("progressPercent").setAttribute("style","width:" + percentOfGoal + "%");
 }
 
 function DisplayAllRemainingCost(){

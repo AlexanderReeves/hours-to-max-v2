@@ -3,6 +3,7 @@ class Skill {
   //a # can be used to privatise a variable
   name = ""; //The name of a skill
   currentXp = 0; //The players current xp in that skill
+  currentLevel = 0;
   goalXp = 13034431; //Goal xp is for lvl 99 in all skills by default
 
   //The dropdown selection will be the index for the following 2 arrays (Unless the rate is custom):
@@ -47,8 +48,20 @@ class Skill {
 
   GetRemainingHours(){
     //Find the current number of hours remaining to train this skill to the goal
-    return (this.goalXp / this.xpRates[this.dropdownSelection -1])
+    var remHours = (this.goalXp - this.currentXp) / this.xpRates[this.dropdownSelection -1];
+    //Failsafe, if the goal has already been surpassed.
+    if(remHours < 0 ){
+      remHours = 0;
+    }
+    return remHours;
   }
+
+  GetHoursFromZero(){
+    //Find the current number of hours remaining to train this skill to the goal
+    return (this.goalXp / this.xpRates[this.dropdownSelection -1]);
+  }
+
+
   GetRemainingCost(){
     //Find the cost in gp to reach the players current goal for this skill
     return (this.gpPerXpRates[this.dropdownSelection -1] *  this.GetRemainingHours());
