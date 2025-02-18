@@ -5,14 +5,17 @@ class Skill {
   currentXp = 0; //The players current xp in that skill
   currentLevel = 0;
   goalXp = 13034431; //Goal xp is for lvl 99 in all skills by default
-
   //The dropdown selection will be the index for the following 2 arrays (Unless the rate is custom):
   dropdownSelection = 0; //The current skill training choice from the dropdown
+  //Note, dropdown selection 0 will be reserved for custom XP amounts.
   xpRates = []; //The xp rates that each training method offers
   gpPerXpRates = []; //The cost per xp for each training method
   customXpRate = 0; //A custom Xp per hour rate
-
+  customGpPerXp = 0;//Cost per xp of the custom rate
   remainingHours = 0;
+
+
+  
 
 
   
@@ -36,7 +39,7 @@ class Skill {
   UpdateDropdown(){
     //sets the corresponding dropdown to the currently active training method
     //Each skill has a corresponding dropdown with name being skillnamedropdown
-    $('#' + this.name +'Dropdown :nth-child('+ this.dropdownSelection +')').prop('selected', true);
+    $('#' + this.name +'Dropdown :nth-child('+ (this.dropdownSelection+1) +')').prop('selected', true);
   }
 
   UpdateTrainingMethod(index){
@@ -48,7 +51,8 @@ class Skill {
 
   GetRemainingHours(){
     //Find the current number of hours remaining to train this skill to the goal
-    var remHours = (this.goalXp - this.currentXp) / this.xpRates[this.dropdownSelection -1];
+    var remHours = (this.goalXp - this.currentXp) / this.xpRates[this.dropdownSelection];
+    console.log(this.xpRates[this.dropdownSelection] + " Xp per hour selected.")
     //Failsafe, if the goal has already been surpassed.
     if(remHours < 0 ){
       remHours = 0;
@@ -58,13 +62,13 @@ class Skill {
 
   GetHoursFromZero(){
     //Find the current number of hours remaining to train this skill to the goal
-    return (this.goalXp / this.xpRates[this.dropdownSelection -1]);
+    return (this.goalXp / this.xpRates[this.dropdownSelection]);
   }
 
 
   GetRemainingCost(){
     //Find the cost in gp to reach the players current goal for this skill
-    return (this.gpPerXpRates[this.dropdownSelection -1] *  this.GetRemainingHours());
+    return (this.gpPerXpRates[this.dropdownSelection] *  this.GetRemainingHours());
   }
 
 
