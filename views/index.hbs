@@ -139,6 +139,7 @@
         <br>
         <!-- *************RANGED *************-->
         <div class="row">
+
             <div class="columnA center"><img style="margin-top:10px" height="30" class="ico" class="ico"
                     src="icons/Ranged_icon.webp" alt="Ranged">
                 <p id="raXpDisplay" class="center">0Xp</p>
@@ -158,7 +159,7 @@
 
                 </form>
             </div>
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" name="finalRanged" id="finalRanged" onClick="ExpandSection(this.id)">
 
                 <div>
                     <nobr>
@@ -170,6 +171,23 @@
                 </div>
 
 
+            </div>
+
+        </div>
+
+                <!-- *************RANGED CONTINUED*************-->
+        <div id="expandedRanged" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="rangedCustomXp" name="rangedCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="rangedCustomGp" name="rangedCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="rangedBoost" name="rangedBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
             </div>
 
         </div>

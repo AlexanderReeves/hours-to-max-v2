@@ -136,6 +136,19 @@ text-align: center; /* Horizontally center the image */
 height: 100px;
 }
 
+
+.transition{
+    transition: 0.3s;
+}
+
+.hidden{
+    height:0px;
+}
+.expanded{
+    height: 60px;
+}
+
+
 .columnA {
 float: left;
 width: 12%;
@@ -152,6 +165,42 @@ Padding-top:10px;
 padding-right:10px;
 float:right;
 }
+.columnD {
+    float: left;
+    width: 33.3%;
+    text-align: left;
+    padding: 0px 3px 0px 3px;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }
+  
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+
+
 
 .columnCa {
 width: 45%;

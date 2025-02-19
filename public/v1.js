@@ -190,6 +190,13 @@ function DisplayAllRemainingHours(){
     });
 }
 
+function ExpandSection(clickedSection){
+    console.log("Clicked section " + clickedSection);
+    expandSectionName = clickedSection.replace("final", "");
+    console.log("Clicked section " + expandSectionName);
+    $( "#expanded"+expandSectionName).toggleClass("expanded");
+}
+
 function SubmitUsername(){
     //
     user = $('#usernameInput').val();
