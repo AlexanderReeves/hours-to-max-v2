@@ -175,7 +175,7 @@
 
         </div>
 
-                <!-- *************RANGED CONTINUED*************-->
+        <!-- *************RANGED CUSTOM*************-->
         <div id="expandedRanged" class="row hidden transition">
             <div class="columnD center">
                     <input type="text" style="text-align:center" id="rangedCustomXp" name="rangedCustomXp"
@@ -191,7 +191,7 @@
             </div>
 
         </div>
-        <!-- *************RANGED *************-->
+        <!-- *************end ranged *************-->
 
 
         <!-- *************Prayer *************-->
@@ -215,7 +215,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalPrayer" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="prayerCost" class="righttext">? Gp</div>
                 </nobr>
@@ -225,7 +225,23 @@
             </div>
 
         </div>
-        <!-- ************* PRAYER *************-->
+        <!-- *************PRAYER CUSTOM*************-->
+        <div id="expandedPrayer" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="prayerCustomXp" name="prayerCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="prayerCustomGp" name="prayerCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="prayerBoost" name="prayerBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- ************* END PRAYER *************-->
 
 
         <!-- *************MAGIC *************-->
@@ -248,7 +264,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalMagic" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="magicCost" class="righttext">? Gp</div>
                 </nobr>
@@ -258,7 +274,25 @@
             </div>
 
         </div>
-        <!-- ************* MAGIC *************-->
+        
+        <!-- *************MAGIC CUSTOM*************-->
+        <div id="expandedMagic" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="magicCustomXp" name="magicCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="magicCustomGp" name="magicCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="magicBoost" name="magicBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+
+        <!-- ************* END MAGIC *************-->
 
 
 
@@ -282,7 +316,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalRunecraft" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="runecraftCost" class="righttext">? Gp</div>
                 </nobr>
@@ -292,10 +326,27 @@
             </div>
 
         </div>
-        <!-- ************* Runecraft*************-->
+
+        <!-- ************RUNECRAFT CUSTOM*************-->
+        <div id="expandedRunecraft" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="runecraftCustomXp" name="runecraftCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="runecraftCustomGp" name="runecraftCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="runecraftBoost" name="runecraftBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************end Runecraft*************-->
 
 
-        <!-- *************Construnction *************-->
+        <!-- *************CONSTRUCTION *************-->
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Construction_icon.webp"
                     alt="Construction">
@@ -316,7 +367,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalConstruction" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="constructionCost" class="righttext">? Gp</div>
                 </nobr>
@@ -327,7 +378,23 @@
 
 
         </div>
-        <!-- *************Construction *************-->
+        <!-- ************CONSTRUCTION CUSTOM*************-->
+        <div id="expandedConstruction" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="constructionCustomXp" name="constructionCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="constructionCustomGp" name="constructionCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="constructionBoost" name="constructionBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************End Construction *************-->
 
         <!-- ************* AGILITY*************-->
         <div class="row">
@@ -351,7 +418,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalAgility" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="agilityCost" class="righttext">? Gp</div>
                 </nobr>
@@ -360,7 +427,24 @@
                 </nobr>
             </div>
         </div>
-        <!-- *************Agility *************-->
+
+        <!-- ************AGILITY CUSTOM*************-->
+        <div id="expandedAgility" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="agilityCustomXp" name="agilityCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="agilityCustomGp" name="agilityCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="agilityBoost" name="agilityBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************End Agility *************-->
 
 
         <!-- ************* HERBLORE*************-->
@@ -382,7 +466,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalHerblore" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="herbloreCost" class="righttext">? Gp</div>
                 </nobr>
@@ -392,7 +476,24 @@
             </div>
 
         </div>
-        <!-- *************Herblore *************-->
+
+        <!-- ************HERBLORE CUSTOM*************-->
+        <div id="expandedHerblore" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="herbloreCustomXp" name="herbloreCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="herbloreCustomGp" name="herbloreCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="herbloreBoost" name="herbloreBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************End Herblore *************-->
 
 
         <!-- *************THIEVING *************-->
@@ -416,7 +517,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalThieving" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="thievingCost" class="righttext">? Gp</div>
                 </nobr>
@@ -426,7 +527,24 @@
             </div>
 
         </div>
-        <!-- *************Thieving *************-->
+        <!-- ************thieving CUSTOM*************-->
+        <div id="expandedThieving" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="thievingCustomXp" name="thievingCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="thievingCustomGp" name="thievingCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="thievingBoost" name="thievingBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+
+        <!-- *************End Thieving *************-->
 
         <!-- *************CRAFTING *************-->
         <div class="row">
@@ -446,7 +564,7 @@
                     </select>
                 </form>
             </div>
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalCrafting" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="craftingCost" class="righttext">? Gp</div>
                 </nobr>
@@ -455,7 +573,23 @@
                 </nobr>
             </div>
         </div>
-        <!-- *************Crafting *************-->
+        <!-- ************crafting CUSTOM*************-->
+        <div id="expandedCrafting" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="craftingCustomXp" name="craftingCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="craftingCustomGp" name="craftingCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="craftingBoost" name="craftingBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************end Crafting *************-->
 
         <!-- *************FLETCHING *************-->
         <div class="row">
@@ -476,7 +610,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalFletching" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="fletchingCost" class="righttext">? Gp</div>
                 </nobr>
@@ -485,7 +619,23 @@
                 </nobr>
             </div>
         </div>
-        <!-- *************Fletching *************-->
+        <!-- ************fletching CUSTOM*************-->
+        <div id="expandedFletching" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="fletchingCustomXp" name="fletchingCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="fletchingCustomGp" name="fletchingCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="fletchingBoost" name="fletchingBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************end Fletching *************-->
 
          <!-- *************SLAYER *************-->
         <div class="row">
@@ -501,13 +651,29 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalSlayer" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="slayerCost" class="righttext">? Gp</div>
                 </nobr>
                 <nobr>
                     <div id="slayerFinal" class="righttext" style="text-align:right;">? hours</div>
                 </nobr>
+            </div>
+
+        </div>
+        <!-- ************slayer CUSTOM*************-->
+        <div id="expandedSlayer" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="slayerCustomXp" name="slayerCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="slayerCustomGp" name="slayerCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="slayerBoost" name="slayerBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
             </div>
 
         </div>
@@ -534,7 +700,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalHunter" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="hunterCost" class="righttext">? Gp</div>
                 </nobr>
@@ -544,7 +710,23 @@
             </div>
 
         </div>
-        <!-- *************hunter *************-->
+                <!-- ************hunter CUSTOM*************-->
+        <div id="expandedHunter" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="hunterCustomXp" name="hunterCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="hunterCustomGp" name="hunterCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="hunterBoost" name="hunterBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************end hunter *************-->
 
         <!-- *************MINING *************-->
         <div class="row">
@@ -568,7 +750,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalMining" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="miningCost" class="righttext">? Gp</div>
                 </nobr>
@@ -578,7 +760,23 @@
             </div>
 
         </div>
-        <!-- *************Mining *************-->
+        <!-- ************Mining CUSTOM*************-->
+        <div id="expandedMining" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="miningCustomXp" name="miningCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="miningCustomGp" name="miningCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="miningBoost" name="miningBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************end Mining *************-->
 
 
         <!-- *************SMITHING *************-->
@@ -598,7 +796,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalSmithing" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="smithingCost" class="righttext">? Gp</div>
                 </nobr>
@@ -608,7 +806,23 @@
             </div>
 
         </div>
-        <!-- *************Smithing *************-->
+        <!-- ************smithing CUSTOM*************-->
+        <div id="expandedSmithing" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="smithingCustomXp" name="smithingCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="smithingCustomGp" name="smithingCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="smithingBoost" name="smithingBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************end Smithing *************-->
 
 
         <!-- *************FISHING *************-->
@@ -629,7 +843,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalFishing" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="fishingCost" class="righttext">? Gp</div>
                 </nobr>
@@ -639,7 +853,23 @@
             </div>
 
         </div>
-        <!-- ************* fishing *************-->
+        <!-- ************fishing CUSTOM*************-->
+        <div id="expandedFishing" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="fishingCustomXp" name="fishingCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="fishingCustomGp" name="fishingCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="fishingBoost" name="fishingBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************end  fishing *************-->
 
         <!-- *************COOKING *************-->
         <div class="row">
@@ -659,7 +889,7 @@
                     </select>
                 </form>
             </div>
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalCooking" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="cookingCost" class="righttext">? Gp</div>
                 </nobr>
@@ -668,7 +898,23 @@
                 </nobr>
             </div>
         </div>
-        <!-- ************* Cooking *************-->
+        <!-- ************cooking CUSTOM*************-->
+        <div id="expandedCooking" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="cookingCustomXp" name="cookingCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="cookingCustomGp" name="cookingCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="cookingBoost" name="cookingBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************End Cooking *************-->
 
         <!-- *************FIREMAKING *************-->
         <div class="row">
@@ -689,7 +935,7 @@
                 </form>
             </div>
 
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalFiremaking" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="firemakingCost" class="righttext">? Gp</div>
                 </nobr>
@@ -699,7 +945,23 @@
             </div>
 
         </div>
-        <!-- *************Firemaking *************-->
+        <!-- ************firemaking CUSTOM*************-->
+        <div id="expandedFiremaking" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="firemakingCustomXp" name="firemakingCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="firemakingCustomGp" name="firemakingCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="firemakingBoost" name="firemakingBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************END Firemaking *************-->
 
         <!-- *************WOODCUTTING *************-->
         <div class="row">
@@ -719,7 +981,7 @@
                     </select>
                 </form>
             </div>
-            <div class="columnC righttext" id="finalcolumn">
+            <div class="columnC righttext" id="finalWoodcutting" onClick="ExpandSection(this.id)">
                 <nobr>
                     <div id="woodcuttingCost" class="righttext">? Gp</div>
                 </nobr>
@@ -728,7 +990,23 @@
                 </nobr>
             </div>
         </div>
-        <!-- *************Woodcutting *************-->
+        <!-- ************woodcutting CUSTOM*************-->
+        <div id="expandedWoodcutting" class="row hidden transition">
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="woodcuttingCustomXp" name="woodcuttingCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="woodcuttingCustomGp" name="woodcuttingCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+            </div>
+            <div class="columnD center">
+                    <input type="text" style="text-align:center" id="woodcuttingBoost" name="woodcuttingBoost"
+                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
+            </div>
+
+        </div>
+        <!-- *************End Woodcutting *************-->
 
         <!-- *************FARMING *************-->
         <div class="row">
