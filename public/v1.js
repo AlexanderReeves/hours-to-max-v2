@@ -56,10 +56,16 @@ window.onload = function(){
     InitialiseSkills();
     //Override the values if there is anything stored in the db
     PullFromDatabase();
+    //Pull the playerdata from the Jagex API if player was in db
+    if(user != ""){PullFromJagex();}
     //Update all the dropdowns to match the current selections
     UpdateAllSkillDropdowns();
+    //Update the custom fields to display the data that loaded
+    UpdateAllSkillCustomisations();
     //Display the remaining hours of training for each skill
     DisplayAllRemainingHours();
+    //Display the remaining cost of training each skill
+    DisplayAllRemainingCost();
 }
 
 function InitialiseSkills(){
@@ -96,6 +102,16 @@ function UpdateAllSkillDropdowns(){
     skills.forEach(element => {
         if(element.name!="farming"){
             element.UpdateDropdown();
+        }
+    });
+}
+
+function UpdateAllSkillCustomisations(){
+    //Different code will apply for Farming related choices as they don't have typical training methods
+    //Apply the default selections to each of the dropdowns
+    skills.forEach(element => {
+        if(element.name!="farming"){
+            element.DisplayCustomisations();
         }
     });
 }
@@ -150,6 +166,42 @@ function PullFromDatabase(){
     return; // avoid to execute the actual submit of the form
 }
 
+function PullFromJagex(){
+    //Get whatever name is currently in the username box
+    username = document.getElementById('usernameInput').value;
+    console.log("Attempting to pull player data for " + username + " from Jagex.");
+    //Cancel if no valid username is being searched
+    if(!username){
+        return false;
+    }
+
+    //Attempt to pull player from the Jagex API
+    $.getJSON("https://corsproxy.io/?url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
+        console.log(result);
+        $.each(result, function(i, field) {
+            //Jagex will return 24 items in an array, including the skills
+        	for(let i = 0; i <24; i++) {
+                //If theres xp, it means we got all the data desired.
+        		if (field[i].xp != null) {
+                    //Get the specific parts of data that are useful to us
+                    // console.log(field[i].name)
+                    // console.log(field[i].xp)
+                    var pulledSkillName = field[i].name.toLowerCase();
+                    var pulledSkillXp = field[i].xp;
+                    var pulledSkillLevel = field[i].level;
+                    //Apply the pulled data into the local skills
+                    skills.forEach(element => {
+                        if(element.name == pulledSkillName){
+                            element.currentXp = pulledSkillXp;
+                            element.currentLevel = pulledSkillLevel;
+                        }
+                    });
+        		}
+        	}
+        });
+    });
+}
+
 function DropdownWasChanged(clickedDropdown){
     //Runs when a dropdown value is changed
     skillDropName = clickedDropdown.name;
@@ -166,8 +218,40 @@ function DropdownWasChanged(clickedDropdown){
 
     //Calculate the new total hours to max based on xp of all skills
     FindTotalHoursToGoal();
+    //Re-Run calculations for reaching the players goals
+    //Display the remaining hours of training for each skill
+    DisplayAllRemainingHours();
+    //Display the remaining cost of training each skill
+    DisplayAllRemainingCost();
 }
 
+function RefreshCustom(clickedRefresh){
+    console.log("Clicked section " + clickedRefresh);
+    skillName = clickedRefresh.replace("Refresh", "");
+    //Get all the custom values
+    //CustomXP
+    var customXp = $('#' + skillName + 'CustomXp').val();
+    //CustomGpPerXp
+    var customGpPerXp = $('#' + skillName + 'CustomGp').val();
+    //LevelsBoosted
+    var levelsBoosted = $('#' + skillName + 'Boost').val();
+    //console.log("custom xp = " + customXp + ". custom gp = " + customGpPerXp + ". boost = " + levelsBoosted + ".");
+    //Update each customisation for that skill locally
+    skills.forEach(element => {
+        if(element.name==skillName && skillName != 'farming'){
+            //Set the skill object to match the selected dropdown value
+            element.UpdateCustomisations(customXp, customGpPerXp, levelsBoosted);
+        }
+    });
+
+    //Calculate the new total hours to max based on xp of all skills
+    FindTotalHoursToGoal();
+    //Re-Run calculations for reaching the players goals
+    //Display the remaining hours of training for each skill
+    DisplayAllRemainingHours();
+    //Display the remaining cost of training each skill
+    DisplayAllRemainingCost();
+}
 
 
 function FindTotalHoursToGoal(){
@@ -182,12 +266,41 @@ function FindTotalHoursToGoal(){
 }
 
 function DisplayAllRemainingHours(){
-    console.log("Displaying all remaining hours...")
+    //Display the remaining hours for each skill
+    //Also get a total for the final display
+    var totalRemainingHours = 0;
+    var totalHoursFromZero = 0;
     skills.forEach(element => {
-        if(element.name!="farming"){
+        if(element.name!="farming" && element.name != "slayer"){
+            totalRemainingHours += element.GetRemainingHours();
+            totalHoursFromZero += element.GetHoursFromZero();
             element.DisplayRemainingHours();
         }
     });
+    //Display the final result
+    var hoursCompleted = totalHoursFromZero - totalRemainingHours;
+
+    $('#goalHoursDisplay').html(totalRemainingHours.toFixed(2));
+    console.log("total hours remaining " + totalRemainingHours)
+    console.log("total hours from scratch " + totalHoursFromZero)
+    var percentOfGoal = hoursCompleted/totalHoursFromZero * 100;
+    console.log("Percent Completed " + percentOfGoal);
+    //percentCompleted = (Math.round(percentCompleted * 100) / 100).toFixed(2);
+    document.getElementById("progressPercent").setAttribute("style","width:" + percentOfGoal + "%");
+}
+
+function DisplayAllRemainingCost(){
+    //Display the remaining cost for each skill
+    //Also get a total for the final display
+    var totalRemainingCost = 0;
+    skills.forEach(element => {
+        if(element.name!="farming" && element.name != "slayer"){
+            totalRemainingCost += element.GetRemainingCost();
+            element.DisplayRemainingCost();
+        }
+    });
+    //Display the final result
+    $('#goalGpDisplay').html(totalRemainingCost.toFixed(2));
 }
 
 function ExpandSection(clickedSection){
@@ -195,6 +308,7 @@ function ExpandSection(clickedSection){
     expandSectionName = clickedSection.replace("final", "");
     console.log("Clicked section " + expandSectionName);
     $( "#expanded"+expandSectionName).toggleClass("expanded");
+    $( "#arrow"+expandSectionName).toggleClass("down");
 }
 
 function SubmitUsername(){

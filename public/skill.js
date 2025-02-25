@@ -10,15 +10,11 @@ class Skill {
   //Note, dropdown selection 0 will be reserved for custom XP amounts.
   xpRates = []; //The xp rates that each training method offers
   gpPerXpRates = []; //The cost per xp for each training method
-  customXpRate = 0; //A custom Xp per hour rate
+  customXpRate = 100000; //A custom Xp per hour rate, default of 100k
   customGpPerXp = 0;//Cost per xp of the custom rate
+  levelsBoosted = 0;
   remainingHours = 0;
 
-
-  
-
-
-  
   constructor(name, xpRates, gpPerXpRates, defaultSelection, dropdownName) {
     //Add the skill name
     this.name = name;
@@ -42,6 +38,21 @@ class Skill {
     $('#' + this.name +'Dropdown :nth-child('+ (this.dropdownSelection+1) +')').prop('selected', true);
   }
 
+  DisplayCustomisations(){
+    //Display the exsiting custom values on the webpage
+    $('#'+this.name + 'CustomXp').val(this.customXpRate);
+    $('#'+this.name + 'CustomGp').val(this.customGpPerXp);
+    $('#'+this.name + 'Boost').val(this.levelsBoosted);
+  }
+
+  UpdateCustomisations(customXp, customGpPerXp, levelsBoosted){
+    //Update this objects custom values to match the ones entered on the webpage
+    this.customXpRate = customXp;
+    this.customGpPerXp = customGpPerXp;
+    this.levelsBoosted = levelsBoosted;
+    console.log(this.customXpRate + "is the custom xp rate");
+  }
+
   UpdateTrainingMethod(index){
     //Runs when a dropdown value is changed, triggered from v1js
     //takes in the index of the training method and updates the xp rates and gp per cost
@@ -50,9 +61,14 @@ class Skill {
   }
 
   GetRemainingHours(){
+    var currentXpPerHour = this.xpRates[this.dropdownSelection];
+    //If a custom value is being used, use that value instead.
+    if(this.dropdownSelection == 0){
+      currentXpPerHour = this.customXpRate;
+    }
     //Find the current number of hours remaining to train this skill to the goal
-    var remHours = (this.goalXp - this.currentXp) / this.xpRates[this.dropdownSelection];
-    console.log(this.xpRates[this.dropdownSelection] + " Xp per hour selected.")
+    var remHours = (this.goalXp - this.currentXp) / currentXpPerHour;
+    //console.log(currentXpPerHour + " Xp per hour selected.")
     //Failsafe, if the goal has already been surpassed.
     if(remHours < 0 ){
       remHours = 0;

@@ -12,7 +12,10 @@ function SaveChoicesToDatabase() {
         //Create data for an ajax post, containing each skill name and corresponding selection
         var postData = '&auth=' + auth + '&username=' + user
         skills.forEach(element => {
+            //Find the JS elements dropdown value from the object
             postData = postData.concat('&' + element.name + 'Choice=' + element.dropdownSelection);
+            //Also get the custom XP val from the object
+            postData = postData.concat('&' + element.name + 'CustomXp=' + element.customXpRate);
         });
         console.log("Attemping to post this data string... " + postData);
 
