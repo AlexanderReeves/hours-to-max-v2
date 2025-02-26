@@ -64,6 +64,8 @@ window.onload = function(){
     UpdateAllSkillCustomisations();
     //Display the remaining hours of training for each skill
     DisplayAllRemainingHours();
+    //Display current level and goal level
+    DisplayAllLevels();
     //Display the remaining cost of training each skill
     DisplayAllRemainingCost();
 }
@@ -271,7 +273,7 @@ function DisplayAllRemainingHours(){
     var totalRemainingHours = 0;
     var totalHoursFromZero = 0;
     skills.forEach(element => {
-        if(element.name!="farming" && element.name != "slayer"){
+        if(element.name!="farming"){
             totalRemainingHours += element.GetRemainingHours();
             totalHoursFromZero += element.GetHoursFromZero();
             element.DisplayRemainingHours();
@@ -289,12 +291,18 @@ function DisplayAllRemainingHours(){
     document.getElementById("progressPercent").setAttribute("style","width:" + percentOfGoal + "%");
 }
 
+function DisplayAllLevels(){
+    skills.forEach(element => {
+        element.DisplayLevels();
+    })
+}
+
 function DisplayAllRemainingCost(){
     //Display the remaining cost for each skill
     //Also get a total for the final display
     var totalRemainingCost = 0;
     skills.forEach(element => {
-        if(element.name!="farming" && element.name != "slayer"){
+        if(element.name!="farming"){
             totalRemainingCost += element.GetRemainingCost();
             element.DisplayRemainingCost();
         }
@@ -312,8 +320,21 @@ function ExpandSection(clickedSection){
 }
 
 function SubmitUsername(){
-    //
+    //When the form is submitted, set the user val to the new username
     user = $('#usernameInput').val();
+    //Refresh a bunch of things!
+    //Pull the playerdata from the Jagex API if player was in db
+    if(user != ""){PullFromJagex();}
+    //Update all the dropdowns to match the current selections
+    UpdateAllSkillDropdowns();
+    //Update the custom fields to display the data that loaded
+    UpdateAllSkillCustomisations();
+    //Display the remaining hours of training for each skill
+    DisplayAllRemainingHours();
+    //Display current level and goal level
+    DisplayAllLevels();
+    //Display the remaining cost of training each skill
+    DisplayAllRemainingCost();
 }
 
 

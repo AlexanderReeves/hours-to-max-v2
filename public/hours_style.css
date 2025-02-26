@@ -44,6 +44,17 @@ background: rgb(0,139,159);
 background: linear-gradient(90deg, rgba(0,139,159,1) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,139,159,1) 100%);
 }
 
+
+.completed{
+    color:green;
+}
+.profit{
+    color:green;
+}
+.expense{
+    color:rgb(170, 45, 0);
+}
+
 .row{
  overflow: hidden;
 }
@@ -145,7 +156,7 @@ height: 100px;
     height:0px;
 }
 .expanded{
-    height: 110px;
+    height: 55px;
 }
 
 
@@ -174,11 +185,46 @@ float:right;
     float:right;
 }
 
+
 .columnE {
     float: left;
-    width: 24.8%;
-    text-align: left;
+    width: 12%;
+    text-align: center;
+    padding: 20px 3px 0px 3px;
+    font-size: 20px;
+}
+.columnF {
+    float: left;
+    width: 12%;
+    text-align: center;
     padding: 0px 3px 0px 3px;
+    font-size: 20px;
+}
+
+.columnG {
+    float: left;
+    width: 12%;
+    text-align: center;
+    padding: 20px 3px 0px 3px;
+    font-size: 20px;
+}
+.columnH {
+    float: left;
+    width: 18%;
+    text-align: center;
+}
+
+.columnI {
+    float: left;
+    width: 12%;
+    text-align: center;
+    padding: 20px 3px 0px 3px;
+    font-size: 20px;
+}
+.columnJ {
+    float: left;
+    width: 19%;
+    text-align: center;
 }
 
 .arrow {
@@ -290,6 +336,7 @@ margin: 8px 0;
 display: inline-block;
 border: 1px solid #ccc;
 box-sizing: border-box;
+border-radius: 10px;
 }
 
 footer{
@@ -440,6 +487,14 @@ border-radius: 0px;
 cursor: pointer;
 height:50px;
 border-radius: 0px;;
+}
+
+.refreshbutton{
+    width: 100px;
+    height: 44px;
+    margin-top: 10px;
+    background-color: #b2b2b2;
+    border-radius:10px;
 }
 
 /***********END SWITCH*******/
@@ -595,6 +650,13 @@ height:130px;
 border-radius: 15px;;
 }
 
+.refreshbutton{
+    width: 100px;
+    height: 20%;
+    margin-top: 14px;
+    background-color: #b2b2b2;
+}
+
 .reload {
     font-size:70px;
   }
@@ -606,10 +668,16 @@ border-radius: 15px;;
 
 header {
  height:130px;
+ z-index: 1;
 }
 
 
 #logoimage {height:130px}	
+
+
+.expanded{
+    height: 110px;
+}
 
 .columnA {
 float: left;
@@ -623,7 +691,7 @@ width: 64%;
 }
 .columnC {
 float: right;
-width: 10%;
+/* width: 10%; */
 /*Padding-top:10px;*/
 padding-right:0px;
 }
@@ -634,6 +702,44 @@ padding-right:0px;
     padding-right:0px;
     text-align: center;
     }
+
+.columnE {
+    float: left;
+    width: 12%;
+    text-align: center;
+    padding-top:28px
+}
+
+.columnF {
+    float: left;
+    width: 12%;
+    text-align: center;
+}
+
+.columnG {
+    float: left;
+    width: 12%;
+    text-align: center;
+}
+.columnH {
+    float: left;
+    width: 18%;
+    text-align: center;
+}
+
+.columnI {
+    float: left;
+    width: 12%;
+    text-align: center;
+    padding-top:28px
+}
+.columnJ {
+    float: left;
+    width: 10%;
+    text-align: center;
+}
+
+
 
 .OutcomeColA{
 width: 10%;
@@ -651,6 +757,7 @@ display:inline;
 width: 10%;
 display:inline;
 }
+
 
 .arrow {
     border: solid black;

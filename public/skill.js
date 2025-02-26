@@ -3,8 +3,9 @@ class Skill {
   //a # can be used to privatise a variable
   name = ""; //The name of a skill
   currentXp = 0; //The players current xp in that skill
-  currentLevel = 0;
+  currentLevel = 1; //Default for blank user
   goalXp = 13034431; //Goal xp is for lvl 99 in all skills by default
+  goalLevel=99;//Default for max
   //The dropdown selection will be the index for the following 2 arrays (Unless the rate is custom):
   dropdownSelection = 0; //The current skill training choice from the dropdown
   //Note, dropdown selection 0 will be reserved for custom XP amounts.
@@ -77,8 +78,12 @@ class Skill {
   }
 
   GetHoursFromZero(){
+    var currentXpPerHour = this.xpRates[this.dropdownSelection];
+    if(this.dropdownSelection == 0){
+      currentXpPerHour = this.customXpRate;
+    }
     //Find the current number of hours remaining to train this skill to the goal
-    return (this.goalXp / this.xpRates[this.dropdownSelection]);
+    return (this.goalXp / currentXpPerHour);
   }
 
 
@@ -93,6 +98,14 @@ class Skill {
     var remainingHoursTwoDecimal = this.GetRemainingHours();
     remainingHoursTwoDecimal = remainingHoursTwoDecimal.toFixed(1);
     $('#' + this.name + 'Final').html(remainingHoursTwoDecimal + " hrs");
+    //Display green for gained money, and red for lost money
+    if(remainingHoursTwoDecimal <= 0){
+      $('#' + this.name + 'Final').addClass("completed");
+      $('#' + this.name + 'Dropdown').attr("disabled", true);
+    }else{
+      $('#' + this.name + 'Final').removeClass("completed");
+      $('#' + this.name + 'Dropdown').attr("disabled", false);
+    }
   }
 
   DisplayRemainingCost(){
@@ -100,6 +113,23 @@ class Skill {
     var remainingCostTwoDecimal = this.GetRemainingCost();
     remainingCostTwoDecimal = remainingCostTwoDecimal.toFixed(1);
     $('#' + this.name + 'Cost').html(remainingCostTwoDecimal + " Gp");
+    //Display green for gained money, and red for lost money
+    if(remainingCostTwoDecimal >= 0){
+      $('#' + this.name + 'Cost').removeClass("expense");
+      $('#' + this.name + 'Cost').addClass("profit");
+    }else{
+      $('#' + this.name + 'Cost').removeClass("profit");
+      $('#' + this.name + 'Cost').addClass("expense");
+    }
+  }
+
+  DisplayLevels(){
+    $('#' + this.name + 'LevelDisplay').html(this.currentLevel + "/"+this.goalLevel);
+    if(this.currentLevel >= this.goalLevel){
+      $('#' + this.name + 'LevelDisplay').addClass("completed");
+    }else{
+      $('#' + this.name + 'LevelDisplay').removeClass("completed");
+    }
   }
 
 }

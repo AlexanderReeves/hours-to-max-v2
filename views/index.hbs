@@ -93,8 +93,7 @@
         <!-- <h1 id="tabtext" class="center">Max Cape</h1> -->
         <br>
         <div class="center " id="intro" style="padding-left:10px;padding-right:10px">
-            PREVIEW VERSION
-            <br>
+                        <br>
             Find many hours until you max in Old School Runescape
             {{title}}
 
@@ -102,22 +101,21 @@
         </div>
         <div class="center" id="disclaimer">
 
-            {{#if signedin}}
+            {{!-- {{#if signedin}}
             <br>
             Welcome, {{username}}, to your personal Old School Runescape goal calculator
 
             {{else }}
             <br>
             A personalised osrs maxing calculator.
-            {{/if}}
+            {{/if}} --}}
 
 
             <br>
-            Select your favourite training methods, and find the amount of hours and gp it will take to reach max level.
+            Select your favourite training methods to find the cost and time to reach your goal!
             <br>
             99 melee (Attack, Strength, Defence and Hitpoints) is assumed to be completed via Slayer.
-            <br>
-            See planned features at the bottom of the page.
+
             <br>
         </div>
         <br>
@@ -142,7 +140,7 @@
 
             <div class="columnA center"><img style="margin-top:10px" height="30" class="ico" class="ico"
                     src="icons/Ranged_icon.webp" alt="Ranged">
-                <p id="raXpDisplay" class="center">0Xp</p>
+                <p id="rangedLevelDisplay" class="center">1/99</p>
             </div>
 
             <div class="columnB">
@@ -182,20 +180,30 @@
         <!-- *************RANGED CUSTOM*************-->
         <div id="expandedRanged" class="row hidden transition">
             <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="rangedCustomXp" name="rangedCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+                <p>Boost:</p>
             </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="rangedCustomGp" name="rangedCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
+            <div class=" columnF center">                    
                     <input type="text" style="text-align:center" id="rangedBoost" name="rangedBoost"
                     onchange="customBoostUpdate(this);" placeholder="Levels boosted">
             </div>
+            <div class=" columnG center">
+                <p >Custom Xp:</p>
+            </div>
+            <div class=" columnH center">            
+                <input type="text" style="text-align:center" id="rangedCustomXp" name="rangedCustomXp"
+                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+            </div>
+             <div class=" columnI center">
+                <p >Cost:</p>
+            </div>
+            <div class=" columnJ center">
+                    <input type="text" style="text-align:center" id="rangedCustomGp" name="rangedCustomGp"
+                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+
+            </div>
             
-            <div class=" columnE center" style="text-align:center;" id="rangedRefresh" name="rangedRefresh" onClick="RefreshCustom(this.id)">       
-                <span class=reload>&#x21bb;</span>
+            <div class=" columnK center" style="text-align:center;" >       
+                <input type="button" class="colorbutton theme refreshbutton" id="rangedRefresh" name="rangedRefresh"  value="&#x2192;" onclick="RefreshCustom(this.id)" style="width:100px">
             </div>
 
         </div>
@@ -206,7 +214,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Prayer_icon.webp"
                     alt="Prayer">
-                <p id="prXpDisplay" class="center">0Xp</p>
+                <p id="prayerLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -263,7 +271,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Magic_icon.webp"
                     alt="Magic">
-                <p id="maXpDisplay" class="center">0Xp</p>
+                <p id="magicLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -319,7 +327,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Runecrafting_icon.webp"
                     alt="Runecraft">
-                <p id="ruXpDisplay" class="center">0Xp</p>
+                <p id="runecraftLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -373,7 +381,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Construction_icon.webp"
                     alt="Construction">
-                <p id="coXpDisplay" class="center">0Xp</p>
+                <p id="constructionLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -427,7 +435,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Agility_icon.webp"
                     alt="Agility">
-                <p id="agXpDisplay" class="center">0Xp</p>
+                <p id="agilityLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -482,7 +490,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="25" class="ico" src="icons/Herblore_icon.webp"
                     alt="Herblore">
-                <p id="heXpDisplay" class="center">0Xp</p>
+                <p id="herbloreLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -535,7 +543,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Thieving_icon.webp"
                     alt="Thieving">
-                <p id="thXpDisplay" class="center">0Xp</p>
+                <p id="thievingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -589,7 +597,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Crafting_icon.webp"
                     alt="Crafting">
-                <p id="crXpDisplay" class="center">0Xp</p>
+                <p id="craftingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -639,7 +647,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Fletching_icon.webp"
                     alt="Fletching">
-                <p id="flXpDisplay" class="center">0Xp</p>
+                <p id="fletchingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -689,7 +697,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Slayer_icon.webp"
                     alt="Slayer">
-                <p id="huXpDisplay" class="center">0Xp</p>
+                <p id="slayerLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -736,7 +744,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Hunter_icon.webp"
                     alt="Hunter">
-                <p id="huXpDisplay" class="center">0Xp</p>
+                <p id="slayerLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -788,7 +796,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Mining_icon.webp"
                     alt="Mining">
-                <p id="miXpDisplay" class="center">0Xp</p>
+                <p id="mininigLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -843,7 +851,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Smithing_icon.webp"
                     alt="Smithing">
-                <p id="smXpDisplay" class="center">0Xp</p>
+                <p id="smithingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -893,7 +901,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Fishing_icon.webp"
                     alt="Fishing">
-                <p id="fiXpDisplay" class="center">0Xp</p>
+                <p id="fishingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -943,7 +951,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Cooking_icon.webp"
                     alt="Cooking">
-                <p id="ckXpDisplay" class="center">0Xp</p>
+                <p id="cookingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -992,7 +1000,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Firemaking_icon.webp"
                     alt="Firemaking">
-                <p id="fmXpDisplay" class="center">0Xp</p>
+                <p id="firemakingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -1043,7 +1051,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Woodcutting_icon.webp"
                     alt="Woodcutting">
-                <p id="wcXpDisplay" class="center">0Xp</p>
+                <p id="woodcuttingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
@@ -1093,13 +1101,13 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Farming_icon.webp"
                     alt="Farming">
-                <p id="faXpDisplay" class="center">0Xp</p>
+                <p id="farmingLevelDisplay" class="center">1/99</p>
             </div>
             <div class="columnB">
                 <form>
                     <select class="fullw minimal" name="seeddrop" id="seeddrop" onchange="DropdownWasChanged(this);">
                         <option value="1">3403xp Maple Seed</option>
-                        <option value="2">7070xp Yew Seed</option>
+                        <option value="2">7071/99 Yew Seed</option>
                         <option value="3" selected="selected">13768xp Magic Seed</option>
                     </select>
                 </form>
@@ -1313,9 +1321,10 @@
             <br><br>
             <input type="button" class="colorbutton theme themered" value="Hire me!" onclick="location.href='/author'" style="width:100px">
             <br><br>
-            <p id="footer">2024 Arrgs - reevesgamedev@gmail.com </p>
+            <p id="footer">2024 Arrgs - reevesgamedev@gmail.com</p>
             <p id="footer">*Gp per XP estimates from June 2024*</p>
             <p id="footer">More features coming soon!</p>
+            <p id="footer">Hours To Max v1.0</p>
         </div>
     </footer>
 
