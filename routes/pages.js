@@ -34,6 +34,28 @@ router.get('/', verifyAccessToken,(req, res) => {
     CountPageRequests();
     username = "Player"
     userSignedIn = false
+
+      var skills = {
+        ranged: [ "ranged" ],
+        prayer: [ "prayer" ],
+        magic: ["magic"],
+        runecraft: [ "runecraft" ],
+        construction: [ "construction" ],
+        agility: ["agility"],
+        herblore: [ "herblore" ],
+        thieving: [ "prayer" ],
+        crafting: ["crafting"],
+        fletching: [ "fletching" ],
+        slayer: [ "slayer" ],
+        hunter: [ "hunter" ],
+        mining: ["mining"],
+        smithing: [ "smithing" ],
+        fishing: [ "fishing" ],
+        cooking: ["cooking"],
+        firemaking: [ "firemaking" ],
+        wooductting: [ "woodcutting" ]
+      };
+
     if(req.verifiedUser){
         username = req.payload.username
         console.log("The page was requested from verified user " + username)
@@ -44,7 +66,7 @@ router.get('/', verifyAccessToken,(req, res) => {
             res.clearCookie("authorization");
         }
     }
-    res.render('index', { signedin: userSignedIn, username: username});
+    res.render('index', { signedin: userSignedIn, username: username, allSkills: skills, title: "test"});
 });
 
 

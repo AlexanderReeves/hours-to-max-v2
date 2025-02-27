@@ -65,9 +65,7 @@
 
     </header>
     <!-- *************header******-->
-
     <br><br class="desktoponly">
-
 
     <!-- ************* MAIN CONTENT *************-->
     <div class="maxw whitebg" id="maincontent">
@@ -93,24 +91,18 @@
         <!-- <h1 id="tabtext" class="center">Max Cape</h1> -->
         <br>
         <div class="center " id="intro" style="padding-left:10px;padding-right:10px">
-                        <br>
-            Find many hours until you max in Old School Runescape
+            <br>
+            Find many hours until you max in Old School Runescape.
             {{title}}
-
-
         </div>
         <div class="center" id="disclaimer">
-
             {{!-- {{#if signedin}}
             <br>
             Welcome, {{username}}, to your personal Old School Runescape goal calculator
-
             {{else }}
             <br>
             A personalised osrs maxing calculator.
             {{/if}} --}}
-
-
             <br>
             Select your favourite training methods to find the cost and time to reach your goal!
             <br>
@@ -135,17 +127,21 @@
         <p id="displayUsername" class="center"></p>
 
         <br>
-        <!-- *************RANGED *************-->
+
+        <!-- HANDLEBARS START -->
+        {{#each allSkills}}
+
+        <!-- *************DYNAMIC SKILL ROW *************-->
         <div class="row">
 
             <div class="columnA center"><img style="margin-top:10px" height="30" class="ico" class="ico"
-                    src="icons/Ranged_icon.webp" alt="Ranged">
-                <p id="rangedLevelDisplay" class="center">1/99</p>
+                    src="icons/{{this}}_icon.webp" alt="{{this}}">
+                <p id="{{this}}LevelDisplay" class="center">1/99</p>
             </div>
 
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="rangedDropdown" id="rangedDropdown" onchange="DropdownWasChanged(this);">
+                    <select class="fullw minimal" name="{{this}}Dropdown" id="{{this}}Dropdown" onchange="DropdownWasChanged(this);">
                         <option value="0">Custom</option>
                         <option value="1">90kph Cannon Ice Trolls</option>
                         <option value="2">130kph Pest Control</option>
@@ -166,10 +162,10 @@
             <div class="columnC righttext" name="finalRanged" id="finalRanged" onClick="ExpandSection(this.id)">
                 <div>
                     <nobr>
-                        <div id="rangedCost" class="righttext">? Gp</div>
+                        <div id="{{this}}Cost" class="righttext">? Gp</div>
                     </nobr>
                     <nobr>
-                        <div id="rangedFinal" class="righttext" style="text-align:right;">? Hours</div>     
+                        <div id="{{this}}Final" class="righttext" style="text-align:right;">? Hours</div>     
                     </nobr>
                 </div>
             </div>
@@ -177,925 +173,40 @@
 
         </div>
 
-        <!-- *************RANGED CUSTOM*************-->
+        <!-- *************custom CUSTOM*************-->
         <div id="expandedRanged" class="row hidden transition">
             <div class=" columnE center">
                 <p>Boost:</p>
             </div>
             <div class=" columnF center">                    
-                    <input type="text" style="text-align:center" id="rangedBoost" name="rangedBoost"
+                    <input type="text" style="text-align:center" id="{{this}}Boost" name="{{this}}Boost"
                     onchange="customBoostUpdate(this);" placeholder="Levels boosted">
             </div>
             <div class=" columnG center">
                 <p >Custom Xp:</p>
             </div>
             <div class=" columnH center">            
-                <input type="text" style="text-align:center" id="rangedCustomXp" name="rangedCustomXp"
+                <input type="text" style="text-align:center" id="{{this}}CustomXp" name="{{this}}CustomXp"
                     onchange="customXpUpdate(this);" placeholder="Xp per hour">
             </div>
              <div class=" columnI center">
                 <p >Cost:</p>
             </div>
             <div class=" columnJ center">
-                    <input type="text" style="text-align:center" id="rangedCustomGp" name="rangedCustomGp"
+                    <input type="text" style="text-align:center" id="{{this}}CustomGp" name="{{this}}CustomGp"
                     onchange="customGpUpdate(this);" placeholder="Gp per xp">
 
             </div>
             
             <div class=" columnK center" style="text-align:center;" >       
-                <input type="button" class="colorbutton theme refreshbutton" id="rangedRefresh" name="rangedRefresh"  value="&#x2192;" onclick="RefreshCustom(this.id)" style="width:100px">
+                <input type="button" class="colorbutton theme refreshbutton" id="{{this}}Refresh" name="{{this}}Refresh"  value="&#x2192;" onclick="RefreshCustom(this.id)" style="width:100px">
             </div>
 
         </div>
-        <!-- *************end ranged *************-->
+        <!-- *************end custom *************-->
 
-
-        <!-- *************Prayer *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Prayer_icon.webp"
-                    alt="Prayer">
-                <p id="prayerLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="prayerDropdown" id="prayerDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">50kph Big Bones</option>
-                        <option value="2">250kph Baby Dragon Bones</option>
-                        <option value="3">437kph Wyrm Bones</option>
-                        <option value="4">600kph Dragon Bones</option>
-                        <option value="5">800kph Lava Dragon Bones</option>
-                        <option value="6" selected="selected">1250kph Sup. Dragon Bones</option>
-                    </select>
-
-                </form>
-            </div>
-            <div class="columnD" name="finalPrayer" id="finalPrayer" onClick="ExpandSection(this.id)">
-                <i id="arrowPrayer" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalPrayer" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="prayerCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="prayerFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-        <!-- *************PRAYER CUSTOM*************-->
-        <div id="expandedPrayer" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="prayerCustomXp" name="prayerCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="prayerCustomGp" name="prayerCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="prayerBoost" name="prayerBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-            <div class=" columnE center" style="text-align:center;" id="prayerRefresh" name="prayerRefresh" onClick="RefreshCustom(this.id)">       
-                <span class=reload>&#x21bb;</span>
-            </div>
-
-
-        </div>
-        <!-- ************* END PRAYER *************-->
-
-
-        <!-- *************MAGIC *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Magic_icon.webp"
-                    alt="Magic">
-                <p id="magicLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="magicDropdown" id="magicDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">78kph Cast High Level Alchemy</option>
-                        <option value="2">150kph Cast Plank Make</option>
-                        <option value="3">150kph Casting String Jewellery</option>
-                        <option value="4">175kph Stun Alching</option>
-                        <option value="5" selected="selected">380kph Ice Barrage Manical Monkeys</option>
-                    </select>
-
-                </form>
-            </div>
-
-            <div class="columnD" name="finalMagic" id="finalMagic" onClick="ExpandSection(this.id)">
-                <i id="arrowMagic" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalMagic" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="magicCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="magicFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-        
-        <!-- *************MAGIC CUSTOM*************-->
-        <div id="expandedMagic" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="magicCustomXp" name="magicCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="magicCustomGp" name="magicCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="magicBoost" name="magicBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-
-        <!-- ************* END MAGIC *************-->
-
-
-
-        <!-- *************Runecraft *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Runecrafting_icon.webp"
-                    alt="Runecraft">
-                <p id="runecraftLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="runecraftDropdown" id="runecraftDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">35kph Blood Runes</option>
-                        <option value="2">60kph Solo Lava Runes</option>
-                        <option value="3">65kph Guardians Of The Rift</option>
-                        <option value="4">70kph Ourania Altar</option>
-                        <option value="5">80kph Arceeus Library</option>
-                        <option value="6" selected="selected">100kph Steam Runes</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalRunecraft" id="finalRunecraft" onClick="ExpandSection(this.id)">
-                <i id="arrowRunecraft" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalRunecraft" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="runecraftCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="runecraftFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-
-        <!-- ************RUNECRAFT CUSTOM*************-->
-        <div id="expandedRunecraft" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="runecraftCustomXp" name="runecraftCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="runecraftCustomGp" name="runecraftCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="runecraftBoost" name="runecraftBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************end Runecraft*************-->
-
-
-        <!-- *************CONSTRUCTION *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Construction_icon.webp"
-                    alt="Construction">
-                <p id="constructionLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="constructionDropdown" id="constructionDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">190kph Mahogany Homes</option>
-                        <option value="2">400kph Mythical Capes</option>
-                        <option value="3">450kph Oak Larders</option>
-                        <option value="4">500kph Oak Dungeon Doors</option>
-                        <option value="5">580kph Teak Benches</option>
-                        <option value="6">850kph Mahogany Tables</option>
-                        <option value="7" selected="selected">1000kph Gnome Benches</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalConstruction" id="finalConstruction" onClick="ExpandSection(this.id)">
-                <i id="arrowConstruction" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalConstruction" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="constructionCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="constructionFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-
-        </div>
-        <!-- ************CONSTRUCTION CUSTOM*************-->
-        <div id="expandedConstruction" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="constructionCustomXp" name="constructionCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="constructionCustomGp" name="constructionCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="constructionBoost" name="constructionBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************End Construction *************-->
-
-        <!-- ************* AGILITY*************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Agility_icon.webp"
-                    alt="Agility">
-                <p id="agilityLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="agilityDropdown" id="agilityDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">45kph Seers Rooftop</option>
-                        <option value="2">50kph Wilderness Agility</option>
-                        <option value="3">50kph Pollivneach Rooftop</option>
-                        <option value="4">55kph Relleka Rooftop</option>
-                        <option value="5">65kph Ardougne Rooftop</option>
-                        <option value="6">65kph Priffdinas Rooftop</option>
-                        <option value="7" selected="selected">90kph Hallowed Sepulchre</option>
-
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalAgility" id="finalAgility" onClick="ExpandSection(this.id)">
-                <i id="arrowAgility" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalAgility" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="agilityCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="agilityFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-        </div>
-
-        <!-- ************AGILITY CUSTOM*************-->
-        <div id="expandedAgility" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="agilityCustomXp" name="agilityCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="agilityCustomGp" name="agilityCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="agilityBoost" name="agilityBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************End Agility *************-->
-
-
-        <!-- ************* HERBLORE*************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="25" class="ico" src="icons/Herblore_icon.webp"
-                    alt="Herblore">
-                <p id="herbloreLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="herbloreDropdown" id="herbloreDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">110kph Cast Degrime Torstol</option>
-                        <option value="2">170kph Making Irit Tar</option>
-                        <option value="3">210kph Making Combat potion</option>
-                        <option value="4">400kph Make Magic Potion</option>
-                        <option value="5" selected="selected">500kph Make Ancient Brew</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalHerblore" id="finalHerblore" onClick="ExpandSection(this.id)">
-                <i id="arrowHerblore" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalHerblore" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="herbloreCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="herbloreFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-
-        <!-- ************HERBLORE CUSTOM*************-->
-        <div id="expandedHerblore" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="herbloreCustomXp" name="herbloreCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="herbloreCustomGp" name="herbloreCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="herbloreBoost" name="herbloreBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************End Herblore *************-->
-
-
-        <!-- *************THIEVING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Thieving_icon.webp"
-                    alt="Thieving">
-                <p id="thievingLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="thievingDropdown" id="thievingDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">110kph Master Farmers</option>
-                        <option value="2">140kph Elves</option>
-                        <option value="3">150kph Vyres</option>
-                        <option value="4">210kph Ardy Knights</option>
-                        <option value="5">240kph Blackjacking</option>
-                        <option value="6">260kph Rogues Castle Chests</option>
-                        <option value="7" selected="selected">265kph Pyramid Plunder</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalThieving" id="finalThieving" onClick="ExpandSection(this.id)">
-                <i id="arrowThieving" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalThieving" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="thievingCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="thievingFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-        <!-- ************thieving CUSTOM*************-->
-        <div id="expandedThieving" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="thievingCustomXp" name="thievingCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="thievingCustomGp" name="thievingCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="thievingBoost" name="thievingBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-
-        <!-- *************End Thieving *************-->
-
-        <!-- *************CRAFTING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Crafting_icon.webp"
-                    alt="Crafting">
-                <p id="craftingLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="craftingDropdown" id="craftingDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">150kph Dragonstone Bracelets</option>
-                        <option value="2">220kph Cutting Rubies</option>
-                        <option value="3">270kph Cutting Diamonds</option>
-                        <option value="4">360kph Cutting Dragonstones</option>
-                        <option value="5" selected="selected">415kph Crafting Black D'hide Bodies</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalCrafting" id="finalCrafting" onClick="ExpandSection(this.id)">
-                <i id="arrowCrafting" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalCrafting" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="craftingCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="craftingFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-        </div>
-        <!-- ************crafting CUSTOM*************-->
-        <div id="expandedCrafting" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="craftingCustomXp" name="craftingCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="craftingCustomGp" name="craftingCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="craftingBoost" name="craftingBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************end Crafting *************-->
-
-        <!-- *************FLETCHING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Fletching_icon.webp"
-                    alt="Fletching">
-                <p id="fletchingLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="fletchingDropdown" id="fletchingDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">1900kph Mithril Darts</option>
-                        <option value="2">2250kph Adamant Darts</option>
-                        <option value="3">2500kph Rune Darts</option>
-                        <option value="4">3000kph Amethyst Darts</option>
-                        <option value="5" selected="selected">4000kph Dragon Darts</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalFletching" id="finalFletching" onClick="ExpandSection(this.id)">
-                <i id="arrowFletching" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalFletching" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="fletchingCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="fletchingFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-        </div>
-        <!-- ************fletching CUSTOM*************-->
-        <div id="expandedFletching" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="fletchingCustomXp" name="fletchingCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="fletchingCustomGp" name="fletchingCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="fletchingBoost" name="fletchingBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************end Fletching *************-->
-
-         <!-- *************SLAYER *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Slayer_icon.webp"
-                    alt="Slayer">
-                <p id="slayerLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="slayerDropdown" id="slayerDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="1">Custom</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalSlayer" id="finalSlayer" onClick="ExpandSection(this.id)">
-                <i id="arrowSlayer" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalSlayer" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="slayerCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="slayerFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-        <!-- ************slayer CUSTOM*************-->
-        <div id="expandedSlayer" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="slayerCustomXp" name="slayerCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="slayerCustomGp" name="slayerCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="slayerBoost" name="slayerBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************slayer *************-->
-
-
-        <!-- *************HUNTER *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Hunter_icon.webp"
-                    alt="Hunter">
-                <p id="slayerLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="hunterDropdown" id="hunterDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">80kph Kebbits</option>
-                        <option value="2">115kph Red Chinchompas</option>
-                        <option value="3">125kph Black Salamanders</option>
-                        <option value="4">150kph Herbiboar</option>
-                        <option value="5">160kph Black Chinchompas</option>
-                        <option value="6" selected="selected">175kph Hunters Rumors</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalHunter" id="finalHunter" onClick="ExpandSection(this.id)">
-                <i id="arrowHunter" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalHunter" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="hunterCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="hunterFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-                <!-- ************hunter CUSTOM*************-->
-        <div id="expandedHunter" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="hunterCustomXp" name="hunterCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="hunterCustomGp" name="hunterCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="hunterBoost" name="hunterBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************end hunter *************-->
-
-        <!-- *************MINING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Mining_icon.webp"
-                    alt="Mining">
-                <p id="mininigLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="miningDropdown" id="miningDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">25kph Crashed Stars</option>
-                        <option value="2">50kph Iron Ore</option>
-                        <option value="3">60kph Motherlode Mine</option>
-                        <option value="4">69kph Blast Mine</option>
-                        <option value="5">70kph Gem Rocks</option>
-                        <option value="6">75kph Zalcano</option>
-                        <option value="7">78kph Solo Volcanic Mine</option>
-                        <option value="8" selected="selected">85kph Volcanic Mine</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalMining" id="finalMining" onClick="ExpandSection(this.id)">
-                <i id="arrowMining" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalMining" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="miningCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="miningFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-        <!-- ************Mining CUSTOM*************-->
-        <div id="expandedMining" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="miningCustomXp" name="miningCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="miningCustomGp" name="miningCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="miningBoost" name="miningBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************end Mining *************-->
-
-
-        <!-- *************SMITHING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Smithing_icon.webp"
-                    alt="Smithing">
-                <p id="smithingLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="smithingDropdown" id="smithingDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">200kph Giants Foundry</option>
-                        <option value="2">250kph Anvil Smithing</option>
-                        <option value="3" selected="selected">350kph Blast Furnace</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalSmithing" id="finalSmithing" onClick="ExpandSection(this.id)">
-                <i id="arrowSmithing" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalSmithing" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="smithingCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="smithingFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-        <!-- ************smithing CUSTOM*************-->
-        <div id="expandedSmithing" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="smithingCustomXp" name="smithingCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="smithingCustomGp" name="smithingCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="smithingBoost" name="smithingBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************end Smithing *************-->
-
-
-        <!-- *************FISHING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Fishing_icon.webp"
-                    alt="Fishing">
-                <p id="fishingLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="fishingDropdown" id="fishingDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">40kph Fly Fishing</option>
-                        <option value="2">50kph Barbarian Fishing</option>
-                        <option value="3">75kph Tempoross</option>
-                        <option value="4" selected="selected">80kph Drift Net Fishing</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalFishing" id="finalFishing" onClick="ExpandSection(this.id)">
-                <i id="arrowFishing" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalFishing" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="fishingCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="fishingFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-        <!-- ************fishing CUSTOM*************-->
-        <div id="expandedFishing" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="fishingCustomXp" name="fishingCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="fishingCustomGp" name="fishingCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="fishingBoost" name="fishingBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************end  fishing *************-->
-
-        <!-- *************COOKING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Cooking_icon.webp"
-                    alt="Cooking">
-                <p id="cookingLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="cookingDropdown" id="cookingDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">150kph Lobster</option>
-                        <option value="2">250kph Karambwans</option>
-                        <option value="3">300kph Angler Fish</option>
-                        <option value="4">450kph Bake Summer Pie Spell</option>
-                        <option value="5" selected="selected">900kph 1t Karambawans</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalCooking" id="finalCooking" onClick="ExpandSection(this.id)">
-                <i id="arrowCooking" class="arrow right"></i>
-            </div>
-            <div class="columnC righttext" id="finalCooking" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="cookingCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="cookingFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-        </div>
-        <!-- ************cooking CUSTOM*************-->
-        <div id="expandedCooking" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="cookingCustomXp" name="cookingCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="cookingCustomGp" name="cookingCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="cookingBoost" name="cookingBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************End Cooking *************-->
-
-        <!-- *************FIREMAKING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Firemaking_icon.webp"
-                    alt="Firemaking">
-                <p id="firemakingLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="firemakingDropdown" id="firemakingDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">250kph Mahogany Logs</option>
-                        <option value="2">275kph Yew Logs</option>
-                        <option value="3">290kph Wintertodt</option>
-                        <option value="4">400kph Magic Logs</option>
-                        <option value="5" selected="selected">450kph Redwood logs</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalFiremaking" id="finalFiremaking" onClick="ExpandSection(this.id)">
-                <i id="arrowFiremaking" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalFiremaking" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="firemakingCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="firemakingFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-
-        </div>
-        <!-- ************firemaking CUSTOM*************-->
-        <div id="expandedFiremaking" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="firemakingCustomXp" name="firemakingCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="firemakingCustomGp" name="firemakingCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="firemakingBoost" name="firemakingBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************END Firemaking *************-->
-
-        <!-- *************WOODCUTTING *************-->
-        <div class="row">
-            <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Woodcutting_icon.webp"
-                    alt="Woodcutting">
-                <p id="woodcuttingLevelDisplay" class="center">1/99</p>
-            </div>
-            <div class="columnB">
-                <form>
-                    <select class="fullw minimal" name="woodcuttingDropdown" id="woodcuttingDropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">68kph Cutting Redwood Trees</option>
-                        <option value="2">75kph Cutting Blisterwood Trees</option>
-                        <option value="3">90kph Forrestry at Yews</option>
-                        <option value="4">90kph Cutting Teak Trees</option>
-                        <option value="5" selected="selected">100kph Cutting Scullicep Trees</option>
-                    </select>
-                </form>
-            </div>
-
-            <div class="columnD" name="finalWoodcutting" id="finalWoodcutting" onClick="ExpandSection(this.id)">
-                <i id="arrowWoodcutting" class="arrow right"></i>
-            </div>
-
-            <div class="columnC righttext" id="finalWoodcutting" onClick="ExpandSection(this.id)">
-                <nobr>
-                    <div id="woodcuttingCost" class="righttext">? Gp</div>
-                </nobr>
-                <nobr>
-                    <div id="woodcuttingFinal" class="righttext" style="text-align:right;">? hours</div>
-                </nobr>
-            </div>
-        </div>
-        <!-- ************woodcutting CUSTOM*************-->
-        <div id="expandedWoodcutting" class="row hidden transition">
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="woodcuttingCustomXp" name="woodcuttingCustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="woodcuttingCustomGp" name="woodcuttingCustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
-            </div>
-            <div class=" columnE center">
-                    <input type="text" style="text-align:center" id="woodcuttingBoost" name="woodcuttingBoost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted">
-            </div>
-
-        </div>
-        <!-- *************End Woodcutting *************-->
+        {{/each}}
+        <!-- HANDLEBARS end -->
 
         <!-- *************FARMING *************-->
         <div class="row">
@@ -1114,7 +225,6 @@
                 <form>
 
                 </form>
-
             </div>
 
             <div class="columnD" name="finalRanged" id="finalRanged" onClick="ExpandSection(this.id)">
@@ -1179,11 +289,7 @@
                         &nbsp;
                     </div>
                 </div>
-
-
-
                 <br><br>
-
                 <div style="padding-top:10px;">
                     <!-- Final Outome Area -->
                     <div class="OutcomeColA" style="float: left;">
