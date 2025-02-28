@@ -312,11 +312,17 @@ function DisplayAllRemainingCost(){
 }
 
 function ExpandSection(clickedSection){
-    console.log("Clicked section " + clickedSection);
-    expandSectionName = clickedSection.replace("final", "");
+    //Expands the section to show the customisation options
+    //Get the name of the desired skill
+    var clickedSectionId = clickedSection
+    console.log("Clicked section " + clickedSectionId);
+    //Remove the words, Final and Expander from the div ID
+    var expandSectionName = clickedSectionId.replace("Expander", "");
+    expandSectionName = expandSectionName.replace("Final", "");
     console.log("Clicked section " + expandSectionName);
-    $( "#expanded"+expandSectionName).toggleClass("expanded");
-    $( "#arrow"+expandSectionName).toggleClass("down");
+    //Find the expandable section with the same name, and add a css class
+    $( "#"+expandSectionName+"Expanded").toggleClass("expanded");
+    $( "#"+expandSectionName +"Arrow").toggleClass("down");
 }
 
 function SubmitUsername(){

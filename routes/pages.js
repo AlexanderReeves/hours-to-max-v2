@@ -36,24 +36,184 @@ router.get('/', verifyAccessToken,(req, res) => {
     userSignedIn = false
 
       var skills = {
-        ranged: [ "ranged" ],
-        prayer: [ "prayer" ],
-        magic: ["magic"],
-        runecraft: [ "runecraft" ],
-        construction: [ "construction" ],
-        agility: ["agility"],
-        herblore: [ "herblore" ],
-        thieving: [ "prayer" ],
-        crafting: ["crafting"],
-        fletching: [ "fletching" ],
-        slayer: [ "slayer" ],
-        hunter: [ "hunter" ],
-        mining: ["mining"],
-        smithing: [ "smithing" ],
-        fishing: [ "fishing" ],
-        cooking: ["cooking"],
-        firemaking: [ "firemaking" ],
-        wooductting: [ "woodcutting" ]
+        "ranged": {
+            "skillName":"ranged",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"90kph Cannon Ice Trolls"},
+                {"method":"130kph Pest Control"},
+                {"method":"140kph NMZ Venator Bow"},
+                {"method":"675kph Chinning Monkeys"},
+                {"method":"710kph Chinning Monkeys (red)"},
+                {"method":"850kph Chinning Monkeys (black)"}]
+        },
+        "prayer": {
+            "skillName":"prayer",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"50kph Big Bones"},
+                {"method":"250kph Baby Dragon Bones"},
+                {"method":"437kph Wyrm Bones"},
+                {"method":"600kph Dragon Bones"},
+                {"method":"800kph Lava Dragon Bones"},
+                {"method":"1250kph Sup. Dragon Bones"}]
+        },
+        "magic": {
+            "skillName":"magic",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"78kph Cast High Level Alchemy"},
+                {"method":"150kph Cast Plank Make"},
+                {"method":"150kph Casting String Jewellery"},
+                {"method":"175kph Stun Alching"},
+                {"method":"380kph Ice Barrage Manical Monkeys"}]
+        },
+        "runecraft": {
+            "skillName":"runecraft",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"35kph Blood Runes"},
+                {"method":"60kph Solo Lava Runes"},
+                {"method":"65kph Guardians Of The Rift"},
+                {"method":"70kph Ourania Altar"},
+                {"method":"80kph Arceeus Library"},
+                {"method":"100kph Steam Runes"}]
+        },
+        "construction": {
+            "skillName":"construction",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"190kph Mahogany Homes"},
+                {"method":"400kph Mythical Capes"},
+                {"method":"450kph Oak Larders"},
+                {"method":"500kph Oak Dungeon Doors"},
+                {"method":"580kph Teak Benches"},
+                {"method":"850kph Mahogany Tables"},
+                {"method":"1000kph Gnome Benches"}]
+        },
+        "agility": {
+            "skillName":"agility",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"45kph Seers Rooftop"},
+                {"method":"50kph Wilderness Agility"},
+                {"method":"50kph Pollivneach Rooftop"},
+                {"method":"55kph Relleka Rooftop"},
+                {"method":"65kph Ardougne Rooftop"},
+                {"method":"65kph Priffdinas Rooftop"},
+                {"method":"90kph Hallowed Sepulchre"}]
+        },
+        "herblore": {
+            "skillName":"herblore",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"110kph Cast Degrime Torstol"},
+                {"method":"170kph Making Irit Tar"},
+                {"method":"210kph Making Combat potion"},
+                {"method":"400kph Make Magic Potion"},
+                {"method":"500kph Make Ancient Brew"}]
+        },
+        "thieving": {
+            "skillName":"thieving",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"110kph Master Farmers"},
+                {"method":"140kph Elves"},
+                {"method":"150kph Vyres"},
+                {"method":"210kph Ardy Knights"},
+                {"method":"240kph Blackjacking"},
+                {"method":"260kph Rogues Castle Chests"},
+                {"method":"265kph Pyramid Plunder"}]
+        },
+        "crafting": {
+            "skillName":"crafting",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"150kph Dragonstone Bracelets"},
+                {"method":"220kph Cutting Rubies"},
+                {"method":"270kph Cutting Diamonds"},
+                {"method":"360kph Cutting Dragonstones"},
+                {"method":"415kph Crafting Black D'hide Bodies"}]
+        },
+        "fletching": {
+            "skillName":"fletching",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"1900kph Mithril Darts"},
+                {"method":"2250kph Adamant Darts"},
+                {"method":"2500kph Rune Darts"},
+                {"method":"3000kph Amethyst Darts"},
+                {"method":"4000kph Dragon Darts"}]
+        },
+        "slayer": {
+            "skillName":"slayer",
+            "trainingMethods":[
+                {"method":"Custom Training Method"}]
+        },
+        "hunter": {
+            "skillName":"hunter",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"80kph Kebbits"},
+                {"method":"115kph Red Chinchompas"},
+                {"method":"125kph Black Salamanders"},
+                {"method":"160kph Black Chinchompas"},
+                {"method":"175kph Hunters Rumors"}]
+        },
+        "mining": {
+            "skillName":"mining",
+            "trainingMethods":[
+                {"method":"25kph Crashed Stars", },
+                {"method":"50kph Iron Ore"},
+                {"method":"60kph Motherlode Mine"},
+                {"method":"69kph Blast Mine"},
+                {"method":"70kph Gem Rocks"},
+                {"method":"75kph Zalcano"},
+                {"method":"78kph Solo Volcanic Mine"},
+                {"method":"85kph Volcanic Mine"}]
+        },
+        "smithing": {
+            "skillName":"smithing",
+            "trainingMethods":[
+                {"method":"200kph Giants Foundry", },
+                {"method":"250kph Anvil Smithing"},
+                {"method":"350kph Blast Furnace"}]
+        },
+        "fishing": {
+            "skillName":"fishing",
+            "trainingMethods":[
+                {"method":"40kph Fly Fishing", },
+                {"method":"50kph Barbarian Fishing"},
+                {"method":"75kph Tempoross"},
+                {"method":"80kph Drift Net Fishing"}]
+        },
+        "cooking": {
+            "skillName":"cooking",
+            "trainingMethods":[
+                {"method":"150kph Lobster", },
+                {"method":"250kph Karambwans"},
+                {"method":"300kph Angler Fish"},
+                {"method":"450kph Bake Summer Pie Spell"},
+                {"method":"900kph 1t Karambawans"}]
+        },
+        "firemaking": {
+            "skillName":"firemaking",
+            "trainingMethods":[
+                {"method":"250kph Mahogany Logs", },
+                {"method":"275kph Yew Logs"},
+                {"method":"290kph Wintertodt"},
+                {"method":"400kph Magic Log"},
+                {"method":"450kph Redwood logs"}]
+        },
+        "woodcutting": {
+            "skillName":"woodcutting",
+            "trainingMethods":[
+                {"method":"68kph Cutting Redwood Trees", },
+                {"method":"75kph Cutting Blisterwood Trees"},
+                {"method":"90kph Forrestry at Yews"},
+                {"method":"90kph Cutting Teak Trees"},
+                {"method":"100kph Cutting Scullicep Trees"}]
+        }
       };
 
     if(req.verifiedUser){

@@ -97,13 +97,13 @@ class Skill {
     //Displays the remainng number of hours of training for a skill
     var remainingHoursTwoDecimal = this.GetRemainingHours();
     remainingHoursTwoDecimal = remainingHoursTwoDecimal.toFixed(1);
-    $('#' + this.name + 'Final').html(remainingHoursTwoDecimal + " hrs");
+    $('#' + this.name + 'Hours').html(remainingHoursTwoDecimal + " hrs");
     //Display green for gained money, and red for lost money
     if(remainingHoursTwoDecimal <= 0){
-      $('#' + this.name + 'Final').addClass("completed");
+      $('#' + this.name + 'Hours').addClass("completed");
       $('#' + this.name + 'Dropdown').attr("disabled", true);
     }else{
-      $('#' + this.name + 'Final').removeClass("completed");
+      $('#' + this.name + 'Hours').removeClass("completed");
       $('#' + this.name + 'Dropdown').attr("disabled", false);
     }
   }

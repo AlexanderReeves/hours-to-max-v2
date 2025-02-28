@@ -135,37 +135,37 @@
         <div class="row">
 
             <div class="columnA center"><img style="margin-top:10px" height="30" class="ico" class="ico"
-                    src="icons/{{this}}_icon.webp" alt="{{this}}">
-                <p id="{{this}}LevelDisplay" class="center">1/99</p>
+                    src="icons/{{this.skillName}}_icon.webp" alt="{{this.skillName}}">
+                <p id="{{this.skillName}}LevelDisplay" class="center">1/99</p>
             </div>
 
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="{{this}}Dropdown" id="{{this}}Dropdown" onchange="DropdownWasChanged(this);">
-                        <option value="0">Custom</option>
-                        <option value="1">90kph Cannon Ice Trolls</option>
-                        <option value="2">130kph Pest Control</option>
-                        <option value="3">140kph NMZ Venator Bow</option>
-                        <option value="4">675kph Chinning Monkeys</option>
-                        <option value="5">710kph Chinning Monkeys (red)</option>
-                        <option value="6">850kph Chinning Monkeys (black)</option>
+                    <select class="fullw minimal" name="{{this.skillName}}Dropdown" id="{{this.skillName}}Dropdown" onchange="DropdownWasChanged(this);">
+                        {{#trainingMethods}}
+                            <!-- Nested handlebars loop -->
+                            <option value="{{@index}}">{{this.method}}</option>
+                        {{/trainingMethods}}
+                        {{!-- {{#if this.name}}
+                            <option value="7">{{this.name}}</option>
+                        {{/if}}  --}}
                     </select>
 
                 </form>
             </div>
 
             
-            <div class="columnD" name="finalRanged" id="finalRanged" onClick="ExpandSection(this.id)">
-                <i id="arrowRanged" class="arrow right"></i>
+            <div class="columnD" name="{{this.skillName}}Expander" id="{{this.skillName}}Expander" onClick="ExpandSection(this.id)">
+                <i id="{{this.skillName}}Arrow" class="arrow right"></i>
             </div>
 
-            <div class="columnC righttext" name="finalRanged" id="finalRanged" onClick="ExpandSection(this.id)">
+            <div class="columnC righttext" name="{{this.skillName}}Final" id="{{this.skillName}}Final" onClick="ExpandSection(this.id)">
                 <div>
                     <nobr>
-                        <div id="{{this}}Cost" class="righttext">? Gp</div>
+                        <div id="{{this.skillName}}Cost" class="righttext">? Gp</div>
                     </nobr>
                     <nobr>
-                        <div id="{{this}}Final" class="righttext" style="text-align:right;">? Hours</div>     
+                        <div id="{{this.skillName}}Hours" class="righttext" style="text-align:right;">? Hours</div>     
                     </nobr>
                 </div>
             </div>
@@ -174,32 +174,32 @@
         </div>
 
         <!-- *************custom CUSTOM*************-->
-        <div id="expandedRanged" class="row hidden transition">
+        <div id="{{this.skillName}}Expanded" class="row hidden transition">
             <div class=" columnE center">
                 <p>Boost:</p>
             </div>
             <div class=" columnF center">                    
-                    <input type="text" style="text-align:center" id="{{this}}Boost" name="{{this}}Boost"
+                    <input type="text" style="text-align:center" id="{{this.skillName}}Boost" name="{{this.skillName}}Boost"
                     onchange="customBoostUpdate(this);" placeholder="Levels boosted">
             </div>
             <div class=" columnG center">
                 <p >Custom Xp:</p>
             </div>
             <div class=" columnH center">            
-                <input type="text" style="text-align:center" id="{{this}}CustomXp" name="{{this}}CustomXp"
+                <input type="text" style="text-align:center" id="{{this.skillName}}CustomXp" name="{{this.skillName}}CustomXp"
                     onchange="customXpUpdate(this);" placeholder="Xp per hour">
             </div>
              <div class=" columnI center">
                 <p >Cost:</p>
             </div>
             <div class=" columnJ center">
-                    <input type="text" style="text-align:center" id="{{this}}CustomGp" name="{{this}}CustomGp"
+                    <input type="text" style="text-align:center" id="{{this.skillName}}CustomGp" name="{{this.skillName}}CustomGp"
                     onchange="customGpUpdate(this);" placeholder="Gp per xp">
 
             </div>
             
             <div class=" columnK center" style="text-align:center;" >       
-                <input type="button" class="colorbutton theme refreshbutton" id="{{this}}Refresh" name="{{this}}Refresh"  value="&#x2192;" onclick="RefreshCustom(this.id)" style="width:100px">
+                <input type="button" class="colorbutton theme refreshbutton" id="{{this.skillName}}Refresh" name="{{this.skillName}}Refresh"  value="&#x2192;" onclick="RefreshCustom(this.id)" style="width:100px">
             </div>
 
         </div>
@@ -227,8 +227,8 @@
                 </form>
             </div>
 
-            <div class="columnD" name="finalRanged" id="finalRanged" onClick="ExpandSection(this.id)">
-                {{!-- <i id="arrowRanged" class="arrow right"></i> --}}
+            <div class="columnD" name="farmingExpander" id="farmingExpander" >
+                {{!-- <i id="arrowFarming" class="arrow right"></i> --}}
             </div>
 
             <div class="columnC righttext" id="finalcolumn">
