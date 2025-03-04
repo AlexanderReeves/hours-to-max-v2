@@ -20,25 +20,25 @@ var hoursToGoal = 0;
 
 //****Default Variables****
 
-//The xp required to reach the goal level for every skill if attempting to obtain a
-//quest cape rather than a max cape
-var questXpGoalArray = [0,0,0,0,0,273742,101333,1210421,737627,814445
-    ,273742,333804,1210421,737627,737627,899257,737627,737627,737627,668051,814445,273742,737627
-    ,737627];
-//The xp required to reach the goal level for every skill if attempting to obtain an
-//achievement cape rather than a max cape
-var achievementXpGoalArray = [0,0,0,0,0,737627,3258594,9684577,3258594,5346332
-    ,8771558,9684577,3258594,3258594,5902831,3258594,5346332,5346332,5902831,8771558,5902831,5902831,737627
-    ,1629200];
-
 //The level requiered for each skill to obtain an achievment cape
-var achLvlArray = [0,0,0,0,0,70,85,96,95,90
-    ,95,96,85,85,91,85,90,90,91,95,91,91,70
-    ,78];
+var achLvlArray = {"attack": 50,"strength": 76, "defence": 70, "hitpoints": 70, "ranged" : 70, "prayer": 85, "magic" : 96, "runecraft": 91, "construction": 78,
+    "agility" : 90, "herblore": 90, "thieving": 91, "crafting": 85, "fletching" :95, "slayer": 95, "hunter": 70, "mining": 85, "smithing": 91, 
+    "fishing": 96, "cooking":95, "firemaking": 85, "woodcutting":90, "farming" : 91};
+
 //The level requiered for each skill to obtain a quest cape
-var questLvlArray = [0,0,0,0,0,60,50,75,70,71
-    ,60,62,75,70,70,72,70,70,70,69,70,60,70
-    ,70];
+var questLvlArray = {"attack": 50,"strength": 60, "defence": 65, "hitpoints": 50, "ranged" : 62, "prayer": 50, "magic" : 75, "runecraft": 60, "construction": 70,
+    "agility" : 70, "herblore": 70, "thieving": 72, "crafting": 70, "fletching" :60, "slayer": 69, "hunter": 70, "mining": 72, "smithing": 70, 
+    "fishing": 62, "cooking":65, "firemaking": 75, "woodcutting":70, "farming" : 70};
+
+//Xp required to reach each level as array
+var levelToXpArray = [0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107, 2411, 2746, 3115, 3523, 3973,
+    4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833, 16456, 18247, 20224, 22406,
+    24815, 27473, 30408, 33648, 37224, 41171, 45529, 50339, 55649, 61512, 67983, 75127, 83014, 91721, 101333,
+    111945, 123660, 136594, 150872, 166636, 184040, 203254, 224466, 247886, 273742, 302288, 333804, 368599,
+    407015, 449428, 496254, 547953, 605032, 668051, 737627, 814445, 899257, 992895, 1096278, 1210421, 1336443,
+    1475581, 1629200, 1798808, 1986068, 2192818, 2421087, 2673114, 2951373, 3258594, 3597792, 3972294, 4385776,
+    4842295, 5346332, 5902831, 6517253, 7195629, 7944614, 8771558, 9684577, 10692629, 11805606, 13034431]
+
 
 //The xp required for a maximum level in any skill
 var ninetyNine = 13034431;
@@ -75,7 +75,7 @@ function InitialiseSkills(){
 
     //Each skills default selection should match the one in the html page
     //Setting dropdown to index 0 in the future should be for custom inputs...
-    skills.push( new Skill("ranged", [0,90000, 130000, 140000, 675000, 710000, 850000], [0,0,-0.1,-0.2,-3.2,-4.7,-8.4], 6));
+    skills.push( new Skill("ranged", [0,90000, 130000, 140000, 675000, 710000, 850000], [0,0,-0.1,-0.1,-4.1,-5.4,-7.6], 6));
     skills.push( new Skill("prayer", [0,50000, 250000, 437000, 600000, 800000, 1250000], [0,0,0,0,0,0,0], 6));
     skills.push( new Skill("magic", [0,78000, 150000, 150000, 175000, 380000], [0,0,0,0,0,0], 5));
     skills.push( new Skill("runecraft", [0,35000, 60000, 65000, 70000, 80000, 100000], [0,0,0,0,0,0,0],6 ));
@@ -230,6 +230,16 @@ function DropdownWasChanged(clickedDropdown){
 function RefreshCustom(clickedRefresh){
     console.log("Clicked section " + clickedRefresh);
     skillName = clickedRefresh.replace("Refresh", "");
+
+    //Force change the dropdown to custom selection
+    skills.forEach(element => {
+        if(element.name==skillName && skillName != 'farming'){
+            //Set the skill object to match the selected dropdown value
+            element.dropdownSelection = 0;
+            element.UpdateDropdown();
+        }
+    });
+
     //Get all the custom values
     //CustomXP
     var customXp = $('#' + skillName + 'CustomXp').val();
@@ -307,7 +317,9 @@ function DisplayAllRemainingCost(){
             element.DisplayRemainingCost();
         }
     });
-    //Display the final result
+    //TO millions of gp
+    totalRemainingCost = totalRemainingCost/1000000;
+    //Display the final result, in millions of gp
     $('#goalGpDisplay').html(totalRemainingCost.toFixed(2));
 }
 
@@ -341,6 +353,36 @@ function SubmitUsername(){
     DisplayAllLevels();
     //Display the remaining cost of training each skill
     DisplayAllRemainingCost();
+}
+
+function ChangeGoal(tabName){
+    currentTab = tabName;
+    //Set the current goal of each skill to depend on the current tab
+    skills.forEach(element => {
+        if(tabName == "achievement"){
+            element.goalLevel = achLvlArray[element.name];
+            element.goalXp = levelToXpArray[element.goalLevel];
+        }
+        if(tabName == "quest"){
+            element.goalLevel = questLvlArray[element.name];
+            element.goalXp = levelToXpArray[element.goalLevel];
+        }
+        if(tabName == "max"){
+            element.goalLevel = 99;
+            element.goalXp = levelToXpArray[element.goalLevel];
+        }
+    })
+
+    UpdateAllSkillDropdowns();
+    //Update the custom fields to display the data that loaded
+    UpdateAllSkillCustomisations();
+    //Display the remaining hours of training for each skill
+    DisplayAllRemainingHours();
+    //Display current level and goal level
+    DisplayAllLevels();
+    //Display the remaining cost of training each skill
+    DisplayAllRemainingCost();
+    
 }
 
 

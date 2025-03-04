@@ -716,10 +716,12 @@ padding-right:0px;
     text-align: center;
 }
 
-.columnG {
+.columnG p{
     float: left;
     width: 12%;
     text-align: center;
+    font-size: 30px;
+    margin-top: -15px;
 }
 .columnH {
     float: left;
@@ -727,12 +729,19 @@ padding-right:0px;
     text-align: center;
 }
 
-.columnI {
+.columnI p{
     float: left;
     width: 12%;
     text-align: center;
-    padding-top:28px
+    padding-top:28px;
 }
+
+.columnI p{
+    font-size: 30px;
+    margin-top: -40px;
+    width:100%;
+}
+
 .columnJ {
     float: left;
     width: 10%;

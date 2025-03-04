@@ -89,7 +89,18 @@ class Skill {
 
   GetRemainingCost(){
     //Find the cost in gp to reach the players current goal for this skill
-    return (this.gpPerXpRates[this.dropdownSelection] *  this.GetRemainingHours());
+    var costPerXp = 0;
+    var remainingXp = this.goalXp - this.currentXp;
+    remainingXp <= 0 ? remainingXp = 0: remainingXp = remainingXp;
+    //If the training method is custom, the gp rate will be custom
+    if(this.dropdownSelection == 0){
+      costPerXp = this.customGpPerXp;
+    }else{
+      //Otherwise, cost will come from array
+      costPerXp = this.gpPerXpRates[this.dropdownSelection];
+    }
+    //Cost is remaining XP x cost per xp
+    return (costPerXp * remainingXp);
   }
 
 
@@ -111,8 +122,10 @@ class Skill {
   DisplayRemainingCost(){
     //Displays the remainng number of hours of training for a skill
     var remainingCostTwoDecimal = this.GetRemainingCost();
-    remainingCostTwoDecimal = remainingCostTwoDecimal.toFixed(1);
-    $('#' + this.name + 'Cost').html(remainingCostTwoDecimal + " Gp");
+    //Also divide by million
+    remainingCostTwoDecimal = remainingCostTwoDecimal/1000000;
+    remainingCostTwoDecimal = (remainingCostTwoDecimal.toFixed(1));
+    $('#' + this.name + 'Cost').html(remainingCostTwoDecimal + " mgp");
     //Display green for gained money, and red for lost money
     if(remainingCostTwoDecimal >= 0){
       $('#' + this.name + 'Cost').removeClass("expense");
