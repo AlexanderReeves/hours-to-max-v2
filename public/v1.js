@@ -163,6 +163,12 @@ function PullFromDatabase(){
                     }
                 }
             }
+            if(element.name == 'farming'){
+                //Load in the downloaded seed choice, and num of patches.
+                seedChoice = dbuser.seedChoice;
+                numPatches = dbuser.farmingPatches;
+                console.log("Seed choice = " + seedChoice + ". Patches = " + numPatches + ".");
+            }
         });
     }
     return; // avoid to execute the actual submit of the form
@@ -215,6 +221,19 @@ function DropdownWasChanged(clickedDropdown){
             //Set the skill object to match the selected dropdown value
             element.UpdateTrainingMethod(skillDropValue);
             console.log("Updaing training method for " + skillName+ " to index " + skillDropValue);
+        }
+        //Occurs when changes happen to the farming or seed dropdown
+        if((element.name == "farming") && (skillName == "seed" || skillName == "patches")){
+            console.log("Faming change " + skillName);
+            if(skillName == "seed"){
+                element.seedChoice = skillDropValue -1;
+            }
+            if(skillName == "patches"){
+                element.numPatches = skillDropValue;
+            }
+            console.log("Updating farm run display");
+            //Update remaining tree runs based on xp per run
+            element.DisplayRemainingFarmRuns();
         }
     });
 
@@ -287,6 +306,8 @@ function DisplayAllRemainingHours(){
             totalRemainingHours += element.GetRemainingHours();
             totalHoursFromZero += element.GetHoursFromZero();
             element.DisplayRemainingHours();
+        }else{
+            element.DisplayRemainingFarmRuns();
         }
     });
     //Display the final result

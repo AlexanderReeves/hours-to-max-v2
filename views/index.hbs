@@ -216,10 +216,10 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="seeddrop" id="seeddrop" onchange="DropdownWasChanged(this);">
-                        <option value="1">3403xp Maple Seed</option>
-                        <option value="2">7071/99 Yew Seed</option>
-                        <option value="3" selected="selected">13768xp Magic Seed</option>
+                    <select class="fullw minimal" name="seedDropdown" id="seedDropdown" onchange="DropdownWasChanged(this);">
+                        <option value="1">Maple Seed (3403xp ea)</option>
+                        <option value="2">Yew Seed (7071xp ea)</option>
+                        <option value="3" selected="selected">Magic Seed (13768xp ea)</option>
                     </select>
                 </form>
                 <form>
@@ -236,7 +236,7 @@
                     <div id="farmingCost" class="righttext">? Gp</div>
                 </nobr>
                 <nobr>
-                    <div id="farmingFinal" class="righttext" style="text-align:right;">? hours</div>
+                    <div id="farmRunsDisplay" name="farmRunsDisplay" class="righttext" style="text-align:right;">? runs</div>
                 </nobr>
             </div>
 
@@ -250,7 +250,7 @@
             </div>
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="patchesdrop" id="patchesdrop" onchange="FaDropdownWasChanged()">
+                    <select class="fullw minimal" name="patchesDropdown" id="patchesDropdown" onchange="DropdownWasChanged(this);">
                         <option value="1">1 patch</option>
                         <option value="2">2 patches</option>
                         <option value="3">3 patches</option>

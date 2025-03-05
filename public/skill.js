@@ -16,6 +16,12 @@ class Skill {
   levelsBoosted = 0;
   remainingHours = 0;
 
+  //Farming exclusive variables
+  seedChoice = 0;
+  seedValues = [3403, 7071, 13768];
+  numPatches = 5;
+
+
   constructor(name, xpRates, gpPerXpRates, defaultSelection, dropdownName) {
     //Add the skill name
     this.name = name;
@@ -60,6 +66,8 @@ class Skill {
     this.dropdownSelection = index;
     this.DisplayRemainingHours();
   }
+
+
 
   GetRemainingHours(){
     var currentXpPerHour = this.xpRates[this.dropdownSelection];
@@ -117,6 +125,27 @@ class Skill {
       $('#' + this.name + 'Hours').removeClass("completed");
       $('#' + this.name + 'Dropdown').attr("disabled", false);
     }
+  }
+
+  DisplayRemainingFarmRuns(){
+    console.log("Displaying remaining farm runs");
+    var xpPerFarmRun = this.seedValues[this.seedChoice] * this.numPatches;
+    console.log("current seed choice  = " + this.seedChoice);
+    console.log("current patches  = " + this.numPatches);
+    console.log("xp per run = " + xpPerFarmRun)
+    var remainingXp = this.goalXp - this.currentXp;
+    if(remainingXp <= 0){
+      remainingXp = 0;
+    }
+    console.log("remaining xp " + remainingXp);
+    var remainingRuns = remainingXp / xpPerFarmRun;
+    //Add one to wipe out any remainder
+    if(remainingXp % xpPerFarmRun > 0){
+      remainingRuns += 1;
+    }
+    console.log("remaining runs: " + remainingRuns);
+    $('#farmRunsDisplay').html(remainingRuns.toFixed(0) + " runs");
+    $('#goalFarmDisplay').html(remainingRuns.toFixed(0));
   }
 
   DisplayRemainingCost(){
