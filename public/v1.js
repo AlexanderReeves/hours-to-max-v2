@@ -17,6 +17,9 @@ $.ajaxSetup({ //Prevent future code loading before previous code finishes.
 //level Old School Runescape account.
 var currentTab = "max";
 var hoursToGoal = 0;
+//The current username of the website user
+var user = "test";
+var totalLevel = 32;
 
 //****Default Variables****
 
@@ -42,8 +45,6 @@ var levelToXpArray = [0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1
 
 //The xp required for a maximum level in any skill
 var ninetyNine = 13034431;
-//The current username of the website user
-var user = "test";
 
 //Start reworking code into re-usable classes.
 //Skills class contains an array of skills.
@@ -75,6 +76,9 @@ function InitialiseSkills(){
 
     //Each skills default selection should match the one in the html page
     //Setting dropdown to index 0 in the future should be for custom inputs...
+    skills.push( new Skill("attack", [0], [0],-1 ));
+    skills.push( new Skill("strength", [0], [0],-1 ));
+    skills.push( new Skill("defence", [0], [0],-1 ));
     skills.push( new Skill("ranged", [0,90000, 130000, 140000, 675000, 710000, 850000], [0,0,-0.1,-0.1,-4.1,-5.4,-7.6], 6));
     skills.push( new Skill("prayer", [0,50000, 250000, 437000, 600000, 800000, 1250000], [0,0,0,0,0,0,0], 6));
     skills.push( new Skill("magic", [0,78000, 150000, 150000, 175000, 380000], [0,0,0,0,0,0], 5));
@@ -124,7 +128,7 @@ function PullFromDatabase(){
     var authCode = $.cookie("authorization");
     //Don't run if an auth code is not in the cookie
     if(!authCode){
-        console.log("no userid found in cookies")
+        console.log("No 'userid' found in the browser cookies.")
         return;
     }
     //Request all the user info from the server
@@ -167,7 +171,6 @@ function PullFromDatabase(){
                 //Load in the downloaded seed choice, and num of patches.
                 seedChoice = dbuser.seedChoice;
                 numPatches = dbuser.farmingPatches;
-                console.log("Seed choice = " + seedChoice + ". Patches = " + numPatches + ".");
             }
         });
     }
@@ -192,12 +195,13 @@ function PullFromJagex(){
                 //If theres xp, it means we got all the data desired.
         		if (field[i].xp != null) {
                     //Get the specific parts of data that are useful to us
-                    // console.log(field[i].name)
-                    // console.log(field[i].xp)
                     var pulledSkillName = field[i].name.toLowerCase();
                     var pulledSkillXp = field[i].xp;
                     var pulledSkillLevel = field[i].level;
                     //Apply the pulled data into the local skills
+                    if(pulledSkillName == "overall"){
+                        totalLevel = field[i].level;
+                    };
                     skills.forEach(element => {
                         if(element.name == pulledSkillName){
                             element.currentXp = pulledSkillXp;
@@ -220,18 +224,15 @@ function DropdownWasChanged(clickedDropdown){
         if(element.name==skillName && skillName != 'farming'){
             //Set the skill object to match the selected dropdown value
             element.UpdateTrainingMethod(skillDropValue);
-            console.log("Updaing training method for " + skillName+ " to index " + skillDropValue);
         }
         //Occurs when changes happen to the farming or seed dropdown
         if((element.name == "farming") && (skillName == "seed" || skillName == "patches")){
-            console.log("Faming change " + skillName);
             if(skillName == "seed"){
                 element.seedChoice = skillDropValue -1;
-            }
+            };
             if(skillName == "patches"){
                 element.numPatches = skillDropValue;
-            }
-            console.log("Updating farm run display");
+            };
             //Update remaining tree runs based on xp per run
             element.DisplayRemainingFarmRuns();
         }
@@ -247,7 +248,6 @@ function DropdownWasChanged(clickedDropdown){
 }
 
 function RefreshCustom(clickedRefresh){
-    console.log("Clicked section " + clickedRefresh);
     skillName = clickedRefresh.replace("Refresh", "");
 
     //Force change the dropdown to custom selection
@@ -266,8 +266,6 @@ function RefreshCustom(clickedRefresh){
     var customGpPerXp = $('#' + skillName + 'CustomGp').val();
     //LevelsBoosted
     var levelsBoosted = $('#' + skillName + 'Boost').val();
-    //console.log("custom xp = " + customXp + ". custom gp = " + customGpPerXp + ". boost = " + levelsBoosted + ".");
-    //Update each customisation for that skill locally
     skills.forEach(element => {
         if(element.name==skillName && skillName != 'farming'){
             //Set the skill object to match the selected dropdown value
@@ -310,22 +308,42 @@ function DisplayAllRemainingHours(){
             element.DisplayRemainingFarmRuns();
         }
     });
+    console.log("remaining total hours = " + totalRemainingHours);
+    console.log
     //Display the final result
     var hoursCompleted = totalHoursFromZero - totalRemainingHours;
 
     $('#goalHoursDisplay').html(totalRemainingHours.toFixed(2));
-    console.log("total hours remaining " + totalRemainingHours)
-    console.log("total hours from scratch " + totalHoursFromZero)
     var percentOfGoal = hoursCompleted/totalHoursFromZero * 100;
-    console.log("Percent Completed " + percentOfGoal);
     //percentCompleted = (Math.round(percentCompleted * 100) / 100).toFixed(2);
     document.getElementById("progressPercent").setAttribute("style","width:" + percentOfGoal + "%");
 }
 
 function DisplayAllLevels(){
+    var completedSkills = 0
+    var remainingTotalLevels = 0;
+    //This repeat code needs to be condensed to a switch. The only diff is
     skills.forEach(element => {
         element.DisplayLevels();
-    })
+        var requiredLevel = 0;
+        if(currentTab == "max"){
+            requiredLevel == 99;
+        }
+        if(currentTab == "achievement"){
+            requiredLevel = achLvlArray[element.name];
+        }
+        if(currentTab == "quest"){
+            requiredLevel = questLvlArray[element.name];
+        }
+
+        var remainingLevels = requiredLevel - element.currentLevel;
+        remainingTotalLevels += remainingLevels;
+        if(remainingLevels == 0 ){
+            completedSkills +=1;
+        }
+    });
+    $('#goalRemainingLevels').html(remainingTotalLevels);
+    $('#goalCompletedSkills').html(completedSkills);
 }
 
 function DisplayAllRemainingCost(){
@@ -347,12 +365,10 @@ function DisplayAllRemainingCost(){
 function ExpandSection(clickedSection){
     //Expands the section to show the customisation options
     //Get the name of the desired skill
-    var clickedSectionId = clickedSection
-    console.log("Clicked section " + clickedSectionId);
+    var clickedSectionId = clickedSection;
     //Remove the words, Final and Expander from the div ID
     var expandSectionName = clickedSectionId.replace("Expander", "");
     expandSectionName = expandSectionName.replace("Final", "");
-    console.log("Clicked section " + expandSectionName);
     //Find the expandable section with the same name, and add a css class
     $( "#"+expandSectionName+"Expanded").toggleClass("expanded");
     $( "#"+expandSectionName +"Arrow").toggleClass("down");

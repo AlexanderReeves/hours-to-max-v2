@@ -33,6 +33,7 @@ class Skill {
     this.dropdownSelection = defaultSelection;
     //Identify the name of the corresponding html dropdown
     this.dropdownName = dropdownName;
+
   }
 
   LogName(){
@@ -57,7 +58,6 @@ class Skill {
     this.customXpRate = customXp;
     this.customGpPerXp = customGpPerXp;
     this.levelsBoosted = levelsBoosted;
-    console.log(this.customXpRate + "is the custom xp rate");
   }
 
   UpdateTrainingMethod(index){
@@ -70,6 +70,10 @@ class Skill {
 
 
   GetRemainingHours(){
+    if(this.dropdownSelection == -1){
+      //In the case this skill is trained passively, return 0 hours.
+      return 0;
+    }
     var currentXpPerHour = this.xpRates[this.dropdownSelection];
     //If a custom value is being used, use that value instead.
     if(this.dropdownSelection == 0){
@@ -77,7 +81,6 @@ class Skill {
     }
     //Find the current number of hours remaining to train this skill to the goal
     var remHours = (this.goalXp - this.currentXp) / currentXpPerHour;
-    //console.log(currentXpPerHour + " Xp per hour selected.")
     //Failsafe, if the goal has already been surpassed.
     if(remHours < 0 ){
       remHours = 0;
@@ -89,6 +92,9 @@ class Skill {
     var currentXpPerHour = this.xpRates[this.dropdownSelection];
     if(this.dropdownSelection == 0){
       currentXpPerHour = this.customXpRate;
+    };
+    if(this.dropdownSelection == -1){
+      return 0;
     }
     //Find the current number of hours remaining to train this skill to the goal
     return (this.goalXp / currentXpPerHour);
@@ -100,6 +106,9 @@ class Skill {
     var costPerXp = 0;
     var remainingXp = this.goalXp - this.currentXp;
     remainingXp <= 0 ? remainingXp = 0: remainingXp = remainingXp;
+    if(this.dropdownSelection == -1){
+      return 0;
+    }
     //If the training method is custom, the gp rate will be custom
     if(this.dropdownSelection == 0){
       costPerXp = this.customGpPerXp;
@@ -116,34 +125,31 @@ class Skill {
     //Displays the remainng number of hours of training for a skill
     var remainingHoursTwoDecimal = this.GetRemainingHours();
     remainingHoursTwoDecimal = remainingHoursTwoDecimal.toFixed(1);
+    if(this.dropdownSelection == -1){
+      remainingHoursTwoDecimal = "0";
+    }
     $('#' + this.name + 'Hours').html(remainingHoursTwoDecimal + " hrs");
     //Display green for gained money, and red for lost money
     if(remainingHoursTwoDecimal <= 0){
       $('#' + this.name + 'Hours').addClass("completed");
-      $('#' + this.name + 'Dropdown').attr("disabled", true);
+      //$('#' + this.name + 'Dropdown').attr("disabled", true);
     }else{
       $('#' + this.name + 'Hours').removeClass("completed");
-      $('#' + this.name + 'Dropdown').attr("disabled", false);
+      //$('#' + this.name + 'Dropdown').attr("disabled", false);
     }
   }
 
   DisplayRemainingFarmRuns(){
-    console.log("Displaying remaining farm runs");
     var xpPerFarmRun = this.seedValues[this.seedChoice] * this.numPatches;
-    console.log("current seed choice  = " + this.seedChoice);
-    console.log("current patches  = " + this.numPatches);
-    console.log("xp per run = " + xpPerFarmRun)
     var remainingXp = this.goalXp - this.currentXp;
     if(remainingXp <= 0){
       remainingXp = 0;
     }
-    console.log("remaining xp " + remainingXp);
     var remainingRuns = remainingXp / xpPerFarmRun;
     //Add one to wipe out any remainder
     if(remainingXp % xpPerFarmRun > 0){
       remainingRuns += 1;
     }
-    console.log("remaining runs: " + remainingRuns);
     $('#farmRunsDisplay').html(remainingRuns.toFixed(0) + " runs");
     $('#goalFarmDisplay').html(remainingRuns.toFixed(0));
   }
@@ -154,6 +160,9 @@ class Skill {
     //Also divide by million
     remainingCostTwoDecimal = remainingCostTwoDecimal/1000000;
     remainingCostTwoDecimal = (remainingCostTwoDecimal.toFixed(1));
+    if(this.dropdownSelection == -1){
+      remainingCostTwoDecimal = 0.0;
+    }
     $('#' + this.name + 'Cost').html(remainingCostTwoDecimal + " mgp");
     //Display green for gained money, and red for lost money
     if(remainingCostTwoDecimal >= 0){

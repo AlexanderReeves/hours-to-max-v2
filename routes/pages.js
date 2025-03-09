@@ -36,6 +36,24 @@ router.get('/', verifyAccessToken,(req, res) => {
     userSignedIn = false
 
       var skills = {
+        "attack": {
+            "skillName":"attack",
+            "trainingMethods":[
+                {"method":"Custom Training Method"},
+                {"method":"Trained during slayer!"}]
+        },
+        "strength": {
+            "skillName":"strength",
+            "trainingMethods":[
+                {"method":"Custom Training Method"},
+                {"method":"Trained during slayer!"}]
+        },
+        "defence": {
+            "skillName":"defence",
+            "trainingMethods":[
+                {"method":"Custom Training Method"},
+                {"method":"Trained during slayer!"}]
+        },
         "ranged": {
             "skillName":"ranged",
             "trainingMethods":[
