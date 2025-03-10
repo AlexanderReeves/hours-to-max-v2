@@ -8,6 +8,7 @@ exports.saveChoices = async (req, res , next) => {
     const { 
         auth:auth,
         username:username,
+        currentGoal: currentGoal,
         rangedChoice: rangedChoice,
         magicChoice: magicChoice , 
         prayerChoice: prayerChoice , 
@@ -44,6 +45,7 @@ exports.saveChoices = async (req, res , next) => {
         return
     }
     user.username = username,
+    user.currentGoal = currentGoal;
     user.rangedChoice = rangedChoice;
     user.magicChoice= magicChoice , 
     user.prayerChoice= prayerChoice , 

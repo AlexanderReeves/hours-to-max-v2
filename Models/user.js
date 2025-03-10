@@ -9,6 +9,8 @@ const UserSchema = new Schema({
   email: { type: String, required: true, lowercase: true, unique: true,},
   confirmed: {type: Boolean,required: true, default: false, },
   username:{ type: String, required: true, unique: false,  },
+  currentGoal:{ type: String, required: true, unique: false, default: "max"},
+  
   password: { type: String, required: false,  },  
   passwordLinkExipry: { type: Date, required: false,  },
   resetToken: { type: String, required: false  },

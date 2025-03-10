@@ -70,11 +70,11 @@ class Skill {
 
 
   GetRemainingHours(){
-    if(this.dropdownSelection == -1){
-      //In the case this skill is trained passively, return 0 hours.
+    var currentXpPerHour = this.xpRates[this.dropdownSelection];
+    //If training method is less than 0 xp per hour, it's considered passively trained
+    if(currentXpPerHour < 0){
       return 0;
     }
-    var currentXpPerHour = this.xpRates[this.dropdownSelection];
     //If a custom value is being used, use that value instead.
     if(this.dropdownSelection == 0){
       currentXpPerHour = this.customXpRate;
@@ -93,7 +93,7 @@ class Skill {
     if(this.dropdownSelection == 0){
       currentXpPerHour = this.customXpRate;
     };
-    if(this.dropdownSelection == -1){
+    if(currentXpPerHour < 0){
       return 0;
     }
     //Find the current number of hours remaining to train this skill to the goal
@@ -103,12 +103,13 @@ class Skill {
 
   GetRemainingCost(){
     //Find the cost in gp to reach the players current goal for this skill
+    //If training method is negative xp, assume it's trained passively for free
+    if(this.xpRates[this.dropdownSelection] < 0){
+      return 0;
+    }
     var costPerXp = 0;
     var remainingXp = this.goalXp - this.currentXp;
     remainingXp <= 0 ? remainingXp = 0: remainingXp = remainingXp;
-    if(this.dropdownSelection == -1){
-      return 0;
-    }
     //If the training method is custom, the gp rate will be custom
     if(this.dropdownSelection == 0){
       costPerXp = this.customGpPerXp;

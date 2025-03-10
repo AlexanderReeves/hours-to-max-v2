@@ -76,14 +76,15 @@ function InitialiseSkills(){
 
     //Each skills default selection should match the one in the html page
     //Setting dropdown to index 0 in the future should be for custom inputs...
-    skills.push( new Skill("attack", [0], [0],-1 ));
-    skills.push( new Skill("strength", [0], [0],-1 ));
-    skills.push( new Skill("defence", [0], [0],-1 ));
+    skills.push( new Skill("attack", [0,-1], [0,0],1 ));
+    skills.push( new Skill("strength", [0,-1], [0,0],1 ));
+    skills.push( new Skill("defence", [0,-1], [0,0],1 ));
     skills.push( new Skill("ranged", [0,90000, 130000, 140000, 675000, 710000, 850000], [0,0,-0.1,-0.1,-4.1,-5.4,-7.6], 6));
     skills.push( new Skill("prayer", [0,50000, 250000, 437000, 600000, 800000, 1250000], [0,0,0,0,0,0,0], 6));
     skills.push( new Skill("magic", [0,78000, 150000, 150000, 175000, 380000], [0,0,0,0,0,0], 5));
     skills.push( new Skill("runecraft", [0,35000, 60000, 65000, 70000, 80000, 100000], [0,0,0,0,0,0,0],6 ));
     skills.push( new Skill("construction", [0,190000, 400000, 450000, 500000, 580000, 850000, 1000000], [0,0,0,0,0,0,0,0],7 ));
+    skills.push( new Skill("hitpoints", [0,-1], [0,0],1 ));
     skills.push( new Skill("agility", [0,45000, 50000, 50000, 55000, 65000, 65000, 90000], [0,0,0,0,0,0,0,0],7 ));
     skills.push( new Skill("herblore", [0,110000, 170000, 210000, 400000, 500000], [0,0,0,0,0,0],5 ));
     skills.push( new Skill("thieving", [0,110000, 140000, 150000, 210000, 240000, 260000, 265000], [0,0,0,0,0,0,0,0],6 ));
@@ -139,10 +140,14 @@ function PullFromDatabase(){
         success: function (data) {
             //Save all the downloaded user into the database user variable
             dbuser = data.user[0];
+            console.log(dbuser);
             console.log(dbuser.username + " player data was pulled from the database");
+            
+            console.log(dbuser.currentGoal + " goal was pulled");
             //Save the new username to variable, and update it in searchbox
             user = dbuser.username;
-            $('#usernameInput').val(user);
+            setTab(dbuser.currentGoal);
+            
         },
         error: function (XMLHttpRequest) {
             console.log('Submit returned errors');
@@ -283,16 +288,16 @@ function RefreshCustom(clickedRefresh){
 }
 
 
-function FindTotalHoursToGoal(){
-    //Calculate and add remaining hours for each skill (excluding farming)
-    hoursToGoal = 0;
-    skills.forEach(element => {
-        if(element.name!="farming"){
-            //calculate and add hours to goal in that skill
-            hoursToGoal += element.GetRemainingHours();
-        }
-    });
-}
+// function FindTotalHoursToGoal(){
+//     //Calculate and add remaining hours for each skill (excluding farming)
+//     hoursToGoal = 0;
+//     skills.forEach(element => {
+//         if(element.name!="farming"){
+//             //calculate and add hours to goal in that skill
+//             hoursToGoal += element.GetRemainingHours();
+//         }
+//     });
+// }
 
 function DisplayAllRemainingHours(){
     //Display the remaining hours for each skill
@@ -322,12 +327,11 @@ function DisplayAllRemainingHours(){
 function DisplayAllLevels(){
     var completedSkills = 0
     var remainingTotalLevels = 0;
-    //This repeat code needs to be condensed to a switch. The only diff is
     skills.forEach(element => {
         element.DisplayLevels();
         var requiredLevel = 0;
         if(currentTab == "max"){
-            requiredLevel == 99;
+            requiredLevel = 99;
         }
         if(currentTab == "achievement"){
             requiredLevel = achLvlArray[element.name];
@@ -335,15 +339,21 @@ function DisplayAllLevels(){
         if(currentTab == "quest"){
             requiredLevel = questLvlArray[element.name];
         }
-
+        
         var remainingLevels = requiredLevel - element.currentLevel;
+        if(remainingLevels < 0){
+            remainingLevels = 0;
+        }
         remainingTotalLevels += remainingLevels;
-        if(remainingLevels == 0 ){
+
+        if(remainingLevels <= 0 ){
             completedSkills +=1;
         }
+        
     });
     $('#goalRemainingLevels').html(remainingTotalLevels);
     $('#goalCompletedSkills').html(completedSkills);
+    $('#goalName').html(user);
 }
 
 function DisplayAllRemainingCost(){

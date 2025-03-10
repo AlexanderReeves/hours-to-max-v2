@@ -109,6 +109,12 @@ router.get('/', verifyAccessToken,(req, res) => {
                 {"method":"850kph Mahogany Tables"},
                 {"method":"1000kph Gnome Benches"}]
         },
+        "hitpoints": {
+            "skillName":"hitpoints",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"Trained Passively Via Combat!"}]
+        },
         "agility": {
             "skillName":"agility",
             "trainingMethods":[

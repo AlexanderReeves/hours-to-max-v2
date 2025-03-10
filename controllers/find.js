@@ -24,6 +24,7 @@ exports.findUser = async (req, res , next) => {
         "user":[{
             "username":user.username,
             "email":user.email,
+            "currentGoal":user.currentGoal,
             "rangedChoice": user.rangedChoice,
             "magicChoice": user.magicChoice , 
             "prayerChoice": user.prayerChoice , 

@@ -17,6 +17,8 @@ function SaveChoicesToDatabase() {
             //Also get the custom XP val from the object
             postData = postData.concat('&' + element.name + 'CustomXp=' + element.customXpRate);
         });
+        //Also add in players current tab/goal
+        postData = postData.concat('&currentGoal=' + currentTab);
         console.log("Attemping to post this data string... " + postData);
 
         //clear result message
