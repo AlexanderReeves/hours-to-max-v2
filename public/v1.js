@@ -18,30 +18,8 @@ $.ajaxSetup({ //Prevent future code loading before previous code finishes.
 var currentTab = "max";
 var hoursToGoal = 0;
 //The current username of the website user
-var user = "test";
+var user = "Player";
 var totalLevel = 32;
-
-//****Default Variables****
-
-//The level requiered for each skill to obtain an achievment cape
-var achLvlArray = {"attack": 50,"strength": 76, "defence": 70, "hitpoints": 70, "ranged" : 70, "prayer": 85, "magic" : 96, "runecraft": 91, "construction": 78,
-    "agility" : 90, "herblore": 90, "thieving": 91, "crafting": 85, "fletching" :95, "slayer": 95, "hunter": 70, "mining": 85, "smithing": 91, 
-    "fishing": 96, "cooking":95, "firemaking": 85, "woodcutting":90, "farming" : 91};
-
-//The level requiered for each skill to obtain a quest cape
-var questLvlArray = {"attack": 50,"strength": 60, "defence": 65, "hitpoints": 50, "ranged" : 62, "prayer": 50, "magic" : 75, "runecraft": 60, "construction": 70,
-    "agility" : 70, "herblore": 70, "thieving": 72, "crafting": 70, "fletching" :60, "slayer": 69, "hunter": 70, "mining": 72, "smithing": 70, 
-    "fishing": 62, "cooking":65, "firemaking": 75, "woodcutting":70, "farming" : 70};
-
-//Xp required to reach each level as array
-var levelToXpArray = [0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107, 2411, 2746, 3115, 3523, 3973,
-    4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833, 16456, 18247, 20224, 22406,
-    24815, 27473, 30408, 33648, 37224, 41171, 45529, 50339, 55649, 61512, 67983, 75127, 83014, 91721, 101333,
-    111945, 123660, 136594, 150872, 166636, 184040, 203254, 224466, 247886, 273742, 302288, 333804, 368599,
-    407015, 449428, 496254, 547953, 605032, 668051, 737627, 814445, 899257, 992895, 1096278, 1210421, 1336443,
-    1475581, 1629200, 1798808, 1986068, 2192818, 2421087, 2673114, 2951373, 3258594, 3597792, 3972294, 4385776,
-    4842295, 5346332, 5902831, 6517253, 7195629, 7944614, 8771558, 9684577, 10692629, 11805606, 13034431]
-
 
 //The xp required for a maximum level in any skill
 var ninetyNine = 13034431;
@@ -109,6 +87,7 @@ function UpdateAllSkillDropdowns(){
     skills.forEach(element => {
         if(element.name!="farming"){
             element.UpdateDropdown();
+            element.GetGoalXp();
         }
     });
 }
@@ -241,6 +220,11 @@ function DropdownWasChanged(clickedDropdown){
             //Update remaining tree runs based on xp per run
             element.DisplayRemainingFarmRuns();
         }
+        //If the section was set to custom, expand it if it is not already expanded
+        if(skillDropValue == 0){
+            $( "#"+skillName+"Expanded").addClass("expanded");
+            $( "#"+skillName +"Arrow").addClass("down");
+        }
     });
 
     //Calculate the new total hours to max based on xp of all skills
@@ -279,8 +263,9 @@ function RefreshCustom(clickedRefresh){
     });
 
     //Calculate the new total hours to max based on xp of all skills
-    FindTotalHoursToGoal();
+    // FindTotalHoursToGoal();
     //Re-Run calculations for reaching the players goals
+    DisplayAllLevels();
     //Display the remaining hours of training for each skill
     DisplayAllRemainingHours();
     //Display the remaining cost of training each skill
@@ -288,16 +273,7 @@ function RefreshCustom(clickedRefresh){
 }
 
 
-// function FindTotalHoursToGoal(){
-//     //Calculate and add remaining hours for each skill (excluding farming)
-//     hoursToGoal = 0;
-//     skills.forEach(element => {
-//         if(element.name!="farming"){
-//             //calculate and add hours to goal in that skill
-//             hoursToGoal += element.GetRemainingHours();
-//         }
-//     });
-// }
+
 
 function DisplayAllRemainingHours(){
     //Display the remaining hours for each skill
@@ -327,20 +303,10 @@ function DisplayAllRemainingHours(){
 function DisplayAllLevels(){
     var completedSkills = 0
     var remainingTotalLevels = 0;
+    console.log("Displaying current and remaining levels for each skill");
     skills.forEach(element => {
         element.DisplayLevels();
-        var requiredLevel = 0;
-        if(currentTab == "max"){
-            requiredLevel = 99;
-        }
-        if(currentTab == "achievement"){
-            requiredLevel = achLvlArray[element.name];
-        }
-        if(currentTab == "quest"){
-            requiredLevel = questLvlArray[element.name];
-        }
-        
-        var remainingLevels = requiredLevel - element.currentLevel;
+        var remainingLevels = element.GetGoalLevel() - element.currentLevel;
         if(remainingLevels < 0){
             remainingLevels = 0;
         }
@@ -403,23 +369,8 @@ function SubmitUsername(){
 }
 
 function ChangeGoal(tabName){
+    //This currentTab var is readabale globally, including by the skills object
     currentTab = tabName;
-    //Set the current goal of each skill to depend on the current tab
-    skills.forEach(element => {
-        if(tabName == "achievement"){
-            element.goalLevel = achLvlArray[element.name];
-            element.goalXp = levelToXpArray[element.goalLevel];
-        }
-        if(tabName == "quest"){
-            element.goalLevel = questLvlArray[element.name];
-            element.goalXp = levelToXpArray[element.goalLevel];
-        }
-        if(tabName == "max"){
-            element.goalLevel = 99;
-            element.goalXp = levelToXpArray[element.goalLevel];
-        }
-    })
-
     UpdateAllSkillDropdowns();
     //Update the custom fields to display the data that loaded
     UpdateAllSkillCustomisations();
@@ -430,6 +381,21 @@ function ChangeGoal(tabName){
     //Display the remaining cost of training each skill
     DisplayAllRemainingCost();
     
+}
+
+function ToggleBoosting(){
+    var disableBoosting = true;
+    //Can boosting be enabled on this tab?
+    if(currentTab == "achievement" || currentTab == "quest"){
+        //Yes to boosting
+        disableBoosting = false;
+    }
+    skills.forEach(element => {
+        $( "#"+element.name+"Boost").prop('disabled', disableBoosting);
+    });
+
+    
+
 }
 
 

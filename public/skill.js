@@ -4,8 +4,6 @@ class Skill {
   name = ""; //The name of a skill
   currentXp = 0; //The players current xp in that skill
   currentLevel = 1; //Default for blank user
-  goalXp = 13034431; //Goal xp is for lvl 99 in all skills by default
-  goalLevel=99;//Default for max
   //The dropdown selection will be the index for the following 2 arrays (Unless the rate is custom):
   dropdownSelection = 0; //The current skill training choice from the dropdown
   //Note, dropdown selection 0 will be reserved for custom XP amounts.
@@ -14,7 +12,6 @@ class Skill {
   customXpRate = 100000; //A custom Xp per hour rate, default of 100k
   customGpPerXp = 0;//Cost per xp of the custom rate
   levelsBoosted = 0;
-  remainingHours = 0;
 
   //Farming exclusive variables
   seedChoice = 0;
@@ -67,6 +64,48 @@ class Skill {
     this.DisplayRemainingHours();
   }
 
+  GetGoalXp(){
+    //Xp required to reach each level as array
+    var levelToXpArray = [0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107, 2411, 2746, 3115, 3523, 3973,
+      4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833, 16456, 18247, 20224, 22406,
+      24815, 27473, 30408, 33648, 37224, 41171, 45529, 50339, 55649, 61512, 67983, 75127, 83014, 91721, 101333,
+      111945, 123660, 136594, 150872, 166636, 184040, 203254, 224466, 247886, 273742, 302288, 333804, 368599,
+      407015, 449428, 496254, 547953, 605032, 668051, 737627, 814445, 899257, 992895, 1096278, 1210421, 1336443,
+      1475581, 1629200, 1798808, 1986068, 2192818, 2421087, 2673114, 2951373, 3258594, 3597792, 3972294, 4385776,
+      4842295, 5346332, 5902831, 6517253, 7195629, 7944614, 8771558, 9684577, 10692629, 11805606, 13034431]
+      
+    return levelToXpArray[this.GetGoalLevel()];
+
+  }
+
+  GetGoalLevel(){
+    var goalLevel = 0;
+    //The level requiered for each skill to obtain an achievment cape
+    var achLvlArray = {"attack": 50,"strength": 76, "defence": 70, "hitpoints": 70, "ranged" : 70, "prayer": 85, "magic" : 96, "runecraft": 91, "construction": 78,
+      "agility" : 90, "herblore": 90, "thieving": 91, "crafting": 85, "fletching" :95, "slayer": 95, "hunter": 70, "mining": 85, "smithing": 91, 
+      "fishing": 96, "cooking":95, "firemaking": 85, "woodcutting":90, "farming" : 91};
+
+    //The level requiered for each skill to obtain a quest cape
+    var questLvlArray = {"attack": 50,"strength": 60, "defence": 65, "hitpoints": 50, "ranged" : 62, "prayer": 50, "magic" : 75, "runecraft": 60, "construction": 70,
+      "agility" : 70, "herblore": 70, "thieving": 72, "crafting": 70, "fletching" :60, "slayer": 69, "hunter": 70, "mining": 72, "smithing": 70, 
+      "fishing": 62, "cooking":65, "firemaking": 75, "woodcutting":70, "farming" : 70};
+
+    if(currentTab == "achievement"){
+      goalLevel = achLvlArray[this.name]
+    }
+    if(currentTab == "quest"){
+      goalLevel = questLvlArray[this.name]
+    }
+
+    goalLevel = goalLevel - this.levelsBoosted;
+
+    if(currentTab == "max"){
+      //If the goal is to max, boosts are useless and the end result is always 99
+      goalLevel = 99;
+    }
+    return goalLevel;
+  }
+
 
 
   GetRemainingHours(){
@@ -80,7 +119,7 @@ class Skill {
       currentXpPerHour = this.customXpRate;
     }
     //Find the current number of hours remaining to train this skill to the goal
-    var remHours = (this.goalXp - this.currentXp) / currentXpPerHour;
+    var remHours = (this.GetGoalXp() - this.currentXp) / currentXpPerHour;
     //Failsafe, if the goal has already been surpassed.
     if(remHours < 0 ){
       remHours = 0;
@@ -97,7 +136,7 @@ class Skill {
       return 0;
     }
     //Find the current number of hours remaining to train this skill to the goal
-    return (this.goalXp / currentXpPerHour);
+    return (this.GetGoalXp() / currentXpPerHour);
   }
 
 
@@ -108,7 +147,7 @@ class Skill {
       return 0;
     }
     var costPerXp = 0;
-    var remainingXp = this.goalXp - this.currentXp;
+    var remainingXp = this.GetGoalXp() - this.currentXp;
     remainingXp <= 0 ? remainingXp = 0: remainingXp = remainingXp;
     //If the training method is custom, the gp rate will be custom
     if(this.dropdownSelection == 0){
@@ -142,7 +181,7 @@ class Skill {
 
   DisplayRemainingFarmRuns(){
     var xpPerFarmRun = this.seedValues[this.seedChoice] * this.numPatches;
-    var remainingXp = this.goalXp - this.currentXp;
+    var remainingXp = this.GetGoalXp() - this.currentXp;
     if(remainingXp <= 0){
       remainingXp = 0;
     }
@@ -176,8 +215,19 @@ class Skill {
   }
 
   DisplayLevels(){
-    $('#' + this.name + 'LevelDisplay').html(this.currentLevel + "/"+this.goalLevel);
-    if(this.currentLevel >= this.goalLevel){
+    console.log("Displaying old boost string thing for " + this.name);
+    var strikeLevel = document.getElementById(this.name + "StrikeLevel");
+    var message = document.getElementById(this.name + 'LevelDisplay');
+    if(this.levelsBoosted > 0 && currentTab != "max"){
+      strikeLevel.innerHTML = "<p>99</p>";
+      console.log("Displaying old boost string thing");
+      message.innerHTML= this.currentLevel + "/" ;
+    }else{
+      strikeLevel.innerText = "";
+      message.innerHTML= '<p>' + this.currentLevel + '/' + '' + this.GetGoalLevel() + '<p>';
+    }
+    
+    if(this.currentLevel >= this.GetGoalLevel()){
       $('#' + this.name + 'LevelDisplay').addClass("completed");
     }else{
       $('#' + this.name + 'LevelDisplay').removeClass("completed");

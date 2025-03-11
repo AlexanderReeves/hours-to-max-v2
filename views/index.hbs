@@ -91,10 +91,10 @@
 
         <!-- <h1 id="tabtext" class="center">Max Cape</h1> -->
         <br>
+        <br>
         <div class="center " id="intro" style="padding-left:10px;padding-right:10px">
-            <br>
+            
             Find many hours until you max in Old School Runescape.
-            {{title}}
         </div>
         <div class="center" id="disclaimer">
             {{!-- {{#if signedin}}
@@ -108,7 +108,6 @@
             Select your favourite training methods to find the cost and time to reach your goal!
             <br>
             99 melee (Attack, Strength, Defence and Hitpoints) is assumed to be completed via Slayer.
-
             <br>
         </div>
         <br>
@@ -137,7 +136,7 @@
 
             <div class="columnA center"><img style="margin-top:10px" height="30" class="ico" class="ico"
                     src="icons/{{this.skillName}}_icon.webp" alt="{{this.skillName}}">
-                <p id="{{this.skillName}}LevelDisplay" class="center">1/99</p>
+                <p id="{{this.skillName}}LevelDisplay" class="center">1/99</p> <p id="{{this.skillName}}StrikeLevel"></p>
             </div>
 
             <div class="columnB">
@@ -181,21 +180,21 @@
             </div>
             <div class=" columnF center">                    
                     <input type="text" style="text-align:center" id="{{this.skillName}}Boost" name="{{this.skillName}}Boost"
-                    onchange="customBoostUpdate(this);" placeholder="Levels boosted" disabled>
+                    onchange="" placeholder="Levels boosted" disabled>
             </div>
             <div class=" columnG center">
                 <p >Custom XpPh:</p>
             </div>
             <div class=" columnH center">            
                 <input type="text" style="text-align:center" id="{{this.skillName}}CustomXp" name="{{this.skillName}}CustomXp"
-                    onchange="customXpUpdate(this);" placeholder="Xp per hour">
+                    onchange="" placeholder="Xp per hour">
             </div>
              <div class=" columnI center">
                 <p >Cost of 1xp:</p>
             </div>
             <div class=" columnJ center">
                     <input type="text" style="text-align:center" id="{{this.skillName}}CustomGp" name="{{this.skillName}}CustomGp"
-                    onchange="customGpUpdate(this);" placeholder="Gp per xp">
+                    onchange="" placeholder="Gp per xp">
 
             </div>
             
@@ -213,7 +212,7 @@
         <div class="row">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/Farming_icon.webp"
                     alt="Farming">
-                <p id="farmingLevelDisplay" class="center">1/99</p>
+                <p id="farmingLevelDisplay" class="center">1/99</p><del id="farmingStrikeLevel"></del>
             </div>
             <div class="columnB">
                 <form>

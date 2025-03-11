@@ -23,7 +23,7 @@ function setTab(tabname) {
         if(tabname == "max"){
            themedElements[i].className = themedElements[i].className.replace("newtheme", "themered");
           document.getElementById('intro').innerText =
-           "PREVIEW VERSION\n Find how many hours until you Max in Old School Runescape";
+           "Find how many hours until you Max in Old School Runescape";
            document.getElementById('goalCapeDisplay').innerText = "Max Cape";
            document.getElementById("finalCape").classList.remove('finalQuest');       
            document.getElementById("finalCape").classList.remove('finalAchievement');       
@@ -55,5 +55,7 @@ function setTab(tabname) {
     
         }
       }
+
+      ToggleBoosting();
 }
     
