@@ -216,14 +216,13 @@ class Skill {
 
   DisplayLevels(){
     console.log("Displaying old boost string thing for " + this.name);
-    var strikeLevel = document.getElementById(this.name + "StrikeLevel");
     var message = document.getElementById(this.name + 'LevelDisplay');
     if(this.levelsBoosted > 0 && currentTab != "max"){
-      strikeLevel.innerHTML = "<p>99</p>";
-      console.log("Displaying old boost string thing");
-      message.innerHTML= this.currentLevel + "/" ;
+      var originalGoal = this.GetGoalLevel() + +this.levelsBoosted;
+      originalGoal = originalGoal + '';
+      originalGoal = originalGoal.split('').map(char => char + '\u0336').join('');
+      message.innerHTML= '<p>' + this.currentLevel + '/'  + '  ' + this.GetGoalLevel() + ' ' +originalGoal;
     }else{
-      strikeLevel.innerText = "";
       message.innerHTML= '<p>' + this.currentLevel + '/' + '' + this.GetGoalLevel() + '<p>';
     }
     
