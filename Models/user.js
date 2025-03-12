@@ -15,6 +15,26 @@ const UserSchema = new Schema({
   passwordLinkExipry: { type: Date, required: false,  },
   resetToken: { type: String, required: false  },
 
+  attackChoice: { type: Number, required: false  },
+  attackCustomXp: { type: Number, required: false  },
+  attackCustomGp: { type: Number, required: false  },
+  attackBoost: { type: Number, required: false  },
+
+  strengthChoice: { type: Number, required: false  },
+  strengthCustomXp: { type: Number, required: false  },
+  strengthCustomGp: { type: Number, required: false  },
+  strengthBoost: { type: Number, required: false  },
+
+  defenceChoice: { type: Number, required: false  },
+  defenceCustomXp: { type: Number, required: false  },
+  defenceCustomGp: { type: Number, required: false  },
+  defenceBoost: { type: Number, required: false  },
+
+  hitpointsChoice: { type: Number, required: false  },
+  hitpointsCustomXp: { type: Number, required: false  },
+  hitpointsCustomGp: { type: Number, required: false  },
+  hitpointsBoost: { type: Number, required: false  },
+
   rangedChoice: { type: Number, required: false  },
   rangedCustomXp: { type: Number, required: false  },
   rangedCustomGp: { type: Number, required: false  },

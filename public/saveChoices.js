@@ -16,6 +16,9 @@ function SaveChoicesToDatabase() {
             postData = postData.concat('&' + element.name + 'Choice=' + element.dropdownSelection);
             //Also get the custom XP val from the object
             postData = postData.concat('&' + element.name + 'CustomXp=' + element.customXpRate);
+            postData = postData.concat('&' + element.name + 'CustomGp=' + element.customGpPerXp);
+            postData = postData.concat('&' + element.name + 'Boost=' + element.levelsBoosted);
+
         });
         //Also add in players current tab/goal
         postData = postData.concat('&currentGoal=' + currentTab);

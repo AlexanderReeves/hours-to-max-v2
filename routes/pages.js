@@ -31,7 +31,7 @@ const router = express.Router();
 // Index page rendering, will have differences if the user is signed in.
 router.get('/', verifyAccessToken,(req, res) => {
     console.log("ATTEMPTING TO LOAD INDEX PAGE")
-    CountPageRequests();
+    // CountPageRequests();
     username = "Player"
     userSignedIn = false
 

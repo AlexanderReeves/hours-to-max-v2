@@ -107,10 +107,11 @@ exports.login = async (req, res, next ) => {
         }
 
         //At this stage, the sign in was successful. Generate a jwt.
-        const accessToken = await signAccessToken(user.id, user.email, user.username, "1m")
+        const accessToken = await signAccessToken(user.id, user.email, user.username, "10m")
         const refreshToken = await signRefreshToken(user.id, user.email, user.username, "1y")
         //On sign in success, send JST cookie and redirect to home page!
         console.log('Valid sign in. Sending cookie to user.')
+        //Cookies delete themselves after exipring, regardless of JWT access token age
         res.cookie('authorization', accessToken, { maxAge: 365 * 24 * 60 * 60 * 1000, httpOnly: false})
         res.cookie('refreshAuthorization', refreshToken, { maxAge: 365 * 24 * 60 * 60 * 1000, httpOnly: false})
         res.cookie('username', user.username)

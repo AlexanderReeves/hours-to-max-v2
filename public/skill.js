@@ -30,6 +30,9 @@ class Skill {
     this.dropdownSelection = defaultSelection;
     //Identify the name of the corresponding html dropdown
     this.dropdownName = dropdownName;
+    if(name == "hitpoints"){
+      this.currentLevel = 10;
+    }
 
   }
 
@@ -215,7 +218,6 @@ class Skill {
   }
 
   DisplayLevels(){
-    console.log("Displaying old boost string thing for " + this.name);
     var message = document.getElementById(this.name + 'LevelDisplay');
     if(this.levelsBoosted > 0 && currentTab != "max"){
       var originalGoal = this.GetGoalLevel() + +this.levelsBoosted;

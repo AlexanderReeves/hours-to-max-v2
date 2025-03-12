@@ -94,7 +94,7 @@
         <br>
         <div class="center " id="intro" style="padding-left:10px;padding-right:10px">
             
-            Find many hours until you max in Old School Runescape.
+            Find how many hours until you Max in Old School Runescape.
         </div>
         <div class="center" id="disclaimer">
             {{!-- {{#if signedin}}
@@ -141,7 +141,7 @@
 
             <div class="columnB">
                 <form>
-                    <select class="fullw minimal" name="{{this.skillName}}Dropdown" id="{{this.skillName}}Dropdown" onchange="DropdownWasChanged(this);">
+                    <select class="fullw minimal" name="{{this.skillName}}Dropdown" id="{{this.skillName}}Dropdown" onchange="DropdownWasChanged(this.name);">
                         {{#trainingMethods}}
                             <!-- Nested handlebars loop -->
                             <option value="{{@index}}">{{this.method}}</option>

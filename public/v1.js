@@ -58,9 +58,9 @@ function InitialiseSkills(){
     skills.push( new Skill("strength", [0,-1], [0,0],1 ));
     skills.push( new Skill("defence", [0,-1], [0,0],1 ));
     skills.push( new Skill("ranged", [0,90000, 130000, 140000, 675000, 710000, 850000], [0,0,-0.1,-0.1,-4.1,-5.4,-7.6], 6));
-    skills.push( new Skill("prayer", [0,50000, 250000, 437000, 600000, 800000, 1250000], [0,0,0,0,0,0,0], 6));
-    skills.push( new Skill("magic", [0,78000, 150000, 150000, 175000, 380000], [0,0,0,0,0,0], 5));
-    skills.push( new Skill("runecraft", [0,35000, 60000, 65000, 70000, 80000, 100000], [0,0,0,0,0,0,0],6 ));
+    skills.push( new Skill("prayer", [0,50000, 250000, 437000, 600000, 800000, 1250000], [-0,-10,-10,-11,-12,-19,-50], 6));
+    skills.push( new Skill("magic", [0,78000, 150000, 150000, 175000, 380000], [0,1,2,0,0,-3.5], 5));
+    skills.push( new Skill("runecraft", [0,35000, 60000, 65000, 70000, 80000, 100000], [0,50,-0.5,1,10,0,10],6 ));
     skills.push( new Skill("construction", [0,190000, 400000, 450000, 500000, 580000, 850000, 1000000], [0,0,0,0,0,0,0,0],7 ));
     skills.push( new Skill("hitpoints", [0,-1], [0,0],1 ));
     skills.push( new Skill("agility", [0,45000, 50000, 50000, 55000, 65000, 65000, 90000], [0,0,0,0,0,0,0,0],7 ));
@@ -125,6 +125,7 @@ function PullFromDatabase(){
             console.log(dbuser.currentGoal + " goal was pulled");
             //Save the new username to variable, and update it in searchbox
             user = dbuser.username;
+            $('#usernameInput').val(user);
             setTab(dbuser.currentGoal);
             
         },
@@ -149,7 +150,38 @@ function PullFromDatabase(){
                         var value = dbuser[key];
                         element.dropdownSelection = value;
                     }
-                }
+                };
+                //do the same for player boosts
+                desiredKey = element.name.concat('Boost');
+                //Loop through each pulled data element looking for the match
+                for(key in dbuser) {
+                    if(key == desiredKey) {
+                        //If match found, update the skill in the array
+                        var value = dbuser[key];
+                        element.levelsBoosted = value;
+                    }
+                };
+                //do the same for custom xp rates
+                desiredKey = element.name.concat('CustomXp');
+                //Loop through each pulled data element looking for the match
+                for(key in dbuser) {
+                    if(key == desiredKey) {
+                        //If match found, update the skill in the array
+                        var value = dbuser[key];
+                        element.customXpRate = value;
+                    }
+                };
+                //do the same for custom xgp per xp rates
+                desiredKey = element.name.concat('CustomGp');
+                //Loop through each pulled data element looking for the match
+                for(key in dbuser) {
+                    if(key == desiredKey) {
+                        //If match found, update the skill in the array
+                        var value = dbuser[key];
+                        element.customGpPerXp = value;
+                    }
+                };
+
             }
             if(element.name == 'farming'){
                 //Load in the downloaded seed choice, and num of patches.
@@ -198,11 +230,11 @@ function PullFromJagex(){
     });
 }
 
-function DropdownWasChanged(clickedDropdown){
-    //Runs when a dropdown value is changed
-    skillDropName = clickedDropdown.name;
-    skillName = skillDropName.replace('Dropdown','');
-    skillDropValue = clickedDropdown.value;
+function DropdownWasChanged(dropdownName){
+    console.log(dropdownName);
+    skillDropValue = $('#' + dropdownName).val();
+    skillName = dropdownName.replace('Dropdown','');
+    console.log(skillDropValue)
     //Get the name of the skill from the dropdown, and find the corresponding object from the skills array
     skills.forEach(element => {
         if(element.name==skillName && skillName != 'farming'){
@@ -228,7 +260,7 @@ function DropdownWasChanged(clickedDropdown){
     });
 
     //Calculate the new total hours to max based on xp of all skills
-    FindTotalHoursToGoal();
+    // FindTotalHoursToGoal();
     //Re-Run calculations for reaching the players goals
     //Display the remaining hours of training for each skill
     DisplayAllRemainingHours();
@@ -243,8 +275,7 @@ function RefreshCustom(clickedRefresh){
     skills.forEach(element => {
         if(element.name==skillName && skillName != 'farming'){
             //Set the skill object to match the selected dropdown value
-            element.dropdownSelection = 0;
-            element.UpdateDropdown();
+            DropdownWasChanged(skillName + 'Dropdown');
         }
     });
 

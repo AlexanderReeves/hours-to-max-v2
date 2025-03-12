@@ -16,18 +16,19 @@ module.exports = {
         return SignRefreshToken(userId,email, username, expiryTime)
     },
     verifyAccessToken: (req, res, next) => {
-        console.log("Verifying access token")
+        console.log("TOKEN VERIFICATION HAS STARTED")
         //Find the authorization/jwt from the cookies
         accessToken = getJwtFromCookies(req,"authorization");
         refreshToken = getJwtFromCookies(req,"refreshAuthorization");
+
         if(!accessToken){
-          // console.log("No jwt access token was found.")
+          console.log("NO VERIFICATION TOKEN WAS FOUND, USER IS NOT SIGNED IN")
           return next()
         }
-        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
-          console.log("Jwt helper verification results....")
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async (err, payload) => {
+          console.log("JWT is checking the vailidity of the access token.")
           if(err) {
-            console.log("JWT helper found invalid auth code")
+            console.log("RESULT: INVALID ACCESS TOKEN");
             //The access token was invalid
             //If there is no refresh token, create error
             if(!refreshToken){
@@ -52,7 +53,7 @@ module.exports = {
                 console.log("payload emai: " + payload.email)
                 console.log("payload username: " + payload.username)
 
-                newAccessToken = await SignAccessToken(payload.aud, payload.email, payload.username, "1m")
+                newAccessToken = await SignAccessToken(payload.aud, payload.email, payload.username, "365d")
                 newRefreshToken = await SignRefreshToken(payload.aud, payload.email, payload.username)
                 accessToken = newAccessToken
                 refreshToken = newRefreshToken
@@ -65,6 +66,7 @@ module.exports = {
             })
             
           }else{
+            console.log("JWT helper found a valid refresh token");
             req.verifiedUser = true
             req.payload = payload
           }
@@ -91,15 +93,15 @@ module.exports = {
 
 function getJwtFromCookies(req,field) {
   //Checks the provided request headers for the specified field
-  console.log('Checking for ' + field+ ' JWT in cookies.')
+  console.log('GetJWTFromCookies:')
   if(req.headers.cookie){
-    console.log('Cookies found in request')
+    console.log(field + ' jwt cookies found in request.')
     //Finds the auth code from cookies and returns it
     result = cookieParser.parseCookies(req)[field]
-    console.log('Cookies result for requested field ' + field + ': ' + result)
+    //console.log('Cookies result for requested field ' + field + ': ' + result)
     return result
   }else{
-    console.log(field+ ' JWT was not found.')
+    console.log(field + ' jwt cookies NOT found in request.')
       return null;
   }
   
@@ -139,13 +141,13 @@ async function SignAccessToken (userId, email, username, expiryTime){
       "email": email,
       "username": username,
     }
-    //Default expiry time if none provided, though this may be settable above in function name
-    if(expiryTime == null){
-      expiryTime = "60d"
-    }
+    // //Default expiry time if none provided, though this may be settable above in function name
+    // if(expiryTime == null){
+    //   expiryTime = "60d"
+    // }
     const secret = process.env.ACCESS_TOKEN_SECRET
     const options = {
-      expiresIn: expiryTime,
+      expiresIn: "356d",
       issuer: 'hourstomax.com',
       audience: userId,
     }
