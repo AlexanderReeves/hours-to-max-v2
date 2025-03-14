@@ -182,21 +182,21 @@
             </div>
             <div class=" columnF center">                    
                     <input type="text" style="text-align:center" id="{{this.skillName}}Boost" name="{{this.skillName}}Boost"
-                    onchange="" placeholder="Levels boosted" disabled>
+                    onchange="ValidateBoost(this)" placeholder="Levels boosted" disabled>
             </div>
             <div class=" columnG center">
                 <p >Custom XpPh:</p>
             </div>
             <div class=" columnH center">            
                 <input type="text" style="text-align:center" id="{{this.skillName}}CustomXp" name="{{this.skillName}}CustomXp"
-                    onchange="" placeholder="Xp per hour">
+                    onchange="ValidateCustom(this)" placeholder="Xp per hour">
             </div>
              <div class=" columnI center">
                 <p >Cost of 1xp:</p>
             </div>
             <div class=" columnJ center">
                     <input type="text" style="text-align:center" id="{{this.skillName}}CustomGp" name="{{this.skillName}}CustomGp"
-                    onchange="" placeholder="Gp per xp">
+                    onchange="ValidateCustomGp(this)" placeholder="Gp per xp">
 
             </div>
             

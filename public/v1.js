@@ -429,4 +429,79 @@ function ToggleBoosting(){
 
 }
 
+function ValidateBoost(div){
+    div.classList.remove("redborder");
+    var validInput = true;
+    var input = div.value;
+    console.log(input);
+    if(isNaN(input)){
+        //Input was not a number
+        validInput = false;
+    }
+    if(validInput){
+        if((input % 1 != 0)){
+        //Input contained decimal places
+        validInput = false;
+        }
+    }
+    if(validInput){
+        if(input < 0 || input > 5){
+            validInput = false;
+        }
+    }
+    if(!validInput){
+        div.classList.add("redborder");
+    }
+}
+
+function ValidateCustom(div){
+    div.classList.remove("redborder");
+    var validInput = true;
+    var input = div.value;
+    console.log(input);
+    if(isNaN(input)){
+        //Input was not a number
+        validInput = false;
+    }
+    if(validInput){
+        if((input % 1 != 0)){
+        //Input contained decimal places
+        validInput = false;
+        }
+    }
+    if(validInput){
+        if(input < 0 || input > 13000000){
+            validInput = false;
+        }
+    }
+    if(!validInput){
+        div.classList.add("redborder");
+    }
+}
+
+function ValidateCustomGp(div){
+    div.classList.remove("redborder");
+    var validInput = true;
+    var input = div.value;
+    console.log(input);
+    if(isNaN(input)){
+        //Input was not a number
+        validInput = false;
+    }
+    if(validInput){
+        if((input % 1 != 0)){
+        //Input contained decimal places
+        validInput = false;
+        }
+    }
+    if(validInput){
+        if(input < -1000 || input > 1000){
+            validInput = false;
+        }
+    }
+    if(!validInput){
+        div.classList.add("redborder");
+    }
+}
+
 

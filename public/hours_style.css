@@ -328,6 +328,9 @@ box-sizing: border-box;
 }
 
 
+.redborder{
+    border-color:red !important;
+  }
 
 input[type=text], select {
 width: 100%;
@@ -604,7 +607,6 @@ box-sizing: border-box;
 }
 
 /*progress bar end*/
-
 
 
 
