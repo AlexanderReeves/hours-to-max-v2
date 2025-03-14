@@ -94,6 +94,7 @@ router.get('/', verifyAccessToken,(req, res) => {
                 {"method":"60kph Solo Lava Runes"},
                 {"method":"65kph Guardians Of The Rift"},
                 {"method":"70kph Ourania Altar"},
+                {"method":"70kph Ach Diary Double Natures"},
                 {"method":"80kph Arceeus Library"},
                 {"method":"100kph Steam Runes"}]
         },
@@ -157,7 +158,7 @@ router.get('/', verifyAccessToken,(req, res) => {
                 {"method":"220kph Cutting Rubies"},
                 {"method":"270kph Cutting Diamonds"},
                 {"method":"360kph Cutting Dragonstones"},
-                {"method":"415kph Crafting Black D'hide Bodies"}]
+                {"method":"415kph Black D'hide Bodies"}]
         },
         "fletching": {
             "skillName":"fletching",
@@ -178,7 +179,7 @@ router.get('/', verifyAccessToken,(req, res) => {
             "skillName":"hunter",
             "trainingMethods":[
                 {"method":"Custom Training Method", },
-                {"method":"80kph Kebbits"},
+                {"method":"80kph Falconry"},
                 {"method":"115kph Red Chinchompas"},
                 {"method":"125kph Black Salamanders"},
                 {"method":"160kph Black Chinchompas"},
@@ -187,6 +188,7 @@ router.get('/', verifyAccessToken,(req, res) => {
         "mining": {
             "skillName":"mining",
             "trainingMethods":[
+                {"method":"Custom Training Method", },
                 {"method":"25kph Crashed Stars", },
                 {"method":"50kph Iron Ore"},
                 {"method":"60kph Motherlode Mine"},
@@ -199,13 +201,15 @@ router.get('/', verifyAccessToken,(req, res) => {
         "smithing": {
             "skillName":"smithing",
             "trainingMethods":[
+                {"method":"Custom Training Method", },
                 {"method":"200kph Giants Foundry", },
-                {"method":"250kph Anvil Smithing"},
+                {"method":"250kph Addy Plate Anvil Smithing"},
                 {"method":"350kph Blast Furnace"}]
         },
         "fishing": {
             "skillName":"fishing",
             "trainingMethods":[
+                {"method":"Custom Training Method", },
                 {"method":"40kph Fly Fishing", },
                 {"method":"50kph Barbarian Fishing"},
                 {"method":"75kph Tempoross"},
@@ -214,6 +218,7 @@ router.get('/', verifyAccessToken,(req, res) => {
         "cooking": {
             "skillName":"cooking",
             "trainingMethods":[
+                {"method":"Custom Training Method", },
                 {"method":"150kph Lobster", },
                 {"method":"250kph Karambwans"},
                 {"method":"300kph Angler Fish"},
@@ -223,6 +228,7 @@ router.get('/', verifyAccessToken,(req, res) => {
         "firemaking": {
             "skillName":"firemaking",
             "trainingMethods":[
+                {"method":"Custom Training Method", },
                 {"method":"250kph Mahogany Logs", },
                 {"method":"275kph Yew Logs"},
                 {"method":"290kph Wintertodt"},
@@ -232,6 +238,7 @@ router.get('/', verifyAccessToken,(req, res) => {
         "woodcutting": {
             "skillName":"woodcutting",
             "trainingMethods":[
+                {"method":"Custom Training Method", },
                 {"method":"68kph Cutting Redwood Trees", },
                 {"method":"75kph Cutting Blisterwood Trees"},
                 {"method":"90kph Forrestry at Yews"},

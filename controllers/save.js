@@ -1,6 +1,7 @@
 //const mongoose = require('mongoose')
 const User = require('../Models/user')
 const {getPayloadFromAccessToken} = require('../helpers/jwt_helper')
+const {saveChoicesSchema} = require('../helpers/validation_schema')
 
 // route /save/choices
 exports.saveChoices = async (req, res , next) => {
@@ -122,8 +123,144 @@ exports.saveChoices = async (req, res , next) => {
         woodcuttingBoost: woodcuttingBoost ,
 
         seedChoice: seedChoice,
-        patchesChoice: patchesChoice
+        patchesChoice: farmingPatches
     } = req.body;
+
+    //Validate the users new save choices before trying to save them, or the system will crash.
+    console.log('about to run validation')
+    try{
+        result = await saveChoicesSchema.validateAsync({
+            username,
+            currentGoal,
+
+            attackChoice,
+            attackCustomXp,
+            attackCustomGp,
+            attackBoost,
+          
+            strengthChoice,
+            strengthCustomXp,
+            strengthCustomGp,
+            strengthBoost,
+          
+            defenceChoice,
+            defenceCustomXp,
+            defenceCustomGp,
+            defenceBoost,
+          
+            hitpointsChoice,
+            hitpointsCustomXp,
+            hitpointsCustomGp,
+            hitpointsBoost,
+          
+            rangedChoice,
+            rangedCustomXp,
+            rangedCustomGp,
+            rangedBoost,
+          
+            prayerChoice,
+            prayerCustomXp,
+            prayerCustomGp,
+            prayerBoost,
+          
+            magicChoice,
+            magicCustomXp,
+            magicCustomGp,
+            magicBoost,
+          
+            runecraftChoice,
+            runecraftCustomXp,
+            runecraftCustomGp,
+            runecraftBoost,
+          
+            constructionChoice,
+            constructionCustomXp,
+            constructionCustomGp,
+            constructionBoost,
+          
+            agilityChoice,
+            agilityCustomXp,
+            agilityCustomGp,
+            agilityBoost,
+          
+            herbloreChoice,
+            herbloreCustomXp,
+            herbloreCustomGp,
+            herbloreBoost,
+          
+            thievingChoice,
+            thievingCustomXp,
+            thievingCustomGp,
+            thievingBoost,
+          
+            craftingChoice,
+            craftingCustomXp,
+            craftingCustomGp,
+            craftingBoost,
+          
+            fletchingChoice,
+            fletchingCustomXp,
+            fletchingCustomGp,
+            fletchingBoost,
+          
+            slayerChoice,
+            slayerCustomXp,
+            slayerCustomGp,
+            slayerBoost,
+          
+            hunterChoice,
+            hunterCustomXp,
+            hunterCustomGp,
+            hunterBoost,
+          
+            miningChoice,
+            miningCustomXp,
+            miningCustomGp,
+            miningBoost,
+          
+            smithingChoice,
+            smithingCustomXp,
+            smithingCustomGp,
+            smithingBoost,
+          
+            fishingChoice,
+            fishingCustomXp,
+            fishingCustomGp,
+            fishingBoost,
+          
+            cookingChoice,
+            cookingCustomXp,
+            cookingCustomGp,
+            cookingBoost,
+          
+            firemakingChoice,
+            firemakingCustomXp,
+            firemakingCustomGp,
+            firemakingBoost,
+          
+            woodcuttingChoice,
+            woodcuttingCustomXp,
+            woodcuttingCustomGp,
+            woodcuttingBoost,
+            
+            seedChoice,
+            farmingPatches,
+        
+        
+
+        }, {warnings: true});
+
+    } catch(err){
+
+        //If this fails, result remains unchanged from its original declaration
+        console.log("Joi Error Message: " + err.message)
+        //console.log(Object.getOwnPropertyNames(err))
+        //From here, set a https error code, a message, and return to requester!
+        res.status(422).json({'error': "Could not save: One or more inputs is invalid"})
+        //If joi validation fails, end function
+        return
+    }
+    
     //Check the request had valid auth code
     payload = getPayloadFromAccessToken(auth) //wil return false if not found
     //Or it can crash here if an invalid access token runs that is in the process of being refreshed.
@@ -254,7 +391,7 @@ exports.saveChoices = async (req, res , next) => {
     user.woodcuttingBoost= woodcuttingBoost ,
 
     user.seedChoice= seedChoice,
-    user.farmingPatches= patchesChoice,
+    user.farmingPatches= farmingPatches,
     
     user.save();
     res.send("success")

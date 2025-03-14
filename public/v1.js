@@ -60,7 +60,7 @@ function InitialiseSkills(){
     skills.push( new Skill("ranged", [0,90000, 130000, 140000, 675000, 710000, 850000], [0,0,-0.1,-0.1,-4.1,-5.4,-7.6], 6));
     skills.push( new Skill("prayer", [0,50000, 250000, 437000, 600000, 800000, 1250000], [-0,-10,-10,-11,-12,-19,-50], 6));
     skills.push( new Skill("magic", [0,78000, 150000, 150000, 175000, 380000], [0,1,2,0,0,-3.5], 5));
-    skills.push( new Skill("runecraft", [0,35000, 60000, 65000, 70000, 80000, 100000], [0,50,-0.5,1,10,0,10],6 ));
+    skills.push( new Skill("runecraft", [0,35000, 60000, 65000, 70000, 80000, 100000], [0,50,-0.5,1,10,30,0,10],6 ));
     skills.push( new Skill("construction", [0,190000, 400000, 450000, 500000, 580000, 850000, 1000000], [0,-6.5,-8,-10,-10,-11,-16,-16],7 ));
     skills.push( new Skill("hitpoints", [0,-1], [0,0],1 ));
     skills.push( new Skill("agility", [0,45000, 50000, 50000, 55000, 65000, 65000, 90000], [0,1.5,1.5,1.5,1.5,1.5,0,10],7 ));
@@ -69,11 +69,11 @@ function InitialiseSkills(){
     skills.push( new Skill("crafting", [0,150000,220000,270000,360000,415000], [0,1,-2,-5,-30,-20], 5));
     skills.push( new Skill("fletching", [0,1900000,2250000,2500000,3000000,4000000], [0,-8,-12,-50,-11,-7],5 ));
     skills.push( new Skill("hunter", [0,80000,115000,125000,150000,160000,175000], [0,0,6,0,10,0,1],6 ));
-    skills.push( new Skill("mining", [0,25000,50000,60000,69000,70000,75000,78000,85000], [0,0,0,0,0,0,0,0,0],8 ));
-    skills.push( new Skill("smithing", [0,200000,250000,350000], [0,0,0,0],3 ));
-    skills.push( new Skill("fishing", [0,40000,50000,75000,80000], [0,0,0,0,0],4 ));
-    skills.push( new Skill("cooking", [0,150000,250000,300000,450000,900000], [0,0,0,0,0,0],5 ));
-    skills.push( new Skill("firemaking", [0,250000,275000,290000,400000,450000], [0,0,0,0,0,0],5 ));
+    skills.push( new Skill("mining", [0,25000,50000,60000,69000,70000,75000,78000,85000], [0,0,0,8,4,8,5,2,2],8 ));
+    skills.push( new Skill("smithing", [0,200000,250000,350000], [0,0,0,-3.5],3 ));
+    skills.push( new Skill("fishing", [0,40000,50000,75000,80000], [0,0,0,1,-2],4 ));
+    skills.push( new Skill("cooking", [0,150000,250000,300000,450000,900000], [0,1,1,1,-2,1],5 ));
+    skills.push( new Skill("firemaking", [0,250000,275000,290000,400000,450000], [0,-3,-2,1,-4,-2],5 ));
     skills.push( new Skill("woodcutting", [0,68000, 75000, 90000, 90000, 100000], [0,0,0,0,0,0],5 ));
     //Slayer is different because it does not have a set list of options, only a custom selection
     skills.push( new Skill("slayer", [0], [0],0 ));

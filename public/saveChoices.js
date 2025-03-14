@@ -41,7 +41,7 @@ function SaveChoicesToDatabase() {
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log('Submit returned errors');
                 jsonErrorMessage = XMLHttpRequest.responseJSON.error;
-                $("#result").html("An error occurred.");
+                $("#result").html("An error occurred. One of your inputs may be invalid, or the server may be experiencing a problem. " + errorThrown + ".");
                 $("#result").removeClass("success");
                 $("#result").addClass("fail");
                 return false;
