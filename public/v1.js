@@ -205,9 +205,16 @@ function PullFromJagex(){
     //Attempt to pull player from the Jagex API
     $.getJSON("https://corsproxy.io/?url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
         console.log(result);
-        $.each(result, function(i, field) {
+        $.each(result, function(pulledkey, field) {
+            console.log(field + "TEST");
+            console.log(pulledkey);
+            console.log(result);
+            //At some point, Jagex changed the Json returned, now there are 3 root values instead of 1 mega one.
+            //Need to 
+            if(pulledkey!= "name" && pulledkey != "activities"){
             //Jagex will return 24 items in an array, including the skills
         	for(let i = 0; i <24; i++) {
+                
                 //If theres xp, it means we got all the data desired.
         		if (field[i].xp != null) {
                     //Get the specific parts of data that are useful to us
@@ -226,6 +233,10 @@ function PullFromJagex(){
                     });
         		}
         	}
+
+
+            }
+
         });
     });
 }
