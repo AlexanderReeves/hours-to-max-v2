@@ -121,6 +121,11 @@ exports.saveChoices = async (req, res , next) => {
         woodcuttingCustomXp: woodcuttingCustomXp ,
         woodcuttingCustomGp: woodcuttingCustomGp ,
         woodcuttingBoost: woodcuttingBoost ,
+        
+        sailingChoice: sailingChoice ,
+        sailingCustomXp: sailingCustomXp ,
+        sailingCustomGp: sailingCustomGp ,
+        sailingBoost: sailingBoost ,
 
         seedChoice: seedChoice,
         patchesChoice: farmingPatches
@@ -242,6 +247,11 @@ exports.saveChoices = async (req, res , next) => {
             woodcuttingCustomXp,
             woodcuttingCustomGp,
             woodcuttingBoost,
+
+            sailingChoice,
+            sailingCustomXp,
+            sailingCustomGp,
+            sailingBoost,
             
             seedChoice,
             farmingPatches,
@@ -389,6 +399,11 @@ exports.saveChoices = async (req, res , next) => {
     user.woodcuttingCustomXp= woodcuttingCustomXp ,
     user.woodcuttingCustomGp= woodcuttingCustomGp ,
     user.woodcuttingBoost= woodcuttingBoost ,
+
+    user.sailingChoice= sailingChoice ,
+    user.sailingCustomXp= sailingCustomXp ,
+    user.sailingCustomGp= sailingCustomGp ,
+    user.sailingBoost= sailingBoost ,
 
     user.seedChoice= seedChoice,
     user.farmingPatches= farmingPatches,

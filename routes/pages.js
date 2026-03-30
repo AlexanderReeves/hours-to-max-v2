@@ -244,6 +244,14 @@ router.get('/', verifyAccessToken,(req, res) => {
                 {"method":"90kph Forrestry at Yews"},
                 {"method":"90kph Cutting Teak Trees"},
                 {"method":"100kph Cutting Scullicep Trees"}]
+        },
+        "sailing": {
+            "skillName":"sailing",
+            "trainingMethods":[
+                {"method":"Custom Training Method", },
+                {"method":"100kph Salvaging", },
+                {"method":"140kph Cargo Delivery"},
+                {"method":"200kph Baracuda Trials"}]
         }
       };
 

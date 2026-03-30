@@ -33,7 +33,7 @@ class Skill {
     if(name == "hitpoints"){
       this.currentLevel = 10;
     }
-
+    //console.log(this.name,this.xpRates);
   }
 
   LogName(){
@@ -76,7 +76,7 @@ class Skill {
       407015, 449428, 496254, 547953, 605032, 668051, 737627, 814445, 899257, 992895, 1096278, 1210421, 1336443,
       1475581, 1629200, 1798808, 1986068, 2192818, 2421087, 2673114, 2951373, 3258594, 3597792, 3972294, 4385776,
       4842295, 5346332, 5902831, 6517253, 7195629, 7944614, 8771558, 9684577, 10692629, 11805606, 13034431]
-      
+      //console.log("Goal level for " + this.name + ": " + this.GetGoalLevel());
     return levelToXpArray[this.GetGoalLevel()];
 
   }
@@ -86,12 +86,12 @@ class Skill {
     //The level requiered for each skill to obtain an achievment cape
     var achLvlArray = {"attack": 50,"strength": 76, "defence": 70, "hitpoints": 70, "ranged" : 70, "prayer": 85, "magic" : 96, "runecraft": 91, "construction": 78,
       "agility" : 90, "herblore": 90, "thieving": 91, "crafting": 85, "fletching" :95, "slayer": 95, "hunter": 70, "mining": 85, "smithing": 91, 
-      "fishing": 96, "cooking":95, "firemaking": 85, "woodcutting":90, "farming" : 91};
+      "fishing": 96, "cooking":95, "firemaking": 85, "woodcutting":90, "sailing":1, "farming" : 91};
 
     //The level requiered for each skill to obtain a quest cape
     var questLvlArray = {"attack": 50,"strength": 60, "defence": 65, "hitpoints": 50, "ranged" : 62, "prayer": 50, "magic" : 75, "runecraft": 60, "construction": 70,
       "agility" : 70, "herblore": 70, "thieving": 72, "crafting": 70, "fletching" :60, "slayer": 69, "hunter": 70, "mining": 72, "smithing": 70, 
-      "fishing": 62, "cooking":65, "firemaking": 75, "woodcutting":70, "farming" : 70};
+      "fishing": 62, "cooking":65, "firemaking": 75, "woodcutting":70,"sailing":45, "farming" : 70};
 
     if(currentTab == "achievement"){
       goalLevel = achLvlArray[this.name]
@@ -112,6 +112,8 @@ class Skill {
 
 
   GetRemainingHours(){
+    
+    //console.log("XP RATE: " + this.xpRates[this.dropdownSelection]);
     var currentXpPerHour = this.xpRates[this.dropdownSelection];
     //If training method is less than 0 xp per hour, it's considered passively trained
     if(currentXpPerHour < 0){
@@ -131,6 +133,8 @@ class Skill {
   }
 
   GetHoursFromZero(){
+    
+    //console.log("XCURRENT XP PER HOUR: " + this.xpRates[this.dropdownSelection]);
     var currentXpPerHour = this.xpRates[this.dropdownSelection];
     if(this.dropdownSelection == 0){
       currentXpPerHour = this.customXpRate;

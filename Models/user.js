@@ -124,6 +124,11 @@ const UserSchema = new Schema({
   woodcuttingCustomXp: { type: Number, required: false  },
   woodcuttingCustomGp: { type: Number, required: false  },
   woodcuttingBoost: { type: Number, required: false  },
+
+  sailingChoice: { type: Number, required: false  },
+  sailingCustomXp: { type: Number, required: false  },
+  sailingCustomGp: { type: Number, required: false  },
+  sailingBoost: { type: Number, required: false  },
   
   seedChoice: { type: Number, required: false  },
   farmingPatches: { type: Number, required: false  }
@@ -151,6 +156,7 @@ UserSchema.pre('save', async function (next){
 
 UserSchema.post('save', async function (next){
   try{
+    console.log(UserSchema);
     console.log('New user has been saved.')
     
   } catch(error){

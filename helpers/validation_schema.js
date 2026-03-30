@@ -133,7 +133,7 @@ const saveChoicesSchema = Joi.object({
   fishingChoice: Joi.number().integer().min(0).max(99),
   fishingCustomXp: Joi.number().integer().min(0).max(13000000),
   fishingCustomGp: Joi.number().min(-1000).max(1000),
-  fishingBoost: Joi.number().integer().min(0).max(5),
+  fishingBoost: Joi.number().integer().min(0).max(6),
 
   cookingChoice: Joi.number().integer().min(0).max(99),
   cookingCustomXp: Joi.number().integer().min(0).max(13000000),
@@ -149,6 +149,11 @@ const saveChoicesSchema = Joi.object({
   woodcuttingCustomXp: Joi.number().integer().min(0).max(13000000),
   woodcuttingCustomGp: Joi.number().min(-1000).max(1000),
   woodcuttingBoost: Joi.number().integer().min(0).max(5),
+
+  sailingChoice: Joi.number().integer().min(0).max(99),
+  sailingCustomXp: Joi.number().integer().min(0).max(13000000),
+  sailingCustomGp: Joi.number().min(-1000).max(1000),
+  sailingBoost: Joi.number().integer().min(0).max(5),
   
   seedChoice: Joi.number().integer().min(0).max(99),
   farmingPatches: Joi.number().integer().min(0).max(99),

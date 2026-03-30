@@ -47,6 +47,9 @@ window.onload = function(){
     DisplayAllLevels();
     //Display the remaining cost of training each skill
     DisplayAllRemainingCost();
+    
+    console.log("FINAL SKILLS RECORD");
+    console.log(skills);
 }
 
 function InitialiseSkills(){
@@ -54,6 +57,7 @@ function InitialiseSkills(){
 
     //Each skills default selection should match the one in the html page
     //Setting dropdown to index 0 in the future should be for custom inputs...
+    //[XP per hour, Cost per XP, Number of options available]
     skills.push( new Skill("attack", [0,-1], [0,0],1 ));
     skills.push( new Skill("strength", [0,-1], [0,0],1 ));
     skills.push( new Skill("defence", [0,-1], [0,0],1 ));
@@ -74,11 +78,16 @@ function InitialiseSkills(){
     skills.push( new Skill("fishing", [0,40000,50000,75000,80000], [0,0,0,1,-2],4 ));
     skills.push( new Skill("cooking", [0,150000,250000,300000,450000,900000], [0,1,1,1,-2,1],5 ));
     skills.push( new Skill("firemaking", [0,250000,275000,290000,400000,450000], [0,-3,-2,1,-4,-2],5 ));
-    skills.push( new Skill("woodcutting", [0,68000, 75000, 90000, 90000, 100000], [0,0,0,0,0,0],5 ));
+    skills.push( new Skill("woodcutting", [0,68000, 75000, 90000, 90000, 100000], [0,0,0,0,0,0],5 ));    
+    skills.push( new Skill("sailing", [0,100000, 140000, 200000], [0,0,0,0],3 ));
     //Slayer is different because it does not have a set list of options, only a custom selection
     skills.push( new Skill("slayer", [0], [0],0 ));
     //Farming also works via doing xp per farm run, rather than xp per hour
     skills.push( new Skill("farming", [0], [0],0 ));
+    console.log("Initialising SKILLS");
+    console.log(skills);
+    
+    console.log("Initialising SKILLS!!!!!!!!!DONE");
 }
 
 function UpdateAllSkillDropdowns(){
@@ -143,6 +152,8 @@ function PullFromDatabase(){
                 //We want to find data where the name matches the current skill
                 //e.g rangedChoice
                 desiredKey = element.name.concat('Choice');
+                console.log("KEY:"+desiredKey);
+                //BROKEN: HERE IT LOOKS FOR sailingChoice, WHICH DOESNT EXISTS AND SO IT BREAKS
                 //Loop through each pulled data element looking for the match
                 for(key in dbuser) {
                     if(key == desiredKey) {
@@ -213,7 +224,7 @@ function PullFromJagex(){
             //Need to 
             if(pulledkey!= "name" && pulledkey != "activities"){
             //Jagex will return 24 items in an array, including the skills
-        	for(let i = 0; i <24; i++) {
+        	for(let i = 0; i <25; i++) {
                 
                 //If theres xp, it means we got all the data desired.
         		if (field[i].xp != null) {
@@ -229,6 +240,7 @@ function PullFromJagex(){
                         if(element.name == pulledSkillName){
                             element.currentXp = pulledSkillXp;
                             element.currentLevel = pulledSkillLevel;
+                            console.log("IMPORTING SKILL INTO IT's OBJECT " + pulledSkillName);
                         }
                     });
         		}
@@ -456,7 +468,7 @@ function ValidateBoost(div){
         }
     }
     if(validInput){
-        if(input < 0 || input > 5){
+        if(input < 0 || input > 6){
             validInput = false;
         }
     }

@@ -140,6 +140,11 @@ exports.findUser = async (req, res , next) => {
             "woodcuttingCustomGp": user.woodcuttingCustomGp ,
             "woodcuttingBoost": user.woodcuttingBoost ,
 
+            "sailingChoice": user.sailingChoice ,
+            "sailingCustomXp": user.sailingCustomXp ,
+            "sailingCustomGp": user.sailingCustomGp ,
+            "sailingBoost": user.sailingBoost ,
+
             "seedChoice": user.seedChoice,
             "patchesChoice": user.patchesChoice,
 
