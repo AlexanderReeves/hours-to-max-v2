@@ -214,7 +214,9 @@ function PullFromJagex(){
     }
 
     //Attempt to pull player from the Jagex API
-    $.getJSON("https://corsproxy.io/?url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
+    //$.getJSON("https://corsproxy.io/?url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
+    
+    $.getJSON("https://proxy.corsfix.com/?url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
         console.log(result);
         $.each(result, function(pulledkey, field) {
             console.log(field + "TEST");
