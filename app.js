@@ -76,6 +76,8 @@ app.use('/auth', require('./routes/auth'))
 app.use('/find', require('./routes/find'))
 //save things
 app.use('/save', require('./routes/save'))
+//lookup player data
+app.use('/lookup', require('./routes/lookup'))
 
 //***Error handling middleware***
 

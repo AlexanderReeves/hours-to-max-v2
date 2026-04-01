@@ -23,3 +23,8 @@ Content-Type: application/json
     "userEmail": "test@test.com",
     "userPass":"test"
 }
+
+
+### 
+Get https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=Arrgs
+Content-Type: application/json

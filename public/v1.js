@@ -213,11 +213,8 @@ function PullFromJagex(){
         return false;
     }
 
-    //Attempt to pull player from the Jagex API
-    $.getJSON("https://corsproxy.io/?url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
-    
-    //$.getJSON("https://corsproxy.io/?key=508f86bd&url=https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user, function(result) {
-    //$.getJSON("https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=" + user , function(result) {
+    //Attempt to pull player from the Jagex API via server proxy
+    $.getJSON("/lookup?player=" + encodeURIComponent(user), function(result) {
         console.log("HISCORE PULL IS");
         console.log(result);
         $.each(result, function(pulledkey, field) {
