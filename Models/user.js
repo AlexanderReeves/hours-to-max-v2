@@ -10,6 +10,9 @@ const UserSchema = new Schema({
   confirmed: {type: Boolean,required: true, default: false, },
   username:{ type: String, required: true, unique: false,  },
   currentGoal:{ type: String, required: true, unique: false, default: "max"},
+  sortChoice: { type: Number, required: false, default: 0 },
+  showCompletedChoice: { type: Boolean, required: false, default: true },
+  customLevelsString: { type: String, required: false, default: "" },
   
   password: { type: String, required: false,  },  
   passwordLinkExipry: { type: Date, required: false,  },

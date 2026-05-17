@@ -39,6 +39,9 @@ const passwordSchema = Joi.object({
 const saveChoicesSchema = Joi.object({
   username: Joi.string().min(2).max(20).required(),
   currentGoal: Joi.string().min(2).max(20).required(),
+  sortChoice: Joi.number().integer().min(0).max(3),
+  showCompletedChoice: Joi.boolean(),
+  customLevelsString: Joi.string().allow(''),
 
   attackChoice: Joi.number().integer().min(0).max(99),
   attackCustomXp: Joi.number().integer().min(0).max(13000000),

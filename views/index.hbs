@@ -20,6 +20,7 @@
 <script type="text/javascript" src="/skill.js"></script>
 <script type="text/javascript" src="/v1.js"></script>
 <script type="text/javascript" src="/saveChoices.js"></script>
+<script type="text/javascript" src="/sort.js"></script>
 
 
 
@@ -82,6 +83,9 @@
             <button class="typebutton quest" id="quest" onclick="setTab('quest')"
                 style="background-image: url(icons/quest_cape.webp)">
             </button>
+            <button class="typebutton custom" id="custom" onclick="setTab('custom')"
+                style="background-image: url(icons/custom_cape.webp)">
+            </button>
         </div>
         <!-- *****Navigation tabs***** -->
 
@@ -107,7 +111,7 @@
             Use custom training methods, and boosted levels via the arrows.
             <br>
 
-                        <bold style="font-weight: bold;">Thank you for your patience! Sailing has been added!</bold>
+                        <bold style="font-weight: bold;">Update 17/5/26: You can now sort skills in your preferred order and hide completed ones. You can also set your own custom goals on the new tab!</bold>
             <br>
             
         </div>
@@ -122,22 +126,37 @@
                     placeholder="Enter your username">
                 <input type="button" class="colorbutton theme themered" value="Submit" onClick="SubmitUsername()">
             </form>
+            <br>
+                    <input type="button" id="sortButton"class="sortbutton theme" value="Sorting by skill" onClick="Sort()">                    
+                    <input type="button" id="showHideButton" class="sortbutton theme" value="Showing completed" onClick="ShowAndHideCompleted()">
+        <br>
         </div>
         <!-- ************* Search *************-->
 
         <p id="displayUsername" class="center"></p>
 
-        <br>
-
+        <div id="skillRows">        <!-- ################################ Start Skill Rows########################### -->
         <!-- ################################HANDLEBARS START########################### -->
         {{#each allSkills}}
 
         <!-- *************DYNAMIC SKILL ROW *************-->
-        <div class="row">
+        <div class="row" id="{{this.skillName}}Row">
 
-            <div class="columnA center"><img style="margin-top:10px" height="30" class="ico" class="ico"
+            <div class="columnA center">
+
+                <!-- Skill icon -->
+                <img style="margin-top:10px" height="30" class="ico" class="ico"
                     src="icons/{{this.skillName}}_icon.webp" alt="{{this.skillName}}">
-                <p id="{{this.skillName}}LevelDisplay" class="center">1/99</p>
+
+                <!-- Level Display -->
+
+                    <!--Text-->
+                    <p id="{{this.skillName}}LevelDisplay" class="center">1/99</p> 
+                    <!-- Custom Goal Input -->
+                    <input type="text" class="levelDisplayInput" style="text-align:center; height:30px; padding:0px;" id="{{this.skillName}}CustomGoal" name="{{this.skillName}}CustomGoal"
+                        onchange="ValidateCustomGoal(this)" placeholder="70" >
+
+
             </div>
 
             <div class="columnB">
@@ -210,10 +229,15 @@
         <!--###################################################HANDLEBARS end -->
 
         <!-- *************FARMING *************-->
-        <div class="row">
+        <div class="row" id="farmingRow">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/farming_icon.webp"
                     alt="Farming">
-                <p id="farmingLevelDisplay" class="center">1/99</p><del id="farmingStrikeLevel"></del>
+                <!--OLD CODE <p id="farmingLevelDisplay" class="center">1/99</p><del id="farmingStrikeLevel"></del>*************-->
+                <!--Text-->
+                <p id="farmingLevelDisplay" class="center">1/99</p> 
+                <!-- Custom Goal Input -->
+                <input type="text" class="levelDisplayInput" style="text-align:center; height:30px; padding:0px;" id="farmingCustomGoal" name="farmingCustomGoal"
+                    onchange="ValidateCustomGoal(this)" placeholder="70" >
             </div>
             <div class="columnB">
                 <form>
@@ -245,7 +269,7 @@
         <!-- *************farming *************-->
 
         <!-- *************FARMINGPATCHES *************-->
-        <div class="row">
+        <div class="row" id="farmingPatchesRow">
             <div class="columnA">
                 <p id=""> &nbsp; </p>
             </div>
@@ -268,6 +292,9 @@
         </div>
         <!-- *************Farming patches *************-->
 
+
+        </div>  
+        <!-- *************end skill rows *************-->
         <br>
         <!-- ************* ENd Info *************-->
         <!-- Final Outome Area -->

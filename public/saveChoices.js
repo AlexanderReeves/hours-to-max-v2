@@ -22,6 +22,16 @@ function SaveChoicesToDatabase() {
         });
         //Also add in players current tab/goal
         postData = postData.concat('&currentGoal=' + currentTab);
+        //Also add in sort choice
+        const sortButton = document.getElementById('sortButton');
+        const sortChoice = sortButton ? sortButton.dataset.sortState || '0' : '0';
+        postData = postData.concat('&sortChoice=' + sortChoice);
+        //Also add in show completed choice
+        const showCompletedChoice = window.showCompletedSkills !== undefined ? window.showCompletedSkills : true;
+        postData = postData.concat('&showCompletedChoice=' + showCompletedChoice);
+        //Also add in custom levels string
+        const customLevelsString = Object.values(customLvlArray).join(',');
+        postData = postData.concat('&customLevelsString=' + encodeURIComponent(customLevelsString));
         console.log("Attemping to post this data string... " + postData);
 
         //clear result message

@@ -11,6 +11,9 @@ exports.saveChoices = async (req, res , next) => {
         auth:auth,
         username:username,
         currentGoal: currentGoal,
+        sortChoice: sortChoice,
+        showCompletedChoice: showCompletedChoice,
+        customLevelsString: customLevelsString,
 
         attackChoice: attackChoice ,
         attackCustomXp: attackCustomXp ,
@@ -137,6 +140,9 @@ exports.saveChoices = async (req, res , next) => {
         result = await saveChoicesSchema.validateAsync({
             username,
             currentGoal,
+            sortChoice,
+            showCompletedChoice,
+            customLevelsString,
 
             attackChoice,
             attackCustomXp,
@@ -289,6 +295,9 @@ exports.saveChoices = async (req, res , next) => {
     
     user.username = username,
     user.currentGoal = currentGoal,
+    user.sortChoice = sortChoice,
+    user.showCompletedChoice = showCompletedChoice,
+    user.customLevelsString = customLevelsString,
 
     user.attackChoice= attackChoice ,
     user.attackCustomXp= attackCustomXp ,

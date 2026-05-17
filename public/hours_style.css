@@ -90,6 +90,15 @@ background-size: 10%;/*13 on mobile, 10 on desktop*/
 /*height:110px;*/
 
 }
+
+.finalCustom {
+background-image: url(./icons/Custom_cape.webp);
+background-repeat: no-repeat;
+background-position: right;
+background-size: 10%;/*13 on mobile, 10 on desktop*/
+/*height:110px;*/
+}
+
 .finalQuest {
 background-image: url(./icons/Quest_cape.webp);
 background-repeat: no-repeat;
@@ -422,7 +431,7 @@ color: blue;
 
 .max{
 background-image: url("Max_cape.webp");
-width: 33%;
+width: 25%;
 border-top-left-radius: 15px;
 background-repeat:no-repeat;
 background-position: center center;
@@ -432,8 +441,7 @@ line-height:11;
 
 .quest{
 background-image: url("quest_cape.webp");
-border-top-right-radius: 15px;
-width: 33%;
+width: 25%;
 background-repeat:no-repeat;
 background-position: center center;
 background-size: 10%;
@@ -441,7 +449,17 @@ line-height:11;
 }
 .achievement{
 background-image: url("achievement_cape.webp");
-width:34%;
+width:25%;
+background-repeat:no-repeat;
+background-position: center center;
+background-size: 10%;
+line-height:11;
+}
+
+.custom{
+background-image: url("custom_cape.webp");
+border-top-right-radius: 15px;
+width: 25%;
 background-repeat:no-repeat;
 background-position: center center;
 background-size: 10%;
@@ -490,6 +508,29 @@ border-radius: 0px;
 cursor: pointer;
 height:50px;
 border-radius: 0px;;
+}
+.sortbutton{
+width: 40%;
+color: rgb(82, 82, 82);
+padding: 14px 20px;
+margin: 0px;
+border: 1px solid #ccc;
+cursor: pointer;
+height:50px;
+border-radius: 8px;;
+background-color:white;
+}
+
+.showHideButton{
+width: 40%;
+color: rgb(82, 82, 82);
+padding: 14px 20px;
+margin: 0px;
+border: 1px solid #ccc;
+cursor: pointer;
+height:50px;
+border-radius: 8px;;
+background-color:white;
 }
 
 .refreshbutton{
@@ -608,7 +649,23 @@ box-sizing: border-box;
 
 /*progress bar end*/
 
+/*CSS that is only activated when the custom tab is selected*/
 
+
+input.levelDisplayInput{
+    display:none;
+    float:left;
+}
+
+.levelDisplayTextCustom.p{
+    text-decoration: underline;
+}
+
+input.levelDisplayInputCustom{
+    display:inline;
+    width:100%;
+    /*float:left;*/
+}
 
 
 /*MOBILE CSS*/
@@ -819,7 +876,7 @@ border-top-right-radius: 50px;
 
 .max{
 background-image: url("Max_cape.webp");
-width: 33%;
+width: 25%;
 border-top-left-radius: 50px;
 background-repeat:no-repeat;
 background-position: center center;
@@ -829,8 +886,7 @@ line-height:11;
 
 .quest{
 background-image: url("quest_cape.webp");
-border-top-right-radius: 50px;
-width: 33%;
+width: 25%;
 background-repeat:no-repeat;
 background-position: center center;
 background-size: 20%;
@@ -838,7 +894,17 @@ line-height:11;
 }
 .achievement{
 background-image: url("achievement_cape.webp");
-width:34%;
+width:25%;
+background-repeat:no-repeat;
+background-position: center center;
+background-size: 20%;
+line-height:11;
+}
+
+.custom{
+background-image: url("custom_cape.webp");
+border-top-right-radius: 50px;
+width:25%;
 background-repeat:no-repeat;
 background-position: center center;
 background-size: 20%;
@@ -853,6 +919,14 @@ border-bottom: 0px;
 border-left:2px;
 border-right:2px;
 border-color: white;
+}
+
+.sortbutton{
+height:100px;
+}
+
+.showHideButton{
+height:100px;
 }
 
 

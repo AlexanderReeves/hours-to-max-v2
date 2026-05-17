@@ -93,6 +93,9 @@ class Skill {
       "agility" : 70, "herblore": 70, "thieving": 72, "crafting": 70, "fletching" :60, "slayer": 69, "hunter": 70, "mining": 72, "smithing": 70, 
       "fishing": 62, "cooking":65, "firemaking": 75, "woodcutting":70,"sailing":45, "farming" : 70};
 
+
+    //Custom levels are not saved on each skill instance. They are a global variable array that is accessed when needed.
+
     if(currentTab == "achievement"){
       goalLevel = achLvlArray[this.name]
     }
@@ -100,7 +103,13 @@ class Skill {
       goalLevel = questLvlArray[this.name]
     }
 
-    goalLevel = goalLevel - this.levelsBoosted;
+    if(currentTab == "custom"){
+      goalLevel = customLvlArray[this.name]
+    }
+
+    if(currentTab == "quest" || currentTab == "achievement"){
+      goalLevel = goalLevel - this.levelsBoosted;
+    }
 
     if(currentTab == "max"){
       //If the goal is to max, boosts are useless and the end result is always 99
@@ -223,13 +232,30 @@ class Skill {
 
   DisplayLevels(){
     var message = document.getElementById(this.name + 'LevelDisplay');
-    if(this.levelsBoosted > 0 && currentTab != "max"){
+    console.log("Displaying levels for " + this.name + ". Current level: " + this.currentLevel + ", Goal level: " + this.GetGoalLevel());
+    //Display boosted skills, and only on the corect tabs
+    if(this.levelsBoosted > 0 && (currentTab != "max" && currentTab !="custom")){
       var originalGoal = this.GetGoalLevel() + +this.levelsBoosted;
       originalGoal = originalGoal + '';
       originalGoal = originalGoal.split('').map(char => char + '\u0336').join('');
       message.innerHTML= '<p>' + this.currentLevel + '/'  + '  ' + this.GetGoalLevel() + ' ' +originalGoal;
+      console.log("Skill: " + this.name + ", current level: " + this.currentLevel + ", goal level: " + this.GetGoalLevel());
     }else{
-      message.innerHTML= '<p>' + this.currentLevel + '/' + '' + this.GetGoalLevel() + '<p>';
+      //In all other cases, boosts do not display.
+      if(currentTab == "custom"){
+        message.innerHTML= '<p style="text-decoration: underline;">' + this.currentLevel + '</p>';
+      }
+      if(currentTab == "max"){
+        message.innerHTML= '<p>' + this.currentLevel + '/99'+ '<p>';
+      }
+      if(currentTab == "achievement"){
+        message.innerHTML= '<p >' + this.currentLevel +'/' + this.GetGoalLevel() +'</p>';
+      }
+      if(currentTab == "quest"){
+        message.innerHTML= '<p >' + this.currentLevel + '/' + this.GetGoalLevel() + '</p>';
+      }
+
+      
     }
     
     if(this.currentLevel >= this.GetGoalLevel()){
@@ -240,3 +266,4 @@ class Skill {
   }
 
 }
+

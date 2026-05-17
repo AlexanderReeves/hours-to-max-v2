@@ -29,6 +29,9 @@ exports.findUser = async (req, res , next) => {
             "username":user.username,
             "email":user.email,
             "currentGoal":user.currentGoal,
+            "sortChoice":user.sortChoice,
+            "showCompletedChoice":user.showCompletedChoice,
+            "customLevelsString":user.customLevelsString,
 
             "attackChoice": user.attackChoice ,
             "attackCustomXp": user.attackCustomXp ,

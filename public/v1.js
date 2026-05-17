@@ -28,6 +28,8 @@ var ninetyNine = 13034431;
 //Skills class contains an array of skills.
 var skills = [];
 
+var customLvlArray =[];
+
 
 window.onload = function(){
     //As soon as the page has finished loading, perform each task once.
@@ -35,6 +37,9 @@ window.onload = function(){
     InitialiseSkills();
     //Override the values if there is anything stored in the db
     PullFromDatabase();
+    //Pull custom goals from the database
+
+    //PullGoalsFromDatabse();
     //Pull the playerdata from the Jagex API if player was in db
     if(user != ""){PullFromJagex();}
     //Update all the dropdowns to match the current selections
@@ -47,7 +52,10 @@ window.onload = function(){
     DisplayAllLevels();
     //Display the remaining cost of training each skill
     DisplayAllRemainingCost();
-    
+    //Sort according to the users last sort choice, or the default choice
+    Sort(false);
+    //Show or hide skills based on user choice
+    ShowAndHideCompleted(false);
     console.log("FINAL SKILLS RECORD");
     console.log(skills);
 }
@@ -86,6 +94,13 @@ function InitialiseSkills(){
     skills.push( new Skill("farming", [0], [0],0 ));
     console.log("Initialising SKILLS");
     console.log(skills);
+
+    //Initialise custom skill goals
+    customLvlArray = {"attack": 70,"strength": 70, "defence": 70, "ranged": 70, "prayer": 70, "magic": 70, "runecraft": 70, "construction": 70,
+      "hitpoints": 70, "agility": 70, "herblore": 70, "thieving": 70, "crafting": 70, "fletching": 70, "hunter": 70, "mining": 70, "smithing": 70, 
+      "fishing": 70, "cooking": 70, "firemaking": 70, "woodcutting": 70, "sailing": 70, "slayer": 70, "farming": 70};
+      
+    customLvlArray = UpdateCustomLevels([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,70,70,70,70,70], customLvlArray);
     
     console.log("Initialising SKILLS!!!!!!!!!DONE");
 }
@@ -107,6 +122,16 @@ function UpdateAllSkillCustomisations(){
     skills.forEach(element => {
         if(element.name!="farming"){
             element.DisplayCustomisations();
+        }
+    });
+    UpdateCustomGoalInputs();
+}
+
+function UpdateCustomGoalInputs(){
+    Object.entries(customLvlArray).forEach(([skillName, goalLevel]) => {
+        var input = document.getElementById(skillName + 'CustomGoal');
+        if(input){
+            input.value = goalLevel;
         }
     });
 }
@@ -152,7 +177,7 @@ function PullFromDatabase(){
                 //We want to find data where the name matches the current skill
                 //e.g rangedChoice
                 desiredKey = element.name.concat('Choice');
-                console.log("KEY:"+desiredKey);
+                //console.log("KEY:"+desiredKey);
                 //BROKEN: HERE IT LOOKS FOR sailingChoice, WHICH DOESNT EXISTS AND SO IT BREAKS
                 //Loop through each pulled data element looking for the match
                 for(key in dbuser) {
@@ -200,6 +225,35 @@ function PullFromDatabase(){
                 numPatches = dbuser.farmingPatches;
             }
         });
+
+        // Set the sort choice
+        //If theres a sort choice found
+        if (dbuser.sortChoice !== undefined) {
+            //Get the button from the html
+            const sortButton = document.getElementById('sortButton');
+            //If button found
+            if (sortButton) {
+                //Set the data state
+                sortButton.dataset.sortState = dbuser.sortChoice;
+                const sortOptions = ['Sorting by skill', 'Sorting by level', 'Sorting by cost', 'Sorting by hours'];
+                sortButton.value = sortOptions[dbuser.sortChoice] || 'Sorting by skill';
+                // Apply the sort without toggling
+                Sort(false);
+            }
+        }
+
+        // Set the show completed choice
+        if (dbuser.showCompletedChoice !== undefined) {
+            window.showCompletedSkills = dbuser.showCompletedChoice;
+            // Apply the show/hide without toggling
+            ShowAndHideCompleted(false);
+        }
+
+        // Set the custom levels
+        if (dbuser.customLevelsString) {
+            const customLevels = dbuser.customLevelsString.split(',').map(Number);
+            customLvlArray = UpdateCustomLevels(customLevels, customLvlArray);
+        }
     }
     return; // avoid to execute the actual submit of the form
 }
@@ -218,9 +272,9 @@ function PullFromJagex(){
         console.log("HISCORE PULL IS");
         console.log(result);
         $.each(result, function(pulledkey, field) {
-            console.log(field + "TEST");
-            console.log(pulledkey);
-            console.log(result);
+            //console.log(field + "TEST");
+            //console.log(pulledkey);
+            //console.log(result);
             //At some point, Jagex changed the Json returned, now there are 3 root values instead of 1 mega one.
             //Need to 
             if(pulledkey!= "name" && pulledkey != "activities"){
@@ -241,7 +295,7 @@ function PullFromJagex(){
                         if(element.name == pulledSkillName){
                             element.currentXp = pulledSkillXp;
                             element.currentLevel = pulledSkillLevel;
-                            console.log("IMPORTING SKILL INTO IT's OBJECT " + pulledSkillName);
+                            //console.log("IMPORTING SKILL INTO IT's OBJECT " + pulledSkillName);
                         }
                     });
         		}
@@ -327,6 +381,18 @@ function RefreshCustom(clickedRefresh){
     DisplayAllRemainingCost();
 }
 
+function SubmitNewCustomGoal(){
+    //Calculate the new total hours to max based on xp of all skills
+    // FindTotalHoursToGoal();
+    //Re-Run calculations for reaching the players goals
+    DisplayAllLevels();
+    //Display the remaining hours of training for each skill
+    DisplayAllRemainingHours();
+    //Display the remaining cost of training each skill
+    DisplayAllRemainingCost();
+
+}
+
 
 
 
@@ -360,6 +426,7 @@ function DisplayAllLevels(){
     var remainingTotalLevels = 0;
     console.log("Displaying current and remaining levels for each skill");
     skills.forEach(element => {
+        console.log("Displaying levels for " + element.name);
         element.DisplayLevels();
         var remainingLevels = element.GetGoalLevel() - element.currentLevel;
         if(remainingLevels < 0){
@@ -421,6 +488,10 @@ function SubmitUsername(){
     DisplayAllLevels();
     //Display the remaining cost of training each skill
     DisplayAllRemainingCost();
+    //Show and hide completed skills based on user choice  
+    ShowAndHideCompleted(false);
+     //Sort the display of skills based on selection
+    Sort(false);
 }
 
 function ChangeGoal(tabName){
@@ -448,10 +519,28 @@ function ToggleBoosting(){
     skills.forEach(element => {
         $( "#"+element.name+"Boost").prop('disabled', disableBoosting);
     });
-
-    
-
 }
+
+function UpdateCustomLevels(customLevels = null, targetArray = customLvlArray) {
+    // If no custom levels provided, return the current array
+    if (!customLevels) {
+        return targetArray;
+    }
+    
+    // Get the skill names in order from the target array
+    const skillNames = Object.keys(targetArray);
+    
+    // Apply each level from the input array to the corresponding skill
+    customLevels.forEach((level, index) => {
+        if (index < skillNames.length) {
+            targetArray[skillNames[index]] = level;
+        }
+    });
+    
+    return targetArray;
+}
+
+
 
 function ValidateBoost(div){
     div.classList.remove("redborder");
@@ -500,6 +589,38 @@ function ValidateCustom(div){
     }
     if(!validInput){
         div.classList.add("redborder");
+    }
+}
+
+function ValidateCustomGoal(div){
+    div.classList.remove("redborder");
+    var validInput = true;
+    var input = div.value;
+    if(isNaN(input)){
+        // Input was not a number
+        validInput = false;
+    }
+    if(validInput){
+        if((input % 1 != 0)){
+            // Input contained decimal places
+            validInput = false;
+        }
+    }
+    if(validInput){
+        if(input < 1 || input > 99){
+            validInput = false;
+        }
+    }
+    if(!validInput){
+        div.classList.add("redborder");
+    } else {
+        var skillName = div.id.replace('CustomGoal', '');
+        if(skillName && customLvlArray.hasOwnProperty(skillName)){
+            customLvlArray[skillName] = Number(input);
+        }
+        DisplayAllLevels();
+        DisplayAllRemainingHours();
+        DisplayAllRemainingCost();
     }
 }
 

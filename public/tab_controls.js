@@ -17,7 +17,8 @@ function setTab(tabname) {
       for (i = 0; i < themedElements.length; i++) {
         themedElements[i].className = themedElements[i].className.replace("themered", "newtheme");
         themedElements[i].className = themedElements[i].className.replace("themegreen", "newtheme");
-        themedElements[i].className = themedElements[i].className.replace("themeblue", "newtheme");
+        themedElements[i].className = themedElements[i].className.replace("themeblue", "newtheme");        
+        themedElements[i].className = themedElements[i].className.replace("themepurple", "newtheme");
       }
       for (i = 0; i < themedElements.length; i++) {
         if(tabname == "max"){
@@ -39,6 +40,24 @@ function setTab(tabname) {
            document.getElementById("finalCape").classList.remove('finalAchievement');       
            document.getElementById("finalCape").classList.add('finalQuest');
         }
+
+        if(tabname == "custom"){
+           themedElements[i].className = themedElements[i].className.replace("newtheme", "themepurple");
+          document.getElementById('intro').innerText =
+           "Find how many hours until you have all the levels for a custom goal.";
+           document.getElementById('goalCapeDisplay').innerText = "Custom Cape";
+           document.getElementById("finalCape").classList.remove('finalMax');       
+           document.getElementById("finalCape").classList.remove('finalAchievement');       
+           document.getElementById("finalCape").classList.add('finalCustom');
+
+           //Get the level display based on the class name, add or remove the extra class to make room for the goal input and make it visible
+            $('.levelDisplayText').addClass('levelDisplayTextCustom');
+            $('.levelDisplayInput').addClass('levelDisplayInputCustom');
+            //Then remove these extra classes and hide the text box when not on custom tab
+        }else{
+            $('.levelDisplayText').removeClass('levelDisplayTextCustom');
+            $('.levelDisplayInput').removeClass('levelDisplayInputCustom');
+        }
     
         if(tabname == "achievement"){
            themedElements[i].className = themedElements[i].className.replace("newtheme", "themegreen");
@@ -55,7 +74,8 @@ function setTab(tabname) {
     
         }
       }
-
+      ShowAndHideCompleted(false);
+      Sort(false);
       ToggleBoosting();
 }
     
