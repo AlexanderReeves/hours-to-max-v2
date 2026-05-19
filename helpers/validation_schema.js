@@ -42,6 +42,7 @@ const saveChoicesSchema = Joi.object({
   sortChoice: Joi.number().integer().min(0).max(3),
   showCompletedChoice: Joi.boolean(),
   customLevelsString: Joi.string().allow(''),
+  hoursPerDay: Joi.number().min(0.01).max(24).default(1),
 
   attackChoice: Joi.number().integer().min(0).max(99),
   attackCustomXp: Joi.number().integer().min(0).max(13000000),

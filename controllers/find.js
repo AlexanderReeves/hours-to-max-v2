@@ -32,6 +32,7 @@ exports.findUser = async (req, res , next) => {
             "sortChoice":user.sortChoice,
             "showCompletedChoice":user.showCompletedChoice,
             "customLevelsString":user.customLevelsString,
+            "hoursPerDay": user.hoursPerDay,
 
             "attackChoice": user.attackChoice ,
             "attackCustomXp": user.attackCustomXp ,

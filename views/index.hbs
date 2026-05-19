@@ -295,7 +295,12 @@
 
         </div>  
         <!-- *************end skill rows *************-->
+        
+        <input type="text" class="textbox" id="hoursPerDayInput" name="hoursPerDayInput" 
+        style="text-align:center; width: 80%;  margin-right: 10%;"
+            placeholder="Enter your average hours played per day" onchange="ValidateHoursPerDay(this)">
         <br>
+
         <!-- ************* ENd Info *************-->
         <!-- Final Outome Area -->
         <div style="padding:10px;">
@@ -335,20 +340,8 @@
                 </div>
 
                 <div>
-                    <!-- Final Outome Area -->
-                    <div class="OutcomeColA" style="float: left;">
-                        &nbsp;
-                    </div>
-                    <div class="OutcomeColB" style="float: left;text-align:left">
-                        Remaining Hours
-                    </div>
-                    <div id="goalHoursDisplay" class="OutcomeColC" style="float: left;text-align:right">
-                        ?
-                    </div>
-                    <div class="OutcomeColD" style="float:left">
-                        &nbsp;
-                    </div>
-                </div>
+
+
 
 
                 <div>
@@ -369,6 +362,8 @@
 
                 <div>
                     <!-- Final Outome Area -->
+            
+                <!-- ROW ONE -->
                     <div class="OutcomeColA" style="float: left;">
                         &nbsp;
                     </div>
@@ -382,6 +377,7 @@
                         &nbsp;
                     </div>
                 </div>
+                <!-- ROW ONE END -->
 
 
 
@@ -416,6 +412,79 @@
                         &nbsp;
                     </div>
                 </div>
+
+
+
+                <!-- Percent of Time completed -->
+                <div>                    
+                    <div class="OutcomeColA" style="float: left;">
+                        &nbsp;
+                    </div>
+                    <div class="OutcomeColB" style="float: left;text-align:left">
+                        Exp. Completed
+                    </div>
+                    <div id="goalXpPercentage" id="goalXpPercentage" class="OutcomeColC" style="float: left;text-align:right">
+                        ?
+                    </div>
+                    <div class="OutcomeColD" style="float:left">
+                        &nbsp;
+                    </div>
+                </div>
+
+
+
+                                <!-- Fraction of Time completed -->
+                <div>                    
+                    <div class="OutcomeColA" style="float: left;">
+                        &nbsp;
+                    </div>
+                    <div class="OutcomeColB" style="float: left;text-align:left">
+                        Completed Hours
+                    </div>
+                    <div id="goalCompletedHours" id="goalCompletedHours" class="OutcomeColC" style="float: left;text-align:right">
+                        ?
+                    </div>
+                    <div class="OutcomeColD" style="float:left">
+                        &nbsp;
+                    </div>
+                </div>
+
+                                    <!-- Final Outome Area -->
+                    <div class="OutcomeColA" style="float: left;">
+                        &nbsp;
+                    </div>
+                    <div class="OutcomeColB" style="float: left;text-align:left">
+                        Remaining Hours
+                    </div>
+                    <div id="goalHoursDisplay" class="OutcomeColC" style="float: left;text-align:right">
+                        ?
+                    </div>
+                    <div class="OutcomeColD" style="float:left">
+                        &nbsp;
+                    </div>
+                </div>
+
+                                <!-- Completion Date Estimated -->
+                <div>                    
+                    <div class="OutcomeColA" style="float: left;">
+                        &nbsp;
+                    </div>
+                    <div class="OutcomeColB" style="float: left;text-align:left">
+                        Est. Date
+                    </div>
+                    <div id="goalCompletedDateEstimate" id="goalCompletedDateEstimate" class="OutcomeColC" style="float: left;text-align:right">
+                        ?
+                    </div>
+                    <div class="OutcomeColD" style="float:left">
+                        &nbsp;
+                    </div>
+                </div>
+
+
+
+
+
+
                 
                 <br><br>
                 <br><br>
@@ -424,10 +493,13 @@
                 <div class="OutcomeColA" style="float:left">&nbsp;</div>
                 <div class="OutcomeBar" style="float:left">
                     <div class="meter red">
-                        <span id="progressPercent" style="width: 0%"></span>
+                        <span id="progressPercent" style="width: 0%;">
+                            <p id="progressPercentText" style=" color: white;    text-align: -webkit-center;">65% (hrs)</p>
+                        </span>
                     </div>
                 </div>
                 <div class="OutcomeColD" style="float:left">&nbsp;</div>
+            
 
 
             </div>
@@ -453,7 +525,7 @@
     <footer>
         <div>
             <br><br>
-            <input type="button" class="colorbutton theme themered" value="Hire me!" onclick="location.href='/author'" style="width:100px">
+            <input type="button" class="colorbutton theme themered" value="Hire me!" onclick="location.href='/author'" style="max-width:200px">
             <br><br>
             <p id="footer">2024 Arrgs - reevesgamedev@gmail.com</p>
             <p id="footer">*Gp per XP estimates from June 2024*</p>

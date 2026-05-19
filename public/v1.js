@@ -136,6 +136,29 @@ function UpdateCustomGoalInputs(){
     });
 }
 
+function GetHoursPerDayValue(){
+    var input = document.getElementById('hoursPerDayInput');
+    if(!input){
+        return 1;
+    }
+    var value = parseFloat(input.value);
+    if(isNaN(value) || value <= 0){
+        return 1;
+    }
+    return value;
+}
+
+function ValidateHoursPerDay(input){
+    if(!input){
+        return;
+    }
+    var value = parseFloat(input.value);
+    if(isNaN(value) || value <= 0){
+        input.value = '';
+    }
+    DisplayAllRemainingHours();
+}
+
 function PullFromDatabase(){
     //Request the user db data to load into page via jwt
     //Get the auth cookie to send to the server
@@ -253,6 +276,11 @@ function PullFromDatabase(){
         if (dbuser.customLevelsString) {
             const customLevels = dbuser.customLevelsString.split(',').map(Number);
             customLvlArray = UpdateCustomLevels(customLevels, customLvlArray);
+        }
+
+        // Set the user's hours per day preference
+        if (dbuser.hoursPerDay !== undefined && document.getElementById('hoursPerDayInput')) {
+            document.getElementById('hoursPerDayInput').value = dbuser.hoursPerDay;
         }
     }
     return; // avoid to execute the actual submit of the form
@@ -414,19 +442,31 @@ function DisplayAllRemainingHours(){
     console.log
     //Display the final result
     var hoursCompleted = totalHoursFromZero - totalRemainingHours;
-
+    //Display remaining hours
     $('#goalHoursDisplay').html(totalRemainingHours.toFixed(2));
+    //Display completed hours as fraction
+    $('#goalCompletedHours').html(hoursCompleted.toFixed(0) + "/" + totalHoursFromZero.toFixed(0));
+
     var percentOfGoal = hoursCompleted/totalHoursFromZero * 100;
     //percentCompleted = (Math.round(percentCompleted * 100) / 100).toFixed(2);
     document.getElementById("progressPercent").setAttribute("style","width:" + percentOfGoal + "%");
+    $('#progressPercentText').html(percentOfGoal.toFixed(2) + "%");
+
+    //Display an estimated completion date based on hours remaining and a set number of hours played per day
+    var hoursPerDay = GetHoursPerDayValue();
+    var daysToGoal = totalRemainingHours / hoursPerDay;
+    var currentDate = new Date();
+    var completionDate = new Date(currentDate.getTime() + (daysToGoal * 24 * 60 * 60 * 1000));
+    $('#goalCompletedDateEstimate').html(completionDate.toDateString());
 }
 
 function DisplayAllLevels(){
     var completedSkills = 0
     var remainingTotalLevels = 0;
+    var goalXP = 0;
+    var remainingXp= 0;
     console.log("Displaying current and remaining levels for each skill");
     skills.forEach(element => {
-        console.log("Displaying levels for " + element.name);
         element.DisplayLevels();
         var remainingLevels = element.GetGoalLevel() - element.currentLevel;
         if(remainingLevels < 0){
@@ -437,11 +477,16 @@ function DisplayAllLevels(){
         if(remainingLevels <= 0 ){
             completedSkills +=1;
         }
-        
+        goalXP += element.GetGoalXp();
+        remainingXp += element.GetRemainingXP();
     });
     $('#goalRemainingLevels').html(remainingTotalLevels);
-    $('#goalCompletedSkills').html(completedSkills);
+    $('#goalCompletedSkills').html(completedSkills + "/24");
+    var percentOfGoal = (goalXP - remainingXp)/goalXP * 100;
+    $('#goalXpPercentage').html(percentOfGoal.toFixed(2) + "%");
     $('#goalName').html(user);
+
+    //Calculate 
 }
 
 function DisplayAllRemainingCost(){

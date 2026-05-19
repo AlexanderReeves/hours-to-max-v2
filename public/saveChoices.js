@@ -29,6 +29,10 @@ function SaveChoicesToDatabase() {
         //Also add in show completed choice
         const showCompletedChoice = window.showCompletedSkills !== undefined ? window.showCompletedSkills : true;
         postData = postData.concat('&showCompletedChoice=' + showCompletedChoice);
+        //Also add in hours per day
+        const hoursPerDay = document.getElementById('hoursPerDayInput') ? document.getElementById('hoursPerDayInput').value : '';
+        const hoursPerDayValue = parseFloat(hoursPerDay);
+        postData = postData.concat('&hoursPerDay=' + (isNaN(hoursPerDayValue) || hoursPerDayValue <= 0 ? '1' : hoursPerDayValue));
         //Also add in custom levels string
         const customLevelsString = Object.values(customLvlArray).join(',');
         postData = postData.concat('&customLevelsString=' + encodeURIComponent(customLevelsString));

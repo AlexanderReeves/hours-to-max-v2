@@ -176,6 +176,14 @@ class Skill {
     return (costPerXp * remainingXp);
   }
 
+  GetRemainingXP(){
+    var remainingXp = this.GetGoalXp() - this.currentXp;
+    if(remainingXp < 0){
+      remainingXp = 0;
+    }
+    return remainingXp;
+  }
+
 
   DisplayRemainingHours(){
     //Displays the remainng number of hours of training for a skill

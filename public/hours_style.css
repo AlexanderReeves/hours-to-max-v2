@@ -547,7 +547,7 @@ background-color:white;
 
 .meter {
 box-sizing: content-box;
-height: 15px; /* Can be anything */
+height: 18px; /* Can be anything */
 position: relative;
 margin: 30px 0 20px 0; /* Just for demo spacing */
 background: #555;
@@ -665,6 +665,10 @@ input.levelDisplayInputCustom{
     display:inline;
     width:100%;
     /*float:left;*/
+}
+
+#progressPercentText{
+    font-size: 16px;
 }
 
 
@@ -927,6 +931,10 @@ height:100px;
 
 .showHideButton{
 height:100px;
+}
+
+#progressPercentText{
+    font-size: 34px;
 }
 
 

@@ -14,6 +14,7 @@ exports.saveChoices = async (req, res , next) => {
         sortChoice: sortChoice,
         showCompletedChoice: showCompletedChoice,
         customLevelsString: customLevelsString,
+        hoursPerDay: hoursPerDay ,
 
         attackChoice: attackChoice ,
         attackCustomXp: attackCustomXp ,
@@ -143,6 +144,7 @@ exports.saveChoices = async (req, res , next) => {
             sortChoice,
             showCompletedChoice,
             customLevelsString,
+            hoursPerDay,
 
             attackChoice,
             attackCustomXp,
@@ -298,6 +300,7 @@ exports.saveChoices = async (req, res , next) => {
     user.sortChoice = sortChoice,
     user.showCompletedChoice = showCompletedChoice,
     user.customLevelsString = customLevelsString,
+    user.hoursPerDay = isNaN(parseFloat(hoursPerDay)) || parseFloat(hoursPerDay) <= 0 ? 1 : parseFloat(hoursPerDay),
 
     user.attackChoice= attackChoice ,
     user.attackCustomXp= attackCustomXp ,

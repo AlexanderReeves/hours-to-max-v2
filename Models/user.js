@@ -13,6 +13,7 @@ const UserSchema = new Schema({
   sortChoice: { type: Number, required: false, default: 0 },
   showCompletedChoice: { type: Boolean, required: false, default: true },
   customLevelsString: { type: String, required: false, default: "" },
+  hoursPerDay: { type: Number, required: false, default: 1 },
   
   password: { type: String, required: false,  },  
   passwordLinkExipry: { type: Date, required: false,  },
