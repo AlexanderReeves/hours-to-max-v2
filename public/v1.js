@@ -58,6 +58,8 @@ window.onload = function(){
     ShowAndHideCompleted(false);
     console.log("FINAL SKILLS RECORD");
     console.log(skills);
+
+    CreateChart();
 }
 
 function InitialiseSkills(){
@@ -457,6 +459,7 @@ function DisplayAllRemainingHours(){
     var daysToGoal = totalRemainingHours / hoursPerDay;
     var currentDate = new Date();
     var completionDate = new Date(currentDate.getTime() + (daysToGoal * 24 * 60 * 60 * 1000));
+    var halfwayDate = new Date(currentDate.getTime() + (daysToGoal * 0.5 * 24 * 60 * 60 * 1000));
     $('#goalCompletedDateEstimate').html(completionDate.toDateString());
 }
 
@@ -572,7 +575,7 @@ function UpdateCustomLevels(customLevels = null, targetArray = customLvlArray) {
         return targetArray;
     }
     
-    // Get the skill names in order from the target array
+    // Get the skill names in order from the target 
     const skillNames = Object.keys(targetArray);
     
     // Apply each level from the input array to the corresponding skill
@@ -693,5 +696,46 @@ function ValidateCustomGp(div){
         div.classList.add("redborder");
     }
 }
+
+function CreateChart(){
+
+    var xyValues = [
+  {x:50, y:7},
+  {x:60, y:8},
+  {x:70, y:8},
+  {x:80, y:9},
+  {x:90, y:9},
+  {x:100, y:9},
+  {x:110, y:10},
+  {x:120, y:11},
+  {x:130, y:14},
+  {x:140, y:14},
+  {x:150, y:15}
+];
+
+    xyValues = [
+];
+
+
+    new Chart("myChart", {
+  type: "scatter",
+  data: {
+    datasets: [{
+      pointRadius: 4,
+      pointBackgroundColor: "rgb(0,0,255)",
+      data: xyValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      xAxes: [{ticks: {min: 40, max:160}}],
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
+    });
+
+}
+
 
 

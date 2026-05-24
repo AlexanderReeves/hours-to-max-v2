@@ -21,6 +21,7 @@
 <script type="text/javascript" src="/v1.js"></script>
 <script type="text/javascript" src="/saveChoices.js"></script>
 <script type="text/javascript" src="/sort.js"></script>
+<script type="text/javascript" src="/chart.js"></script>
 
 
 
@@ -29,6 +30,12 @@
 <!--Fav end -->
 
 <head>
+    {{!-- Favicon --}}
+    <link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/ico/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/ico/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/ico/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     {{!-- Css files --}}
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/hours_style.css">
@@ -54,6 +61,7 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
+                <li><a href="https://discord.gg/UVz8h7Jt4w" target="_blank">Discord</a></li>
                 {{#if signedin}}
                     <li><a href="/logout">Logout</a></li>
 
@@ -98,21 +106,24 @@
         <br>
         <div class="center " id="intro" style="padding-left:10px;padding-right:10px">
             
-            <bold style="font-weight: bold;">How long does it take to Max in Old School Runescape?</bold>
+            <bold style="font-weight: bold;">Find how long it will take you to Max in Old School Runescape</bold>
         </div>
         <div class="center" id="disclaimer">
             <br>
             
-            Enter your username your favourite training methods to find the cost and time to reach your goal!
+            Enter your username and favourite training methods to find the cost and time to reach your goal!
             <br>
             <br>
-            This calculator assumes melee skills will be trained passively during slayer.
+            
+            Modify your choices to optimise the path to your goals!
+            <br>
+            <br>
+            This goal calculator assumes melee skills will be trained passively during slayer.
             <br>
             Use custom training methods, and boosted levels via the arrows.
-            <br>
-
-                        <bold style="font-weight: bold;">Update 17/5/26: You can now sort skills in your preferred order and hide completed ones. You can also set your own custom goals on the new tab!</bold>
-            <br>
+            <br>            
+            Join the new <a href="https://discord.gg/UVz8h7Jt4w" target="_blank">Discord</a> to chat with other players about your goals, training methods and achievements!
+            
             
         </div>
         <br>
@@ -290,7 +301,18 @@
             </div>
             <div class="columnC center" id=""> &nbsp; </div>
         </div>
-        <!-- *************Farming patches *************-->
+        <!-- *************Farming patches end *************-->
+
+
+
+
+
+
+
+
+
+
+
 
 
         </div>  
@@ -472,13 +494,14 @@
                     <div class="OutcomeColB" style="float: left;text-align:left">
                         Est. Date
                     </div>
-                    <div id="goalCompletedDateEstimate" id="goalCompletedDateEstimate" class="OutcomeColC" style="float: left;text-align:right">
+                    <div id="goalCompletedDateEstimate" class="OutcomeColC" style="float: left;text-align:right">
                         ?
                     </div>
                     <div class="OutcomeColD" style="float:left">
                         &nbsp;
                     </div>
                 </div>
+
 
 
 
@@ -512,20 +535,34 @@
             <div id="result" style="margin-top:10px">&nbsp;</div>
             {{!-- <input type="button" class="colorbutton theme themered" value="Save!" onClick="SaveAll()"> --}}
         </div>
-        <br><br>
         <p id="hours" class="center">Register for an account to save your changes! You can register in another tab so your current choices aren't lost!</p>
         <!-- *************end info *************-->
 
-        <br><br>
+        <br>
+
+            <!-- GRAPHS-->
+        <p id="hours" class="center">Coming soon: Visualise your progress!</p>
+
+<canvas id="myChart" style="width:100%;max-width:700px;margin-left:auto;margin-right:auto;"></canvas>
+
+<br>
+
+    <!-- GRAPHS END-->
+
     </div>
     <!-- ENd outcome area -->
+
+
+
+
+
     </div>
 
 
     <footer>
         <div>
             <br><br>
-            <input type="button" class="colorbutton theme themered" value="Hire me!" onclick="location.href='/author'" style="max-width:200px">
+            <input type="button" class="colorbutton theme themered" value="About me!" onclick="location.href='/author'" style="max-width:200px">
             <br><br>
             <p id="footer">2024 Arrgs - reevesgamedev@gmail.com</p>
             <p id="footer">*Gp per XP estimates from June 2024*</p>
