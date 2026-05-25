@@ -19,7 +19,11 @@ var currentTab = "max";
 var hoursToGoal = 0;
 //The current username of the website user
 var user = "Player";
+var jagexId = "";
 var totalLevel = 32;
+
+var percentOfGoal = 0;
+var finalGoalXP = 0;
 
 //The xp required for a maximum level in any skill
 var ninetyNine = 13034431;
@@ -59,7 +63,7 @@ window.onload = function(){
     console.log("FINAL SKILLS RECORD");
     console.log(skills);
 
-    CreateChart();
+    UpdateChart();
 }
 
 function InitialiseSkills(){
@@ -466,7 +470,7 @@ function DisplayAllRemainingHours(){
 function DisplayAllLevels(){
     var completedSkills = 0
     var remainingTotalLevels = 0;
-    var goalXP = 0;
+    finalGoalXP = 0;
     var remainingXp= 0;
     console.log("Displaying current and remaining levels for each skill");
     skills.forEach(element => {
@@ -480,12 +484,12 @@ function DisplayAllLevels(){
         if(remainingLevels <= 0 ){
             completedSkills +=1;
         }
-        goalXP += element.GetGoalXp();
+        finalGoalXP += element.GetGoalXp();
         remainingXp += element.GetRemainingXP();
     });
     $('#goalRemainingLevels').html(remainingTotalLevels);
     $('#goalCompletedSkills').html(completedSkills + "/24");
-    var percentOfGoal = (goalXP - remainingXp)/goalXP * 100;
+    percentOfGoal = (finalGoalXP - remainingXp)/finalGoalXP * 100;
     $('#goalXpPercentage').html(percentOfGoal.toFixed(2) + "%");
     $('#goalName').html(user);
 
@@ -543,6 +547,16 @@ function SubmitUsername(){
 }
 
 function ChangeGoal(tabName){
+    //This is essentially a refresh-all function, for non-databse related changes
+    //This currentTab var is readabale globally, including by the skills object
+    currentTab = tabName;
+    RefreshAll(tabName);
+    
+}
+
+
+function RefreshAll(tabName){
+    //This is essentially a refresh-all function, for non-databse related changes
     //This currentTab var is readabale globally, including by the skills object
     currentTab = tabName;
     UpdateAllSkillDropdowns();
@@ -554,7 +568,12 @@ function ChangeGoal(tabName){
     DisplayAllLevels();
     //Display the remaining cost of training each skill
     DisplayAllRemainingCost();
-    
+    //Show and hide completed skills based on user choice  
+    ShowAndHideCompleted(false);
+    //Sort the display of skills based on selection
+    Sort(false);
+    //Update the chart
+    UpdateChart();
 }
 
 function ToggleBoosting(){
@@ -697,45 +716,7 @@ function ValidateCustomGp(div){
     }
 }
 
-function CreateChart(){
 
-    var xyValues = [
-  {x:50, y:7},
-  {x:60, y:8},
-  {x:70, y:8},
-  {x:80, y:9},
-  {x:90, y:9},
-  {x:100, y:9},
-  {x:110, y:10},
-  {x:120, y:11},
-  {x:130, y:14},
-  {x:140, y:14},
-  {x:150, y:15}
-];
-
-    xyValues = [
-];
-
-
-    new Chart("myChart", {
-  type: "scatter",
-  data: {
-    datasets: [{
-      pointRadius: 4,
-      pointBackgroundColor: "rgb(0,0,255)",
-      data: xyValues
-    }]
-  },
-  options: {
-    legend: {display: false},
-    scales: {
-      xAxes: [{ticks: {min: 40, max:160}}],
-      yAxes: [{ticks: {min: 6, max:16}}],
-    }
-  }
-    });
-
-}
 
 
 

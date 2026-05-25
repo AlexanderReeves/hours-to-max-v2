@@ -3,6 +3,7 @@
 
 //const mongoose = require('mongoose')
 const User = require('../Models/user')
+const Snapshot = require('../Models/snapshot')
 //Jwt decrypter
 const {getPayloadFromAccessToken} = require('../helpers/jwt_helper')
 
@@ -155,4 +156,32 @@ exports.findUser = async (req, res , next) => {
         }]
         }
     res.send(jsonUser)
+}
+
+exports.findSnapshots = async (req, res , next) => {
+    const { authCode, auth, currentGoal, playerId } = req.body;
+    const accessToken = auth || authCode;
+    if(!accessToken){
+        res.status(422).json({ error: 'token was invalid' })
+        return
+    }
+
+    const payload = getPayloadFromAccessToken(accessToken)
+    if(!payload){
+        res.status(422).json({ error: 'token was invalid' })
+        return
+    }
+
+    if(!currentGoal || !playerId){
+        res.status(422).json({ error: 'missing required query data' })
+        return
+    }
+
+    const snapshots = await Snapshot.find({
+        email: payload.email,
+        currentGoal,
+        playerId
+    }).sort({ entryDate: 1 })
+
+    res.json({ snapshots })
 }

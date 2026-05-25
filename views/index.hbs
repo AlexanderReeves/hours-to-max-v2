@@ -21,7 +21,9 @@
 <script type="text/javascript" src="/v1.js"></script>
 <script type="text/javascript" src="/saveChoices.js"></script>
 <script type="text/javascript" src="/sort.js"></script>
+<script type="text/javascript" src="/moment.js"></script>
 <script type="text/javascript" src="/chart.js"></script>
+<script type="text/javascript" src="/updateChart.js"></script>
 
 
 
@@ -540,10 +542,24 @@
 
         <br>
 
-            <!-- GRAPHS-->
-        <p id="hours" class="center">Coming soon: Visualise your progress!</p>
+        <!-- GRAPHS-->
 
-<canvas id="myChart" style="width:100%;max-width:700px;margin-left:auto;margin-right:auto;"></canvas>
+        
+        <p id="hours" class="center">Your progress over time.</p>
+        <canvas id="myChart" style="width:100%;margin-left:auto;margin-right:auto;padding-right:50px;"></canvas>
+
+        {{#if signedin}}  
+            
+        <div class="maxw" style="padding:0% 20%; background-color:#f0f0f0; border-radius:10px; margin-left:auto;margin-right:auto;">  
+            <input type="button" id="saveProgressButton" class="colorbutton theme themered" value="Save this weeks progress point!" onClick="SaveProgress()">
+            <div id="saveProgressResult" style="margin-top:10px">&nbsp;</div>
+        </div>
+
+        {{else }}
+
+            <p id="hours" class="center">Sign in to save your progress!</p>
+
+        {{/if}}
 
 <br>
 

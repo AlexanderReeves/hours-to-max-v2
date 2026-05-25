@@ -163,6 +163,12 @@ const saveChoicesSchema = Joi.object({
   farmingPatches: Joi.number().integer().min(0).max(99),
 })
 
+const saveProgressSchema = Joi.object({
+  currentGoal: Joi.string().min(2).max(50).required(),
+  percentOfGoal: Joi.number().min(0).max(100).required(),
+  playerId: Joi.string().min(1).max(100).required()
+})
+
 //It's likely these above two schema's could be consolidated using a Joi functio
 //Hapi Joi has a class extender but I couldn't find one for normal Joi
 
@@ -175,5 +181,6 @@ const saveChoicesSchema = Joi.object({
     loginSchema,
     emailSchema,
     passwordSchema,
-    saveChoicesSchema
+    saveChoicesSchema,
+    saveProgressSchema
   }

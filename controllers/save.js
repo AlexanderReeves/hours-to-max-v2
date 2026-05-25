@@ -1,7 +1,8 @@
 //const mongoose = require('mongoose')
 const User = require('../Models/user')
+const Snapshot = require('../Models/snapshot')
 const {getPayloadFromAccessToken} = require('../helpers/jwt_helper')
-const {saveChoicesSchema} = require('../helpers/validation_schema')
+const {saveChoicesSchema, saveProgressSchema} = require('../helpers/validation_schema')
 
 // route /save/choices
 exports.saveChoices = async (req, res , next) => {
@@ -422,4 +423,56 @@ exports.saveChoices = async (req, res , next) => {
     
     user.save();
     res.send("success")
+}
+
+exports.saveProgress = async (req, res, next) => {
+    console.log(req.body)
+    const { auth, currentGoal, percentOfGoal, playerId } = req.body;
+
+    try {
+        await saveProgressSchema.validateAsync({ currentGoal, percentOfGoal, playerId }, { warnings: true });
+    } catch (err) {
+        console.log("Save progress validation failed: " + err.message)
+        res.status(422).json({ error: "Could not save progress: invalid input." })
+        return
+    }
+
+    const payload = getPayloadFromAccessToken(auth)
+    if(!payload){
+        res.status(422).json({ error: "token was invalid" })
+        return
+    }
+
+    const user = await User.findById(payload.aud)
+    if(!user){
+        res.status(422).json({ error: "user was not found" })
+        return
+    }
+
+    const playerIdValue = playerId || user.username
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    const recentSnapshot = await Snapshot.findOne({
+        email: payload.email,
+        currentGoal,
+        playerId: playerIdValue,
+        entryDate: { $gte: sevenDaysAgo }
+    }).sort({ entryDate: -1 })
+
+    if (recentSnapshot) {
+        res.status(422).json({ error: "A progress snapshot for this character and goal was already saved within the last 7 days." })
+        return
+    }
+
+    const snapshot = new Snapshot({
+        userId: user.id,
+        email: payload.email || user.email,
+        username: payload.username || user.username,
+        playerId: playerIdValue,
+        currentGoal: currentGoal,
+        percentOfGoal: parseFloat(percentOfGoal),
+        entryDate: new Date()
+    })
+
+    await snapshot.save()
+    res.json({ success: true, snapshotId: snapshot.id })
 }
