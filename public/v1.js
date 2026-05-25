@@ -688,6 +688,7 @@ function ValidateCustomGoal(div){
         DisplayAllLevels();
         DisplayAllRemainingHours();
         DisplayAllRemainingCost();
+        UpdateChart();
     }
 }
 

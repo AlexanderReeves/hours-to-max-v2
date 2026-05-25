@@ -77,5 +77,6 @@ function setTab(tabname) {
       ShowAndHideCompleted(false);
       Sort(false);
       ToggleBoosting();
+      UpdateChart();
 }
     

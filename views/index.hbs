@@ -545,7 +545,10 @@
         <!-- GRAPHS-->
 
         
-        <p id="hours" class="center">Your progress over time.</p>
+        <p id="hours" class="center">Your progress over time.</p>        
+        <div class="maxw searcharea">
+            <input type="button" id="graphMinButton" class="sortbutton theme" value="Starting from 0%" onClick="GraphMinToggle()">
+        </div>
         <canvas id="myChart" style="width:100%;margin-left:auto;margin-right:auto;padding-right:50px;"></canvas>
 
         {{#if signedin}}  
