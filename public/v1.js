@@ -34,9 +34,14 @@ var skills = [];
 
 var customLvlArray =[];
 
+//When a dropdown input is selected, it's value is cleared so the dropdown can populate. Store the value to return it in case it's left blank
+var storedDropdownText = "";
+
 
 window.onload = function(){
     //As soon as the page has finished loading, perform each task once.
+    InitialiseTrainingMethods();
+    PopulateDropdowns();
     //Initialise the Runescape skills that each dropdown is based on
     InitialiseSkills();
     //Override the values if there is anything stored in the db

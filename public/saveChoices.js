@@ -7,37 +7,100 @@ function SaveChoicesToDatabase() {
     //Checks for valid auth code, gets that username, saves choices to database
     auth = $.cookie("authorization");
     if(auth){
+
+        //If uset is logged in, save choices to database
         console.log('Saving user selections to the databse.');
 
-        //Create data for an ajax post, containing each skill name and corresponding selection
-        var postData = '&auth=' + auth + '&username=' + user
-        skills.forEach(element => {
-            //Find the JS elements dropdown value from the object
-            postData = postData.concat('&' + element.name + 'Choice=' + element.dropdownSelection);
-            //Also get the custom XP val from the object
-            postData = postData.concat('&' + element.name + 'CustomXp=' + element.customXpRate);
-            postData = postData.concat('&' + element.name + 'CustomGp=' + element.customGpPerXp);
-            postData = postData.concat('&' + element.name + 'Boost=' + element.levelsBoosted);
+        //Json Version NOT YET IN USE
+        var jsonPostData = {
+            auth: auth,
+            username: user,
+            currentGoal: currentTab,
+            sortChoice: document.getElementById('sortButton') ? document.getElementById('sortButton').dataset.sortState || '0' : '0',
+            showCompletedChoice: window.showCompletedSkills !== undefined ? window.showCompletedSkills : true,
+            hoursPerDay: (function() {
+                const hoursInput = document.getElementById('hoursPerDayInput');
+                const value = hoursInput ? parseFloat(hoursInput.value) : '';
+                return isNaN(value) || value <= 0 ? '1' : value.toString();
+            })()
+        };
+        //console.log("Initial JSON data to post: ", jsonPostData);
+
+        //Loop through each dropdown
+        //get the skill name, get the text value, get the xp, get the gp
+
+        var trainingMethodsToSave = {};
+        // 1. Find all training method parents and loop through them
+        $('.trainingSelectionParent').each(function() {
+            // $(this) refers to the current parent div
+            //console.log("Parent ID:", this.id);
+
+
+
+
+            let selectedMethod = "";
+
+            // Inner loop: iterates through immediate child input divs of the current parent
+            $(this).find('input').each(function() {
+                //console.log($(this).val());
+                // $(this) now refers to the current child div
+                if(this.classList.contains('trainingMethodSelector')) {                    
+                    //console.log("Child Text:", $(this).text() || $(this).val()); // Use .text() for divs and .val() for inputs
+                    const selectedMethodName = $(this).val();
+                    const skillName = this.id.replace("trainingMethodSelector", "");
+                    //Get the skill details based on the dropdown text from the training methods array
+                    if(selectedMethodName == null){
+                        selectedMethodName = "Custom Method";
+                    }
+                    selectedMethod = trainingMethods.find(method => method.name === selectedMethodName && method.skill === skillName);
+                    //log the details of the selected method (or undefined if no match was found)
+                    if(selectedMethod == null || selectedMethod == undefined) {
+                        //console.error("Selected training method does not match a known method. A custom method with 100k XP/hr and 0 gp/xp was saved.");
+                        selectedMethod = {name: selectedMethodName, xpPerHour: 100000, profitPerXp: 0, skill: skillName};
+                    }
+                    //console.log("Selected method details: ", selectedMethod);
+                }                            
+            });
+            
+            //console.log("Selected method details outside of loop: ", selectedMethod);
+
+            //Get the expanded section
+            //console.log($(this).next().attr('id'));;
+            $(this).next().find('input').each(function() {
+                //console.log("Found input in expanded section: " + this.id + " with value: " + $(this).val());
+                var idAsString = $(this).attr("id");
+                if(idAsString.includes("Boost")){ 
+                  selectedMethod.levelsBoosted = $(this).val();
+                }
+                if(idAsString.includes("CustomXp")){ 
+                  selectedMethod.xpPerHour = $(this).val();
+                }
+                if(idAsString.includes("CustomGp")){ 
+                  selectedMethod.profitPerXp = $(this).val();
+                }
+
+            });
+            if(selectedMethod.name == null || selectedMethod.name == undefined || selectedMethod.name.trim() === "") {
+                selectedMethod.name = "Custom Method";
+            }
+            //console.log("Selected method details: ", selectedMethod);
+
+            trainingMethodsToSave[selectedMethod.skill + "Data"] = selectedMethod;
+            
 
         });
-        //Also add in players current tab/goal
-        postData = postData.concat('&currentGoal=' + currentTab);
-        //Also add in sort choice
-        const sortButton = document.getElementById('sortButton');
-        const sortChoice = sortButton ? sortButton.dataset.sortState || '0' : '0';
-        postData = postData.concat('&sortChoice=' + sortChoice);
-        //Also add in show completed choice
-        const showCompletedChoice = window.showCompletedSkills !== undefined ? window.showCompletedSkills : true;
-        postData = postData.concat('&showCompletedChoice=' + showCompletedChoice);
-        //Also add in hours per day
-        const hoursPerDay = document.getElementById('hoursPerDayInput') ? document.getElementById('hoursPerDayInput').value : '';
-        const hoursPerDayValue = parseFloat(hoursPerDay);
-        postData = postData.concat('&hoursPerDay=' + (isNaN(hoursPerDayValue) || hoursPerDayValue <= 0 ? '1' : hoursPerDayValue));
-        //Also add in custom levels string
-        const customLevelsString = Object.values(customLvlArray).join(',');
-        postData = postData.concat('&customLevelsString=' + encodeURIComponent(customLevelsString));
+        jsonPostData["trainingMethods"] = trainingMethodsToSave;
+        console.log("Final JSON data to post: ", jsonPostData);
+
+
+
+        //END NEW VERSION #########################################################
+
+
         console.log("Attemping to post this data string... " + postData);
 
+
+        //AJAX POST TO BE UPDATED TO POST JSON INSTEAD OF STRINGIFYING IT FIRST
         //clear result message
         $("#result").html('&nbsp;');
         $.ajax({ // make an AJAX request
@@ -63,10 +126,12 @@ function SaveChoicesToDatabase() {
             
 
         });
+
+
     }else{
+        //If user is not signed in, suggest they register.
         $("#result").html("Please register first before saving your choices! You can register in another tab and then return here so your current choices aren't lost.");
         $("#result").removeClass("success");
         $("#result").addClass("fail");
     }
-     // avoid to execute the actual submit of the form
 }

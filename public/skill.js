@@ -240,7 +240,7 @@ class Skill {
 
   DisplayLevels(){
     var message = document.getElementById(this.name + 'LevelDisplay');
-    console.log("Displaying levels for " + this.name + ". Current level: " + this.currentLevel + ", Goal level: " + this.GetGoalLevel());
+    //console.log("Displaying levels for " + this.name + ". Current level: " + this.currentLevel + ", Goal level: " + this.GetGoalLevel());
     //Display boosted skills, and only on the corect tabs
     if(this.levelsBoosted > 0 && (currentTab != "max" && currentTab !="custom")){
       var originalGoal = this.GetGoalLevel() + +this.levelsBoosted;

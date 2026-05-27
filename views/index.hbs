@@ -18,6 +18,7 @@
 <script type="text/javascript" src="/test.js"></script>
 <script type="text/javascript" src="/tab_controls.js"></script>
 <script type="text/javascript" src="/skill.js"></script>
+<script type="text/javascript" src="/training_methods.js"></script>
 <script type="text/javascript" src="/v1.js"></script>
 <script type="text/javascript" src="/saveChoices.js"></script>
 <script type="text/javascript" src="/sort.js"></script>
@@ -153,7 +154,7 @@
         {{#each allSkills}}
 
         <!-- *************DYNAMIC SKILL ROW *************-->
-        <div class="row" id="{{this.skillName}}Row">
+        <div class="row trainingSelectionParent" id="{{this.skillName}}Row">
 
             <div class="columnA center">
 
@@ -179,12 +180,36 @@
                             <!-- Nested handlebars loop -->
                             <option value="{{@index}}">{{this.method}}</option>
                         {{/trainingMethods}}
-                        {{!-- {{#if this.name}}
-                            <option value="7">{{this.name}}</option>
-                        {{/if}}  --}}
                     </select>
 
                 </form>
+
+
+
+
+        {{!-- DROPDOWN TESTING AREA ###################################################################################################################--}}
+        
+        {{!-- On focus, store the current value, then set to blank temporarily --}}
+        {{!-- Once the action is completed, change/update , then run UpdateTrainingMethod --}}
+        <input list="trainingMethods{{this.skillName}}" 
+        id="trainingMethodSelector{{this.skillName}}"
+        name="trainingMethodSelector" 
+        placeholder="Select a training method..."
+        onfocus="storedDropdownText=this.value; this.value=''" 
+        OnBlur="UpdateTrainingMethod(this)"
+        class="trainingMethodSelector fullw minimal"
+        style="height:50px"
+        
+        >
+        <datalist id="trainingMethods{{this.skillName}}" class="trainingMethodList">
+            <option value="test"></option>
+        </datalist>
+        {{!-- DROPDOWN TESTING AREA END ###################################################################################################################--}}
+
+
+
+
+
             </div>
 
             
@@ -213,7 +238,7 @@
             </div>
             <div class=" columnF center">                    
                     <input type="text" style="text-align:center" id="{{this.skillName}}Boost" name="{{this.skillName}}Boost"
-                    onchange="ValidateBoost(this)" placeholder="Levels boosted" disabled>
+                    onchange="ValidateBoost(this)" class="boostInput" placeholder="Levels boosted" disabled>
             </div>
             <div class=" columnG center">
                 <p >Custom XpPh:</p>
@@ -535,7 +560,6 @@
             
             <input type="button" class="colorbutton theme themered" value="Save!" onClick="SaveChoicesToDatabase()">
             <div id="result" style="margin-top:10px">&nbsp;</div>
-            {{!-- <input type="button" class="colorbutton theme themered" value="Save!" onClick="SaveAll()"> --}}
         </div>
         <p id="hours" class="center">Register for an account to save your changes! You can register in another tab so your current choices aren't lost!</p>
         <!-- *************end info *************-->
