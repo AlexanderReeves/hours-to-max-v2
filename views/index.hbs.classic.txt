@@ -25,7 +25,6 @@
 <script type="text/javascript" src="/moment.js"></script>
 <script type="text/javascript" src="/chart.js"></script>
 <script type="text/javascript" src="/updateChart.js"></script>
-<script type="text/javascript" src="/populate_rows.js"></script>
 
 
 
@@ -151,57 +150,51 @@
         <p id="displayUsername" class="center"></p>
 
         
-
-
-
-
-
-
-
         <!-- ################################ Start Skill Rows########################### -->
         <div id="skillRows">
         <!-- ################################HANDLEBARS START########################### -->
+        {{#each allSkills}}
 
         <!-- *************DYNAMIC SKILL ROW *************-->
-        <div class="row trainingSelectionParent hidden" id="Row">
+        <div class="row trainingSelectionParent" id="{{this.skillName}}Row">
 
             <div class="columnA center">
 
                 <!-- Skill icon -->
                 <img style="margin-top:10px" height="30" class="ico" class="ico"
-                    src="icons/attack_icon.webp" alt="" name="skillIcon" id="skillIcon">
+                    src="icons/{{this.skillName}}_icon.webp" alt="{{this.skillName}}">
 
                 <!-- Level Display -->
 
                     <!--Text-->
-                    <p id="LevelDisplay" class="center">1/99</p> 
+                    <p id="{{this.skillName}}LevelDisplay" class="center">1/99</p> 
                     <!-- Custom Goal Input -->
-                    <input type="text" class="levelDisplayInput" style="text-align:center; height:30px; padding:0px;" id="CustomGoal" name="CustomGoal"
+                    <input type="text" class="levelDisplayInput" style="text-align:center; height:30px; padding:0px;" id="{{this.skillName}}CustomGoal" name="{{this.skillName}}CustomGoal"
                         onchange="ValidateCustomGoal(this)" placeholder="70" >
 
 
             </div>
 
             <div class="columnB">
-                {{!-- DROPDOWN  AREA ###################################################################################################################--}}
+                <form>
+                    <select class="fullw minimal" name="{{this.skillName}}Dropdown" id="{{this.skillName}}Dropdown" onchange="DropdownWasChanged(this.name);">
+                        {{#trainingMethods}}
+                            <!-- Nested handlebars loop -->
+                            <option value="{{@index}}">{{this.method}}</option>
+                        {{/trainingMethods}}
+                    </select>
+
+                </form>
+
+
+
+
+                {{!-- DROPDOWN TESTING AREA ###################################################################################################################--}}
                 
-
-
-                <div id="myDropdown" class="dropdown-content">
-                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                    <a href="#about">About</a>
-                    <a href="#base">Base</a>
-                    <a href="#blog">Blog</a>
-                    <a href="#contact">Contact</a>
-                    <a href="#custom">Custom</a>
-                    <a href="#support">Support</a>
-                    <a href="#tools">Tools</a>
-                </div>
-
                 {{!-- On focus, store the current value, then set to blank temporarily --}}
                 {{!-- Once the action is completed, change/update , then run UpdateTrainingMethod --}}
-                <input list="trainingMethods" 
-                id="trainingMethodSelector"
+                <input list="trainingMethods{{this.skillName}}" 
+                id="trainingMethodSelector{{this.skillName}}"
                 name="trainingMethodSelector" 
                 placeholder="Select a training method..."
                 onfocus="storedDropdownText=this.value; this.value=''" 
@@ -210,76 +203,73 @@
                 style="height:50px"
                 
                 >
-                <datalist id="trainingMethods" class="trainingMethodList">
+                <datalist id="trainingMethods{{this.skillName}}" class="trainingMethodList">
                     <option value="test"></option>
                 </datalist>
-                {{!-- DROPDOWN  AREA END ###################################################################################################################--}}
+                {{!-- DROPDOWN TESTING AREA END ###################################################################################################################--}}
+
+
+
+
 
             </div>
 
             
-            <div class="columnD" name="Expander" id="Expander" onClick="ExpandSection(this.id)">
-                <i id="Arrow" class="arrow right"></i>
+            <div class="columnD" name="{{this.skillName}}Expander" id="{{this.skillName}}Expander" onClick="ExpandSection(this.id)">
+                <i id="{{this.skillName}}Arrow" class="arrow right"></i>
             </div>
 
-            <div class="columnC righttext" name="Final" id="Final" onClick="ExpandSection(this.id)">
+            <div class="columnC righttext" name="{{this.skillName}}Final" id="{{this.skillName}}Final" onClick="ExpandSection(this.id)">
                 <div>
                     <nobr>
-                        <div id="Cost" class="righttext">? Gp</div>
+                        <div id="{{this.skillName}}Cost" class="righttext">? Gp</div>
                     </nobr>
                     <nobr>
-                        <div id="Hours" class="righttext" style="text-align:right;">? Hours</div>     
+                        <div id="{{this.skillName}}Hours" class="righttext" style="text-align:right;">? Hours</div>     
                     </nobr>
                 </div>
             </div>
 
+
         </div>
 
         <!-- *************custom CUSTOM*************-->
-        <div id="Expanded" class="row hidden transition">
+        <div id="{{this.skillName}}Expanded" class="row hidden transition">
             <div class=" columnE center">
                 <p>Boost:</p>
             </div>
             <div class=" columnF center">                    
-                    <input type="text" style="text-align:center" id="Boost" name="Boost"
+                    <input type="text" style="text-align:center" id="{{this.skillName}}Boost" name="{{this.skillName}}Boost"
                     onchange="ValidateBoost(this)" class="boostInput" placeholder="Levels boosted" disabled>
             </div>
             <div class=" columnG center">
                 <p >Custom XpPh:</p>
             </div>
             <div class=" columnH center">            
-                <input type="text" style="text-align:center" id="CustomXp" name="CustomXp"
+                <input type="text" style="text-align:center" id="{{this.skillName}}CustomXp" name="{{this.skillName}}CustomXp"
                     onchange="ValidateCustom(this)" placeholder="Xp per hour">
             </div>
              <div class=" columnI center">
                 <p >Cost of 1xp:</p>
             </div>
             <div class=" columnJ center">
-                    <input type="text" style="text-align:center" id="CustomGp" name="CustomGp"
+                    <input type="text" style="text-align:center" id="{{this.skillName}}CustomGp" name="{{this.skillName}}CustomGp"
                     onchange="ValidateCustomGp(this)" placeholder="Gp per xp">
 
             </div>
             
             <div class=" columnK center" style="text-align:center;" >       
-                <input type="button" class="colorbutton theme refreshbutton" id="Refresh" name="Refresh"  value="&#x2192;" onclick="RefreshCustom(this.id)" style="width:100px">
+                <input type="button" class="colorbutton theme refreshbutton" id="{{this.skillName}}Refresh" name="{{this.skillName}}Refresh"  value="&#x2192;" onclick="RefreshCustom(this.id)" style="width:100px">
             </div>
 
         </div>
         <!-- *************end custom *************-->
+
+        {{/each}}
         <!--###################################################HANDLEBARS end -->
 
-
-
-
-
-
-
-
-
-
-
         <!-- *************FARMING *************-->
-        <div class="row hidden" id="farmingRow">
+        <div class="row" id="farmingRow">
             <div class="columnA"><img style="margin-top:10px" height="30" class="ico" src="icons/farming_icon.webp"
                     alt="Farming">
                 <!--OLD CODE <p id="farmingLevelDisplay" class="center">1/99</p><del id="farmingStrikeLevel"></del>*************-->
@@ -319,7 +309,7 @@
         <!-- *************farming *************-->
 
         <!-- *************FARMINGPATCHES *************-->
-        <div class="row hidden" id="farmingPatchesRow">
+        <div class="row" id="farmingPatchesRow">
             <div class="columnA">
                 <p id=""> &nbsp; </p>
             </div>

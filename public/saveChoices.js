@@ -29,11 +29,16 @@ function SaveChoicesToDatabase() {
         //Loop through each dropdown
         //get the skill name, get the text value, get the xp, get the gp
 
-        var trainingMethodsToSave = {};
+        let trainingMethodsToSave = [];
         // 1. Find all training method parents and loop through them
         $('.trainingSelectionParent').each(function() {
             // $(this) refers to the current parent div
             //console.log("Parent ID:", this.id);
+
+            if(this.id === "Row"){
+            return;
+            }
+            console.log("Processing training method parent div with ID:", this.id);
 
 
 
@@ -83,10 +88,15 @@ function SaveChoicesToDatabase() {
             if(selectedMethod.name == null || selectedMethod.name == undefined || selectedMethod.name.trim() === "") {
                 selectedMethod.name = "Custom Method";
             }
-            //console.log("Selected method details: ", selectedMethod);
 
-            trainingMethodsToSave[selectedMethod.skill + "Data"] = selectedMethod;
-            
+            //trainingMethodsToSave[selectedMethod.skill + "Data"] = selectedMethod;
+            trainingMethodsToSave.push({
+                name: selectedMethod.name,
+                xpPerHour: Number(selectedMethod.xpPerHour),
+                profitPerXp: Number(selectedMethod.profitPerXp),
+                skill: selectedMethod.skill,
+                levelsBoosted: Number(selectedMethod.levelsBoosted)
+            });
 
         });
         jsonPostData["trainingMethods"] = trainingMethodsToSave;
@@ -97,19 +107,18 @@ function SaveChoicesToDatabase() {
         //END NEW VERSION #########################################################
 
 
-        console.log("Attemping to post this data string... " + postData);
+        console.log("Attemping to post this data string... " + jsonPostData);
 
 
         //AJAX POST TO BE UPDATED TO POST JSON INSTEAD OF STRINGIFYING IT FIRST
         //clear result message
-        $("#result").html('&nbsp;');
-        $.ajax({ // make an AJAX request
+        $.ajax({ 
             type: "POST",
-            url: "/save/choices", // it's the URL of your component B
-            data: postData,
-            // serializes the form's elements
+            url: "/save/choices", 
+            contentType: "application/json; charset=utf-8", // Tells the server you're sending JSON
+            dataType: "json",                               // Tells jQuery you expect JSON back
+            data: JSON.stringify(jsonPostData),             // Stringifies the payload object
             success: function (data) {
-                // show the data you got from B in result div
                 console.log('Success');
                 $("#result").html('Your choices were saved!');
                 $("#result").removeClass("fail");
@@ -117,14 +126,13 @@ function SaveChoicesToDatabase() {
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log('Submit returned errors');
-                jsonErrorMessage = XMLHttpRequest.responseJSON.error;
+                // Guard against responseJSON being undefined on crash
+                var jsonErrorMessage = XMLHttpRequest.responseJSON ? XMLHttpRequest.responseJSON.error : "Unknown error";
                 $("#result").html("An error occurred. One of your inputs may be invalid, or the server may be experiencing a problem. " + errorThrown + ".");
                 $("#result").removeClass("success");
                 $("#result").addClass("fail");
                 return false;
             }
-            
-
         });
 
 

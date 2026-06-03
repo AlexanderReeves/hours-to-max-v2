@@ -56,7 +56,9 @@ const limiter = rateLimit({
 app.use(limiter)
 
 //Listen on port 3000 for requests
-app.listen(3000)
+app.listen(3000, '0.0.0.0', () => {
+    console.log('Server is running on http://192.168.1.102:3000');
+});
 
 //__dirname is a variable that gives access to the current directory
 //Allow public access to assets in public folder

@@ -39,15 +39,16 @@ var storedDropdownText = "";
 
 
 window.onload = function(){
+    console.log("Page has loaded, running scripts...");
     //As soon as the page has finished loading, perform each task once.
+    //Populate each training method dropdown with the available choices, which are stored in the trainingMethods array in training_methods.js
     InitialiseTrainingMethods();
-    PopulateDropdowns();
     //Initialise the Runescape skills that each dropdown is based on
-    InitialiseSkills();
+    //InitialiseSkills();
     //Override the values if there is anything stored in the db
-    PullFromDatabase();
+    PullFromDatabase(); //This will also populate rows
+    PopulateDropdowns();
     //Pull custom goals from the database
-
     //PullGoalsFromDatabse();
     //Pull the playerdata from the Jagex API if player was in db
     if(user != ""){PullFromJagex();}
@@ -72,48 +73,12 @@ window.onload = function(){
 }
 
 function InitialiseSkills(){
-    //Create each skill and add to the array.
-
-    //Each skills default selection should match the one in the html page
-    //Setting dropdown to index 0 in the future should be for custom inputs...
-    //[XP per hour, Cost per XP, Number of options available]
-    skills.push( new Skill("attack", [0,-1], [0,0],1 ));
-    skills.push( new Skill("strength", [0,-1], [0,0],1 ));
-    skills.push( new Skill("defence", [0,-1], [0,0],1 ));
-    skills.push( new Skill("ranged", [0,90000, 130000, 140000, 675000, 710000, 850000], [0,0,-0.1,-0.1,-4.1,-5.4,-7.6], 6));
-    skills.push( new Skill("prayer", [0,50000, 250000, 437000, 600000, 800000, 1250000], [-0,-10,-10,-11,-12,-19,-50], 6));
-    skills.push( new Skill("magic", [0,78000, 150000, 150000, 175000, 380000], [0,1,2,0,0,-3.5], 5));
-    skills.push( new Skill("runecraft", [0,35000, 60000, 65000, 70000, 80000, 100000], [0,50,-0.5,1,10,30,0,10],6 ));
-    skills.push( new Skill("construction", [0,190000, 400000, 450000, 500000, 580000, 850000, 1000000], [0,-6.5,-8,-10,-10,-11,-16,-16],7 ));
-    skills.push( new Skill("hitpoints", [0,-1], [0,0],1 ));
-    skills.push( new Skill("agility", [0,45000, 50000, 50000, 55000, 65000, 65000, 90000], [0,1.5,1.5,1.5,1.5,1.5,0,10],7 ));
-    skills.push( new Skill("herblore", [0,110000, 170000, 210000, 400000, 500000], [0,8,-22,-9,-10,-25],5 ));
-    skills.push( new Skill("thieving", [0,110000, 140000, 150000, 210000, 240000, 260000, 265000], [0,7,10,20,1,1,10,7],6 ));
-    skills.push( new Skill("crafting", [0,150000,220000,270000,360000,415000], [0,1,-2,-5,-30,-20], 5));
-    skills.push( new Skill("fletching", [0,1900000,2250000,2500000,3000000,4000000], [0,-8,-12,-50,-11,-7],5 ));
-    skills.push( new Skill("hunter", [0,80000,115000,125000,150000,160000,175000], [0,0,6,0,10,0,1],6 ));
-    skills.push( new Skill("mining", [0,25000,50000,60000,69000,70000,75000,78000,85000], [0,0,0,8,4,8,5,2,2],8 ));
-    skills.push( new Skill("smithing", [0,200000,250000,350000], [0,0,0,-3.5],3 ));
-    skills.push( new Skill("fishing", [0,40000,50000,75000,80000], [0,0,0,1,-2],4 ));
-    skills.push( new Skill("cooking", [0,150000,250000,300000,450000,900000], [0,1,1,1,-2,1],5 ));
-    skills.push( new Skill("firemaking", [0,250000,275000,290000,400000,450000], [0,-3,-2,1,-4,-2],5 ));
-    skills.push( new Skill("woodcutting", [0,68000, 75000, 90000, 90000, 100000], [0,0,0,0,0,0],5 ));    
-    skills.push( new Skill("sailing", [0,100000, 140000, 200000], [0,0,0,0],3 ));
-    //Slayer is different because it does not have a set list of options, only a custom selection
-    skills.push( new Skill("slayer", [0], [0],0 ));
-    //Farming also works via doing xp per farm run, rather than xp per hour
-    skills.push( new Skill("farming", [0], [0],0 ));
-    console.log("Initialising SKILLS");
-    console.log(skills);
-
     //Initialise custom skill goals
     customLvlArray = {"attack": 70,"strength": 70, "defence": 70, "ranged": 70, "prayer": 70, "magic": 70, "runecraft": 70, "construction": 70,
       "hitpoints": 70, "agility": 70, "herblore": 70, "thieving": 70, "crafting": 70, "fletching": 70, "hunter": 70, "mining": 70, "smithing": 70, 
       "fishing": 70, "cooking": 70, "firemaking": 70, "woodcutting": 70, "sailing": 70, "slayer": 70, "farming": 70};
       
     customLvlArray = UpdateCustomLevels([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,70,70,70,70,70], customLvlArray);
-    
-    console.log("Initialising SKILLS!!!!!!!!!DONE");
 }
 
 function UpdateAllSkillDropdowns(){
@@ -176,7 +141,9 @@ function PullFromDatabase(){
     var authCode = $.cookie("authorization");
     //Don't run if an auth code is not in the cookie
     if(!authCode){
-        console.log("No 'userid' found in the browser cookies.")
+        console.log("No 'userid' found in the browser cookies. Will not attempt to reach database ")
+        console.log("Attempting to create rows with default data");
+        PopulateRowsWithUserData(false);
         return;
     }
     //Request all the user info from the server
@@ -186,11 +153,10 @@ function PullFromDatabase(){
         data: '&authCode=' + authCode, // serializes the form's elements
         success: function (data) {
             //Save all the downloaded user into the database user variable
+            console.log("A valid user was found! There data has been pulled from mongodb.");
+            //dbuser now contains data about this user from the database, including their email, username, and all their saved choices and settings
             dbuser = data.user[0];
-            console.log(dbuser);
-            console.log(dbuser.username + " player data was pulled from the database");
-            
-            console.log(dbuser.currentGoal + " goal was pulled");
+            console.log("Raw response from server:", data);
             //Save the new username to variable, and update it in searchbox
             user = dbuser.username;
             $('#usernameInput').val(user);
@@ -199,68 +165,17 @@ function PullFromDatabase(){
         },
         error: function (XMLHttpRequest) {
             console.log('Submit returned errors');
+            console.log('The auth cookies were invalid, will use default values for rows and settings');
+            PopulateRowsWithUserData(false);
             jsonErrorMessage = XMLHttpRequest.responseJSON.error;
         }
     });
-
+    //Poulate each row with user data, or defaults values if no db user was found
     if(dbuser){
-        //If a user was pulled, put their data into the skills array
-        //Loop through each skill in the array (Excluding farming)
-        skills.forEach(element => {
-            if(element.name != 'farming'){
-                //We want to find data where the name matches the current skill
-                //e.g rangedChoice
-                desiredKey = element.name.concat('Choice');
-                //console.log("KEY:"+desiredKey);
-                //BROKEN: HERE IT LOOKS FOR sailingChoice, WHICH DOESNT EXISTS AND SO IT BREAKS
-                //Loop through each pulled data element looking for the match
-                for(key in dbuser) {
-                    if(key == desiredKey) {
-                        //If match found, update the skill in the array
-                        var value = dbuser[key];
-                        element.dropdownSelection = value;
-                    }
-                };
-                //do the same for player boosts
-                desiredKey = element.name.concat('Boost');
-                //Loop through each pulled data element looking for the match
-                for(key in dbuser) {
-                    if(key == desiredKey) {
-                        //If match found, update the skill in the array
-                        var value = dbuser[key];
-                        element.levelsBoosted = value;
-                    }
-                };
-                //do the same for custom xp rates
-                desiredKey = element.name.concat('CustomXp');
-                //Loop through each pulled data element looking for the match
-                for(key in dbuser) {
-                    if(key == desiredKey) {
-                        //If match found, update the skill in the array
-                        var value = dbuser[key];
-                        element.customXpRate = value;
-                    }
-                };
-                //do the same for custom xgp per xp rates
-                desiredKey = element.name.concat('CustomGp');
-                //Loop through each pulled data element looking for the match
-                for(key in dbuser) {
-                    if(key == desiredKey) {
-                        //If match found, update the skill in the array
-                        var value = dbuser[key];
-                        element.customGpPerXp = value;
-                    }
-                };
-
-            }
-            if(element.name == 'farming'){
-                //Load in the downloaded seed choice, and num of patches.
-                seedChoice = dbuser.seedChoice;
-                numPatches = dbuser.farmingPatches;
-            }
-        });
-
-        // Set the sort choice
+        console.log("Attempting to create rows for this user with their saved data...");
+        PopulateRowsWithUserData(true);
+        //Extra user selections to save after the rows are populated.
+        // Set the sort choice (hours, gp, level, default)
         //If theres a sort choice found
         if (dbuser.sortChoice !== undefined) {
             //Get the button from the html
@@ -383,6 +298,25 @@ function DropdownWasChanged(dropdownName){
     DisplayAllRemainingHours();
     //Display the remaining cost of training each skill
     DisplayAllRemainingCost();
+}
+
+
+
+// v3 Dropdown testing area
+
+function filterFunction() {
+  const input = document.getElementById("myInput");
+  const filter = input.value.toUpperCase();
+  const div = document.getElementById("slayermyInput");
+  const a = div.getElementsByTagName("a");
+  for (let i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
 }
 
 function RefreshCustom(clickedRefresh){

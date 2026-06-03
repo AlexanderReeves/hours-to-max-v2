@@ -3,142 +3,45 @@ const User = require('../Models/user')
 const Snapshot = require('../Models/snapshot')
 const {getPayloadFromAccessToken} = require('../helpers/jwt_helper')
 const {saveChoicesSchema, saveProgressSchema} = require('../helpers/validation_schema')
+const ChosenTrainingMethod = require('../Models/chosen_training_method');
 
-// route /save/choices
+
+//Comes from the save.js route
+//router.post('/choices', saveController.saveChoices);
+
+        // ### single users table data to save ###
+        // auth:auth,
+        // username:username,
+        // currentGoal: currentGoal,
+        // sortChoice: sortChoice,
+        // showCompletedChoice: showCompletedChoice,
+        // customLevelsString: customLevelsString,
+        // hoursPerDay: hoursPerDay ,
+        // seedChoice: seedChoice,
+        // patchesChoice: farmingPatches
+        //### multiple training methods data to save ###
+        // trainingMethods: levelsBoosted, name, profitPerXp, skill, xpPerHour
+
+// route POST /save/choices
 exports.saveChoices = async (req, res , next) => {
-    console.log(req.body)
-    //Convert received request post values into variables
+    console.log("Received save choices request with body:", req.body, "ATTEMPTING TO PROCESS DATA FOR SAVING");
     const { 
-        auth:auth,
-        username:username,
-        currentGoal: currentGoal,
-        sortChoice: sortChoice,
-        showCompletedChoice: showCompletedChoice,
-        customLevelsString: customLevelsString,
-        hoursPerDay: hoursPerDay ,
-
-        attackChoice: attackChoice ,
-        attackCustomXp: attackCustomXp ,
-        attackCustomGp: attackCustomGp ,
-        attackBoost: attackBoost ,
-
-        strengthChoice: strengthChoice ,
-        strengthCustomXp: strengthCustomXp ,
-        strengthCustomGp: strengthCustomGp ,
-        strengthBoost: strengthBoost ,
-        
-        defenceChoice: defenceChoice ,
-        defenceCustomXp: defenceCustomXp ,
-        defenceCustomGp: defenceCustomGp ,
-        defenceBoost: defenceBoost ,
-
-        hitpointsChoice: hitpointsChoice ,
-        hitpointsCustomXp: hitpointsCustomXp ,
-        hitpointsCustomGp: hitpointsCustomGp ,
-        hitpointsBoost: hitpointsBoost ,
-
-        rangedChoice: rangedChoice ,
-        rangedCustomXp: rangedCustomXp ,
-        rangedCustomGp: rangedCustomGp ,
-        rangedBoost: rangedBoost ,
-      
-        prayerChoice: prayerChoice ,
-        prayerCustomXp: prayerCustomXp ,
-        prayerCustomGp: prayerCustomGp ,
-        prayerBoost: prayerBoost ,
-      
-        magicChoice: magicChoice ,
-        magicCustomXp: magicCustomXp ,
-        magicCustomGp: magicCustomGp ,
-        magicBoost: magicBoost ,
-      
-        runecraftChoice: runecraftChoice ,
-        runecraftCustomXp: runecraftCustomXp ,
-        runecraftCustomGp: runecraftCustomGp ,
-        runecraftBoost: runecraftBoost ,
-      
-        constructionChoice: constructionChoice ,
-        constructionCustomXp: constructionCustomXp ,
-        constructionCustomGp: constructionCustomGp ,
-        constructionBoost: constructionBoost ,
-      
-        agilityChoice: agilityChoice ,
-        agilityCustomXp: agilityCustomXp ,
-        agilityCustomGp: agilityCustomGp ,
-        agilityBoost: agilityBoost ,
-      
-        herbloreChoice: herbloreChoice ,
-        herbloreCustomXp: herbloreCustomXp ,
-        herbloreCustomGp: herbloreCustomGp ,
-        herbloreBoost: herbloreBoost ,
-      
-        thievingChoice: thievingChoice ,
-        thievingCustomXp: thievingCustomXp ,
-        thievingCustomGp: thievingCustomGp ,
-        thievingBoost: thievingBoost ,
-      
-        craftingChoice: craftingChoice ,
-        craftingCustomXp: craftingCustomXp ,
-        craftingCustomGp: craftingCustomGp ,
-        craftingBoost: craftingBoost ,
-      
-        fletchingChoice: fletchingChoice ,
-        fletchingCustomXp: fletchingCustomXp ,
-        fletchingCustomGp: fletchingCustomGp ,
-        fletchingBoost: fletchingBoost ,
-      
-        slayerChoice: slayerChoice ,
-        slayerCustomXp: slayerCustomXp ,
-        slayerCustomGp: slayerCustomGp ,
-        slayerBoost: slayerBoost ,
-      
-        hunterChoice: hunterChoice ,
-        hunterCustomXp: hunterCustomXp ,
-        hunterCustomGp: hunterCustomGp ,
-        hunterBoost: hunterBoost ,
-      
-        miningChoice: miningChoice ,
-        miningCustomXp: miningCustomXp ,
-        miningCustomGp: miningCustomGp ,
-        miningBoost: miningBoost ,
-      
-        smithingChoice: smithingChoice ,
-        smithingCustomXp: smithingCustomXp ,
-        smithingCustomGp: smithingCustomGp ,
-        smithingBoost: smithingBoost ,
-      
-        fishingChoice: fishingChoice ,
-        fishingCustomXp: fishingCustomXp ,
-        fishingCustomGp: fishingCustomGp ,
-        fishingBoost: fishingBoost ,
-      
-        cookingChoice: cookingChoice ,
-        cookingCustomXp: cookingCustomXp ,
-        cookingCustomGp: cookingCustomGp ,
-        cookingBoost: cookingBoost ,
-      
-        firemakingChoice: firemakingChoice ,
-        firemakingCustomXp: firemakingCustomXp ,
-        firemakingCustomGp: firemakingCustomGp ,
-        firemakingBoost: firemakingBoost ,
-      
-        woodcuttingChoice: woodcuttingChoice ,
-        woodcuttingCustomXp: woodcuttingCustomXp ,
-        woodcuttingCustomGp: woodcuttingCustomGp ,
-        woodcuttingBoost: woodcuttingBoost ,
-        
-        sailingChoice: sailingChoice ,
-        sailingCustomXp: sailingCustomXp ,
-        sailingCustomGp: sailingCustomGp ,
-        sailingBoost: sailingBoost ,
-
-        seedChoice: seedChoice,
-        patchesChoice: farmingPatches
+        auth,
+        username,
+        currentGoal,
+        sortChoice,
+        showCompletedChoice,
+        customLevelsString,
+        hoursPerDay,
+        seedChoice,
+        patchesChoice: farmingPatches,
+        trainingMethods
     } = req.body;
 
-    //Validate the users new save choices before trying to save them, or the system will crash.
-    console.log('about to run validation')
-    try{
+        console.log("TRY STARTED SUCCESSFULLY: ")
+    // 1. Validate choices AND the nested training methods array together
+    try {
+        
         result = await saveChoicesSchema.validateAsync({
             username,
             currentGoal,
@@ -146,293 +49,77 @@ exports.saveChoices = async (req, res , next) => {
             showCompletedChoice,
             customLevelsString,
             hoursPerDay,
-
-            attackChoice,
-            attackCustomXp,
-            attackCustomGp,
-            attackBoost,
-          
-            strengthChoice,
-            strengthCustomXp,
-            strengthCustomGp,
-            strengthBoost,
-          
-            defenceChoice,
-            defenceCustomXp,
-            defenceCustomGp,
-            defenceBoost,
-          
-            hitpointsChoice,
-            hitpointsCustomXp,
-            hitpointsCustomGp,
-            hitpointsBoost,
-          
-            rangedChoice,
-            rangedCustomXp,
-            rangedCustomGp,
-            rangedBoost,
-          
-            prayerChoice,
-            prayerCustomXp,
-            prayerCustomGp,
-            prayerBoost,
-          
-            magicChoice,
-            magicCustomXp,
-            magicCustomGp,
-            magicBoost,
-          
-            runecraftChoice,
-            runecraftCustomXp,
-            runecraftCustomGp,
-            runecraftBoost,
-          
-            constructionChoice,
-            constructionCustomXp,
-            constructionCustomGp,
-            constructionBoost,
-          
-            agilityChoice,
-            agilityCustomXp,
-            agilityCustomGp,
-            agilityBoost,
-          
-            herbloreChoice,
-            herbloreCustomXp,
-            herbloreCustomGp,
-            herbloreBoost,
-          
-            thievingChoice,
-            thievingCustomXp,
-            thievingCustomGp,
-            thievingBoost,
-          
-            craftingChoice,
-            craftingCustomXp,
-            craftingCustomGp,
-            craftingBoost,
-          
-            fletchingChoice,
-            fletchingCustomXp,
-            fletchingCustomGp,
-            fletchingBoost,
-          
-            slayerChoice,
-            slayerCustomXp,
-            slayerCustomGp,
-            slayerBoost,
-          
-            hunterChoice,
-            hunterCustomXp,
-            hunterCustomGp,
-            hunterBoost,
-          
-            miningChoice,
-            miningCustomXp,
-            miningCustomGp,
-            miningBoost,
-          
-            smithingChoice,
-            smithingCustomXp,
-            smithingCustomGp,
-            smithingBoost,
-          
-            fishingChoice,
-            fishingCustomXp,
-            fishingCustomGp,
-            fishingBoost,
-          
-            cookingChoice,
-            cookingCustomXp,
-            cookingCustomGp,
-            cookingBoost,
-          
-            firemakingChoice,
-            firemakingCustomXp,
-            firemakingCustomGp,
-            firemakingBoost,
-          
-            woodcuttingChoice,
-            woodcuttingCustomXp,
-            woodcuttingCustomGp,
-            woodcuttingBoost,
-
-            sailingChoice,
-            sailingCustomXp,
-            sailingCustomGp,
-            sailingBoost,
-            
             seedChoice,
             farmingPatches,
-        
-        
-
+            trainingMethods // Validated cleanly by the updated Joi schema
         }, {warnings: true});
 
-    } catch(err){
-
-        //If this fails, result remains unchanged from its original declaration
-        console.log("Joi Error Message: " + err.message)
-        //console.log(Object.getOwnPropertyNames(err))
-        //From here, set a https error code, a message, and return to requester!
-        res.status(422).json({'error': "Could not save: One or more inputs is invalid"})
-        //If joi validation fails, end function
-        return
+    } catch(err) {
+        console.log("Save choices validation failed: " + err.message)
+        return res.status(422).json({'error': "Could not save: One or more inputs is invalid"})
     }
     
-    //Check the request had valid auth code
-    payload = getPayloadFromAccessToken(auth) //wil return false if not found
-    //Or it can crash here if an invalid access token runs that is in the process of being refreshed.
-    //WE need an escape here for invalid tokens
-    console.log("Found user with id: " + payload.aud)
+    // Check the request had valid auth token
+    const payload = getPayloadFromAccessToken(auth) 
     if(!payload){
-        res.status(422).json({'error': `token was invalid`})
-        return
+        return res.status(422).json({'error': `token was invalid`})
     }
+
     const user = await User.findById(payload.aud)
     if(!user){
-        res.status(422).json({'error': `user was not found`})
-        return
+        return res.status(422).json({'error': `user was not found`})
     }
-    //Save to model (left) based on post data (right)
-    
-    user.username = username,
-    user.currentGoal = currentGoal,
-    user.sortChoice = sortChoice,
-    user.showCompletedChoice = showCompletedChoice,
-    user.customLevelsString = customLevelsString,
-    user.hoursPerDay = isNaN(parseFloat(hoursPerDay)) || parseFloat(hoursPerDay) <= 0 ? 1 : parseFloat(hoursPerDay),
 
-    user.attackChoice= attackChoice ,
-    user.attackCustomXp= attackCustomXp ,
-    user.attackCustomGp= attackCustomGp ,
-    user.attackBoost= attackBoost ,
+    try {
+        // 2. Update primary user document values
+        user.username = username;
+        user.currentGoal = currentGoal;
+        user.sortChoice = sortChoice;
+        user.showCompletedChoice = showCompletedChoice;
+        user.customLevelsString = customLevelsString;
+        user.hoursPerDay = isNaN(parseFloat(hoursPerDay)) || parseFloat(hoursPerDay) <= 0 ? 1 : parseFloat(hoursPerDay);
+        
+        await user.save();
 
-    user.strengthChoice= strengthChoice ,
-    user.strengthCustomXp= strengthCustomXp ,
-    user.strengthCustomGp= strengthCustomGp ,
-    user.strengthBoost= strengthBoost ,
+        // 3. Clear existing methods for this specific user to handle updates/removals cleanly
+        await ChosenTrainingMethod.deleteMany({ userId: user._id });
+        console.log(`Cleared existing training methods for user ${user.username} (ID: ${user._id}) to prepare for new saves.`);
 
-    user.defenceChoice= defenceChoice ,
-    user.defenceCustomXp= defenceCustomXp ,
-    user.defenceCustomGp= defenceCustomGp ,
-    user.defenceBoost= defenceBoost ,
+        // 4. Map and save the new training rows using values verified from the database user record
+        if (trainingMethods && Array.isArray(trainingMethods) && trainingMethods.length > 0) {
+            
+            const methodsToInsert = trainingMethods.map(method => ({
+                userId: user._id.toString(),
+                email: user.email,         // Sourced securely from your verified database user doc
+                username: user.username,   // Sourced securely from your verified database user doc
+                levelsBoosted: method.levelsBoosted,
+                profitPerXp: method.profitPerXp,
+                skill: method.skill,
+                xpPerHour: method.xpPerHour,
+                name: method.name
+            }));
 
-    user.hitpointsChoice= hitpointsChoice ,
-    user.hitpointsCustomXp= hitpointsCustomXp ,
-    user.hitpointsCustomGp= hitpointsCustomGp ,
-    user.hitpointsBoost= hitpointsBoost ,
+            // Handle multiple document inserts seamlessly
+            await ChosenTrainingMethod.insertMany(methodsToInsert);
+        }
 
-    user.rangedChoice= rangedChoice ,
-    user.rangedCustomXp= rangedCustomXp ,
-    user.rangedCustomGp= rangedCustomGp ,
-    user.rangedBoost= rangedBoost ,
-  
-    user.prayerChoice= prayerChoice ,
-    user.prayerCustomXp= prayerCustomXp ,
-    user.prayerCustomGp= prayerCustomGp ,
-    user.prayerBoost= prayerBoost ,
-  
-    user.magicChoice= magicChoice ,
-    user.magicCustomXp= magicCustomXp ,
-    user.magicCustomGp= magicCustomGp ,
-    user.magicBoost= magicBoost ,
-  
-    user.runecraftChoice= runecraftChoice ,
-    user.runecraftCustomXp= runecraftCustomXp ,
-    user.runecraftCustomGp= runecraftCustomGp ,
-    user.runecraftBoost= runecraftBoost ,
-  
-    user.constructionChoice= constructionChoice ,
-    user.constructionCustomXp= constructionCustomXp ,
-    user.constructionCustomGp= constructionCustomGp ,
-    user.constructionBoost= constructionBoost ,
-  
-    user.agilityChoice= agilityChoice ,
-    user.agilityCustomXp= agilityCustomXp ,
-    user.agilityCustomGp= agilityCustomGp ,
-    user.agilityBoost= agilityBoost ,
-  
-    user.herbloreChoice= herbloreChoice ,
-    user.herbloreCustomXp= herbloreCustomXp ,
-    user.herbloreCustomGp= herbloreCustomGp ,
-    user.herbloreBoost= herbloreBoost ,
-  
-    user.thievingChoice= thievingChoice ,
-    user.thievingCustomXp= thievingCustomXp ,
-    user.thievingCustomGp= thievingCustomGp ,
-    user.thievingBoost= thievingBoost ,
-  
-    user.craftingChoice= craftingChoice ,
-    user.craftingCustomXp= craftingCustomXp ,
-    user.craftingCustomGp= craftingCustomGp ,
-    user.craftingBoost= craftingBoost ,
-  
-    user.fletchingChoice= fletchingChoice ,
-    user.fletchingCustomXp= fletchingCustomXp ,
-    user.fletchingCustomGp= fletchingCustomGp ,
-    user.fletchingBoost= fletchingBoost ,
-  
-    user.slayerChoice= slayerChoice ,
-    user.slayerCustomXp= slayerCustomXp ,
-    user.slayerCustomGp= slayerCustomGp ,
-    user.slayerBoost= slayerBoost ,
-  
-    user.hunterChoice= hunterChoice ,
-    user.hunterCustomXp= hunterCustomXp ,
-    user.hunterCustomGp= hunterCustomGp ,
-    user.hunterBoost= hunterBoost ,
-  
-    user.miningChoice= miningChoice ,
-    user.miningCustomXp= miningCustomXp ,
-    user.miningCustomGp= miningCustomGp ,
-    user.miningBoost= miningBoost ,
-  
-    user.smithingChoice= smithingChoice ,
-    user.smithingCustomXp= smithingCustomXp ,
-    user.smithingCustomGp= smithingCustomGp ,
-    user.smithingBoost= smithingBoost ,
-  
-    user.fishingChoice= fishingChoice ,
-    user.fishingCustomXp= fishingCustomXp ,
-    user.fishingCustomGp= fishingCustomGp ,
-    user.fishingBoost= fishingBoost ,
-  
-    user.cookingChoice= cookingChoice ,
-    user.cookingCustomXp= cookingCustomXp ,
-    user.cookingCustomGp= cookingCustomGp ,
-    user.cookingBoost= cookingBoost ,
-  
-    user.firemakingChoice= firemakingChoice ,
-    user.firemakingCustomXp= firemakingCustomXp ,
-    user.iremakingCustomGp= firemakingCustomGp ,
-    user.firemakingBoost= firemakingBoost ,
-  
-    user.woodcuttingChoice= woodcuttingChoice ,
-    user.woodcuttingCustomXp= woodcuttingCustomXp ,
-    user.woodcuttingCustomGp= woodcuttingCustomGp ,
-    user.woodcuttingBoost= woodcuttingBoost ,
+        res.status(200).json({ success: true, message: "success" });
 
-    user.sailingChoice= sailingChoice ,
-    user.sailingCustomXp= sailingCustomXp ,
-    user.sailingCustomGp= sailingCustomGp ,
-    user.sailingBoost= sailingBoost ,
-
-    user.seedChoice= seedChoice,
-    user.farmingPatches= farmingPatches,
-    
-    user.save();
-    res.send("success")
+    } catch (dbError) {
+        console.error("Database save error:", dbError);
+        res.status(500).json({ error: "An error occurred while trying to save your data." });
+    }
 }
 
+//SNAPSHOT SAVING LOGIC ####################################
 exports.saveProgress = async (req, res, next) => {
-    console.log(req.body)
+    //console.log(req.body)
     const { auth, currentGoal, percentOfGoal, playerId } = req.body;
 
     try {
         await saveProgressSchema.validateAsync({ currentGoal, percentOfGoal, playerId }, { warnings: true });
     } catch (err) {
-        console.log("Save progress validation failed: " + err.message)
+        //console.log("Save progress validation failed: " + err.message)
         res.status(422).json({ error: "Could not save progress: invalid input." })
         return
     }
@@ -448,6 +135,8 @@ exports.saveProgress = async (req, res, next) => {
         res.status(422).json({ error: "user was not found" })
         return
     }
+
+
 
     const playerIdValue = playerId || user.username
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
@@ -476,3 +165,4 @@ exports.saveProgress = async (req, res, next) => {
     await snapshot.save()
     res.json({ success: true, snapshotId: snapshot.id })
 }
+//END SNAPSHOT SAVING LOGIC #############################

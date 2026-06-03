@@ -36,137 +36,50 @@ const passwordSchema = Joi.object({
 })
 
 //For choices saving
+
+//UPDATED BY AI##########
 const saveChoicesSchema = Joi.object({
   username: Joi.string().min(2).max(20).required(),
   currentGoal: Joi.string().min(2).max(20).required(),
   sortChoice: Joi.number().integer().min(0).max(3),
   showCompletedChoice: Joi.boolean(),
   customLevelsString: Joi.string().allow(''),
-  hoursPerDay: Joi.number().min(0.01).max(24).default(1),
-
-  attackChoice: Joi.number().integer().min(0).max(99),
-  attackCustomXp: Joi.number().integer().min(0).max(13000000),
-  attackCustomGp: Joi.number().min(-1000).max(1000),
-  attackBoost: Joi.number().integer().min(0).max(5),
-
-  strengthChoice: Joi.number().integer().min(0).max(99),
-  strengthCustomXp: Joi.number().integer().min(0).max(13000000),
-  strengthCustomGp: Joi.number().min(-1000).max(1000),
-  strengthBoost: Joi.number().integer().min(0).max(5),
-
-  defenceChoice: Joi.number().integer().min(0).max(99),
-  defenceCustomXp: Joi.number().integer().min(0).max(13000000),
-  defenceCustomGp: Joi.number().min(-1000).max(1000),
-  defenceBoost: Joi.number().integer().min(0).max(5),
-
-  hitpointsChoice: Joi.number().integer().min(0).max(99),
-  hitpointsCustomXp: Joi.number().integer().min(0).max(13000000),
-  hitpointsCustomGp: Joi.number().min(-1000).max(1000),
-  hitpointsBoost: Joi.number().integer().min(0).max(5),
-
-  rangedChoice: Joi.number().integer().min(0).max(99),
-  rangedCustomXp: Joi.number().integer().min(0).max(13000000),
-  rangedCustomGp: Joi.number().min(-1000).max(1000),
-  rangedBoost: Joi.number().integer().min(0).max(5),
-
-  prayerChoice: Joi.number().integer().min(0).max(99),
-  prayerCustomXp: Joi.number().integer().min(0).max(13000000),
-  prayerCustomGp: Joi.number().min(-1000).max(1000),
-  prayerBoost: Joi.number().integer().min(0).max(5),
-
-  magicChoice: Joi.number().integer().min(0).max(99),
-  magicCustomXp: Joi.number().integer().min(0).max(13000000),
-  magicCustomGp: Joi.number().min(-1000).max(1000),
-  magicBoost: Joi.number().integer().min(0).max(5),
-
-  runecraftChoice: Joi.number().integer().min(0).max(99),
-  runecraftCustomXp: Joi.number().integer().min(0).max(13000000),
-  runecraftCustomGp: Joi.number().min(-1000).max(1000),
-  runecraftBoost: Joi.number().integer().min(0).max(5),
-
-  constructionChoice: Joi.number().integer().min(0).max(99),
-  constructionCustomXp: Joi.number().integer().min(0).max(13000000),
-  constructionCustomGp: Joi.number().min(-1000).max(1000),
-  constructionBoost: Joi.number().integer().min(0).max(5),
-
-  agilityChoice: Joi.number().integer().min(0).max(99),
-  agilityCustomXp: Joi.number().integer().min(0).max(13000000),
-  agilityCustomGp: Joi.number().min(-1000).max(1000),
-  agilityBoost: Joi.number().integer().min(0).max(5),
-
-  herbloreChoice: Joi.number().integer().min(0).max(99),
-  herbloreCustomXp: Joi.number().integer().min(0).max(13000000),
-  herbloreCustomGp: Joi.number().min(-1000).max(1000),
-  herbloreBoost: Joi.number().integer().min(0).max(5),
-
-  thievingChoice: Joi.number().integer().min(0).max(99),
-  thievingCustomXp: Joi.number().integer().min(0).max(13000000),
-  thievingCustomGp: Joi.number().min(-1000).max(1000),
-  thievingBoost: Joi.number().integer().min(0).max(5),
-
-  craftingChoice: Joi.number().integer().min(0).max(99),
-  craftingCustomXp: Joi.number().integer().min(0).max(13000000),
-  craftingCustomGp: Joi.number().min(-1000).max(1000),
-  craftingBoost: Joi.number().integer().min(0).max(5),
-
-  fletchingChoice: Joi.number().integer().min(0).max(99),
-  fletchingCustomXp: Joi.number().integer().min(0).max(13000000),
-  fletchingCustomGp: Joi.number().min(-1000).max(1000),
-  fletchingBoost: Joi.number().integer().min(0).max(5),
-
-  slayerChoice: Joi.number().integer().min(0).max(99),
-  slayerCustomXp: Joi.number().integer().min(0).max(13000000),
-  slayerCustomGp: Joi.number().min(-1000).max(1000),
-  slayerBoost: Joi.number().integer().min(0).max(5),
-
-  hunterChoice: Joi.number().integer().min(0).max(99),
-  hunterCustomXp: Joi.number().integer().min(0).max(13000000),
-  hunterCustomGp: Joi.number().min(-1000).max(1000),
-  hunterBoost: Joi.number().integer().min(0).max(5),
-
-  miningChoice: Joi.number().integer().min(0).max(99),
-  miningCustomXp: Joi.number().integer().min(0).max(13000000),
-  miningCustomGp: Joi.number().min(-1000).max(1000),
-  miningBoost: Joi.number().integer().min(0).max(5),
-
-  smithingChoice: Joi.number().integer().min(0).max(99),
-  smithingCustomXp: Joi.number().integer().min(0).max(13000000),
-  smithingCustomGp: Joi.number().min(-1000).max(1000),
-  smithingBoost: Joi.number().integer().min(0).max(5),
-
-  fishingChoice: Joi.number().integer().min(0).max(99),
-  fishingCustomXp: Joi.number().integer().min(0).max(13000000),
-  fishingCustomGp: Joi.number().min(-1000).max(1000),
-  fishingBoost: Joi.number().integer().min(0).max(6),
-
-  cookingChoice: Joi.number().integer().min(0).max(99),
-  cookingCustomXp: Joi.number().integer().min(0).max(13000000),
-  cookingCustomGp: Joi.number().min(-1000).max(1000),
-  cookingBoost: Joi.number().integer().min(0).max(5),
-
-  firemakingChoice: Joi.number().integer().min(0).max(99),
-  firemakingCustomXp: Joi.number().integer().min(0).max(13000000),
-  firemakingCustomGp: Joi.number().min(-1000).max(1000),
-  firemakingBoost: Joi.number().integer().min(0).max(5),
-
-  woodcuttingChoice: Joi.number().integer().min(0).max(99),
-  woodcuttingCustomXp: Joi.number().integer().min(0).max(13000000),
-  woodcuttingCustomGp: Joi.number().min(-1000).max(1000),
-  woodcuttingBoost: Joi.number().integer().min(0).max(5),
-
-  sailingChoice: Joi.number().integer().min(0).max(99),
-  sailingCustomXp: Joi.number().integer().min(0).max(13000000),
-  sailingCustomGp: Joi.number().min(-1000).max(1000),
-  sailingBoost: Joi.number().integer().min(0).max(5),
-  
+  hoursPerDay: Joi.number().min(0.01).max(24).default(1),  
   seedChoice: Joi.number().integer().min(0).max(99),
   farmingPatches: Joi.number().integer().min(0).max(99),
+  
+  // NEW: Validate the incoming trainingMethods array right here
+  trainingMethods: Joi.array().items(
+    Joi.object({
+      levelsBoosted: Joi.number().min(0).max(9).required(),
+      profitPerXp: Joi.number().min(-1000).max(1000).required(),
+      skill: Joi.string().min(2).max(20).required(),
+      xpPerHour: Joi.number().min(0).max(13000000).required(),
+      name: Joi.string().min(2).max(30).required()
+    })
+  ).optional() // marked as optional in case a user clears out all methods
 })
 
+//###### END OF AI UPDATE
+
 const saveProgressSchema = Joi.object({
+  userId: Joi.string().required(),
+  email: Joi.string().email().lowercase().min(7).max(40).required(),
+  username: Joi.string().min(2).max(20).required(),
   currentGoal: Joi.string().min(2).max(50).required(),
   percentOfGoal: Joi.number().min(0).max(100).required(),
   playerId: Joi.string().min(1).max(100).required()
+})
+
+const saveTrainingMethodSchema = Joi.object({
+    userId: Joi.string().required(),
+    email: Joi.string().email().lowercase().min(7).max(40).required(),
+    username: Joi.string().min(2).max(20).required(),
+    levelsBoosted: Joi.number().min(0).max(9).required(),
+    profitPerXp: Joi.number().min(-1000).max(1000).required(),
+    skill: Joi.string().min(2).max(20).required(),
+    xpPerHour: Joi.number().min(0).max(13000000).required(),
+    name: Joi.string().min(2).max(30).required()
 })
 
 //It's likely these above two schema's could be consolidated using a Joi functio
@@ -176,11 +89,12 @@ const saveProgressSchema = Joi.object({
 //as we already have the email
 //const userLoginSchema = authSchema.optionalKeys("username");
 
-  module.exports = {
-    authSchema,
-    loginSchema,
-    emailSchema,
-    passwordSchema,
-    saveChoicesSchema,
-    saveProgressSchema
-  }
+module.exports = {
+  authSchema,
+  loginSchema,
+  emailSchema,
+  passwordSchema,
+  saveChoicesSchema, // Exported with the new array handling nested inside
+  saveProgressSchema,
+  saveTrainingMethodSchema
+}

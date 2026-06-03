@@ -4,13 +4,16 @@ function getSkillRowsContainer(){
 }
 
 function reorderSkillRowsBySkillsOrder(){
+    //Re-orders all skill rows in order chosen by user
     const parent = getSkillRowsContainer();
+    //Gets the main parent container
     if (!parent) {
         console.error('Skill rows container not found');
         return;
     }
-
+    //Loop through each skill
     skills.forEach(skill => {
+        //Get the skill row
         const row = document.getElementById(`${skill.name}Row`);
         if (row) {
             parent.appendChild(row);
@@ -33,7 +36,7 @@ function reorderSkillRowsBySkillsOrder(){
 function Sort(toggleState = true){
     //If toggle state is true, toggle the current choice, then sort
     //If false, sort by the existing choice without toggling (used when switching tabs to maintain sorting choice)
-    console.log('Attempting to sort');
+    //console.log('Attempting to sort');
     const sortButton = document.getElementById('sortButton');
     
     if (!sortButton) {
@@ -61,7 +64,7 @@ function Sort(toggleState = true){
     sortButton.dataset.sortState = currentState;
 
     const sortOption = sortOptions[currentState];
-    console.log(`Sorting skills by option: ${sortOption}`);
+    //console.log(`Sorting skills by option: ${sortOption}`);
 
     skills.sort((a, b) => {
         if (currentState === 0) {
@@ -93,11 +96,11 @@ function Sort(toggleState = true){
 
     reorderSkillRowsBySkillsOrder();
 
-    //console.log('Skills sorted:', skills.map(skill => ({ name: skill.name, xp: skill.xp ?? skill.currentXp })));
+    ////console.log('Skills sorted:', skills.map(skill => ({ name: skill.name, xp: skill.xp ?? skill.currentXp })));
 }
 
 function ShowAndHideCompleted(doToggle = true){
-    console.log('Toggling completed skills visibility');
+    //console.log('Toggling completed skills visibility');
     
     // Get or initialize the show state
     let showCompleted = window.showCompletedSkills !== undefined ? window.showCompletedSkills : true;
@@ -147,5 +150,5 @@ function ShowAndHideCompleted(doToggle = true){
         }
     });
     
-    console.log(`Completed skills ${showCompleted ? 'shown' : 'hidden'}`);
+    //console.log(`Completed skills ${showCompleted ? 'shown' : 'hidden'}`);
 }
