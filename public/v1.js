@@ -399,11 +399,11 @@ function PullFromDatabase(){
             ShowAndHideCompleted(false);
         }
 
-        // Set the custom levels
-        if (dbuser.customLevelsString) {
-            const customLevels = dbuser.customLevelsString.split(',').map(Number);
-            customLvlArray = UpdateCustomLevels(customLevels, customLvlArray);
-        }
+        // // Set the custom levels
+        // if (dbuser.customLevelsString) {
+        //     const customLevels = dbuser.customLevelsString.split(',').map(Number);
+        //     customLvlArray = UpdateCustomLevels(customLevels, customLvlArray);
+        // }
 
         // Set the user's hours per day preference
         if (dbuser.hoursPerDay !== undefined && document.getElementById('hoursPerDayInput')) {
