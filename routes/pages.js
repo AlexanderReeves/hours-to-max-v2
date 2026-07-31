@@ -28,14 +28,13 @@ function CountPageRequests(){
 //Router will direct web requests and results
 const router = express.Router();
 
-// Index page rendering, will have differences if the user is signed in.
-router.get('/', verifyAccessToken,(req, res) => {
+function renderIndexPage(req, res, usernameOverride = null, forceSignedIn = false) {
     console.log("ATTEMPTING TO LOAD INDEX PAGE")
-    // CountPageRequests();
-    username = "Player"
-    userSignedIn = false
 
-      var skills = {
+    let username = usernameOverride || "Player"
+    let userSignedIn = forceSignedIn
+
+    const skills = {
         "attack": {
             "skillName":"attack",
             "trainingMethods":[
@@ -253,19 +252,25 @@ router.get('/', verifyAccessToken,(req, res) => {
                 {"method":"140kph Cargo Delivery"},
                 {"method":"200kph Baracuda Trials"}]
         }
-      };
+    };
 
-    if(req.verifiedUser){
+    if (req.verifiedUser) {
         username = req.payload.username
         console.log("The page was requested from verified user " + username)
-        if(username){
+        if (username) {
             userSignedIn = true
-        }else{
+        } else {
             console.log("JWT cookies were found to be invalid, removing them")
             res.clearCookie("authorization");
         }
     }
+
     res.render('index', { signedin: userSignedIn, username: username, allSkills: skills, title: "test"});
+}
+
+// Index page rendering, will have differences if the user is signed in.
+router.get('/', verifyAccessToken, (req, res) => {
+    return renderIndexPage(req, res);
 });
 
 
@@ -299,9 +304,9 @@ router.get('/register', (req, res) => {
             userSignedIn = false
         }
     }
-    //If the user is already signed in, go to home page
+    //If the user is already signed in, show the home page without a redirect
     if(userSignedIn){
-        res.redirect('/');
+        return renderIndexPage(req, res, username, true);
     }else{
         //If not signed in, show a fresh registration page
         res.render('register');
@@ -367,10 +372,10 @@ router.get('/login', (req, res) => {
             userSignedIn = false
         }
     }
-    //If the user is already signed in, go to home page
+    //If the user is already signed in, show the home page without a redirect
     if(userSignedIn){
-        console.log("REDIRECTING TO INDEX")
-        res.redirect('/');
+        console.log("Rendering index page for an already signed in user")
+        return renderIndexPage(req, res, username, true);
     }else{
         //If not signed in, show a fresh login page
         res.render('login');
@@ -385,6 +390,13 @@ router.get('/forgot', (req, res) => {
 router.get('/projects', (req, res) => {
     //This page can render for both signed in and non signed in users
     res.render('projects');
+});
+
+router.get('/snapshots', verifyAccessToken, (req, res) => {
+    if(!req.verifiedUser){
+        return res.redirect('/login')
+    }
+    res.render('snapshots', { signedin: true, username: req.payload.username });
 });
 
 router.get('/author', (req, res) => {

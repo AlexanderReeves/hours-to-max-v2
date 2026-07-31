@@ -14,13 +14,10 @@ email: { type: String, required: true, lowercase: true, unique: true,},
   showCompletedChoice: { type: Boolean, required: false, default: true },
   customLevelsString: { type: String, required: false, default: "" },
   hoursPerDay: { type: Number, required: false, default: 1 },
-  
+  chosenCape: { type: String, required: false, default: "Max_cape.webp" },
   password: { type: String, required: false,  },  
   passwordLinkExipry: { type: Date, required: false,  },
   resetToken: { type: String, required: false },
-
-  seedChoice: { type: Number, required: false  },
-  farmingPatches: { type: Number, required: false  },
   
 }, {
   // CRITICAL: This allows virtual fields like 'chosenMethods' to 
@@ -48,12 +45,12 @@ UserSchema.pre('save', async function (next){
       console.log(hashedPass)
     } catch(error){
       console.log("Bad pass middleware")
-      next(error)
+      return next(error)
     }
   }else{
     console.log("Skipping pre hash of password")
   }
-  next()
+  return next()
 })
 
 UserSchema.post('save', async function (next){
@@ -69,7 +66,7 @@ UserSchema.post('save', async function (next){
 //Login check valid password including its encryption
 UserSchema.methods.isValidPassword = async function (password) {
   try{
-    result = await bcrypt.compare(password, this.password)
+    const result = await bcrypt.compare(password, this.password)
     //return await bcrypt.compare(password, this.password)
     console.log(result)
     return result

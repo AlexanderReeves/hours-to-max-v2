@@ -18,8 +18,8 @@ module.exports = {
     verifyAccessToken: (req, res, next) => {
         console.log("TOKEN VERIFICATION HAS STARTED")
         //Find the authorization/jwt from the cookies
-        accessToken = getJwtFromCookies(req,"authorization");
-        refreshToken = getJwtFromCookies(req,"refreshAuthorization");
+      let accessToken = getJwtFromCookies(req,"authorization");
+      let refreshToken = getJwtFromCookies(req,"refreshAuthorization");
 
         if(!accessToken){
           console.log("NO VERIFICATION TOKEN WAS FOUND, USER IS NOT SIGNED IN")
@@ -48,20 +48,20 @@ module.exports = {
                 return next()
               }else{
                 console.log("Refresh code was valid. Generating new auth and refresh code.")
-                payload = GetPayloadFromRefreshToken(refreshToken)
-                console.log("payload aud: " + payload.aud)
-                console.log("payload emai: " + payload.email)
-                console.log("payload username: " + payload.username)
+                const refreshedPayload = GetPayloadFromRefreshToken(refreshToken)
+                console.log("payload aud: " + refreshedPayload.aud)
+                console.log("payload emai: " + refreshedPayload.email)
+                console.log("payload username: " + refreshedPayload.username)
 
-                newAccessToken = await SignAccessToken(payload.aud, payload.email, payload.username, "365d")
-                newRefreshToken = await SignRefreshToken(payload.aud, payload.email, payload.username)
+                const newAccessToken = await SignAccessToken(refreshedPayload.aud, refreshedPayload.email, refreshedPayload.username, "365d")
+                const newRefreshToken = await SignRefreshToken(refreshedPayload.aud, refreshedPayload.email, refreshedPayload.username)
                 accessToken = newAccessToken
                 refreshToken = newRefreshToken
 
                 res.cookie('authorization', newAccessToken)
                 res.cookie('refreshAuthorization', newRefreshToken)
-                res.cookie('username', payload.username)
-                res.cookie('userid', payload.aud)
+                res.cookie('username', refreshedPayload.username)
+                res.cookie('userid', refreshedPayload.aud)
               }
             })
             
@@ -76,7 +76,7 @@ module.exports = {
       },
       verifyRegistrationToken: (req, res, next) => {
         console.log("Verifying registration token")
-        accessToken = req.query.token;
+        const accessToken = req.query.token;
         jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
           if(err) {
             return next(createError.Unauthorized())
@@ -97,7 +97,7 @@ function getJwtFromCookies(req,field) {
   if(req.headers.cookie){
     console.log(field + ' jwt cookies found in request.')
     //Finds the auth code from cookies and returns it
-    result = cookieParser.parseCookies(req)[field]
+    const result = cookieParser.parseCookies(req)[field]
     //console.log('Cookies result for requested field ' + field + ': ' + result)
     return result
   }else{
@@ -108,31 +108,27 @@ function getJwtFromCookies(req,field) {
 }
 
 function GetPayloadFromAccessToken(code){
-  result = false
   //Converts a jwt to a payload internally
   console.log("jwt helper is getting the payload from the access token...")
-  jwt.verify(code, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
-    if(err) {
-      return false
-    }
+  try {
+    const payload = jwt.verify(code, process.env.ACCESS_TOKEN_SECRET)
     console.log('Successfully read the access jwt: ' + JSON.stringify(payload))
-    result = payload
-  })
-  return result
+    return payload
+  } catch (err) {
+    return false
+  }
 }
 
 function GetPayloadFromRefreshToken(code){
-  result = false
   //Converts a jwt to a payload internally
   console.log("jwt helper is getting the payload from the refresh token...")
-  jwt.verify(code, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
-    if(err) {
-      return false
-    }
+  try {
+    const payload = jwt.verify(code, process.env.REFRESH_TOKEN_SECRET)
     console.log('Successfully read the refresh jwt: ' + JSON.stringify(payload))
-    result = payload
-  })
-  return result
+    return payload
+  } catch (err) {
+    return false
+  }
 }
 
 async function SignAccessToken (userId, email, username, expiryTime){     

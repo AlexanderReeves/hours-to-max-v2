@@ -8,11 +8,13 @@ const ChosenTrainingMethodSchema = new Schema({
     username: { type: String, required: true },
 
   //Method specific fields
-    levelsBoosted: { type: Number, required: true },
     profitPerXp: { type: Number, required: true },
     skill: { type: String, required: true },
     xpPerHour: { type: Number, required: true },
     name: { type: String, required: true }
+    ,
+    startLevel: { type: Number, required: false },
+    goalLevel: { type: Number, required: false }
 })
 
 const ChosenTrainingMethod = mongoose.model('ChosenTrainingMethod', ChosenTrainingMethodSchema)

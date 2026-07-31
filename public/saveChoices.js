@@ -3,102 +3,109 @@ window.addEventListener('load', function() {
   });
   
 
+
+
 function SaveChoicesToDatabase() {
     //Checks for valid auth code, gets that username, saves choices to database
     auth = $.cookie("authorization");
     if(auth){
 
-        //If uset is logged in, save choices to database
-        console.log('Saving user selections to the databse.');
+        const chosenCapeValue = (typeof currentCapeFileName !== 'undefined' && currentCapeFileName)
+            ? currentCapeFileName
+            : 'Max_cape.webp';
+
+        //If user is logged in, save choices to database
+        console.log('Saving user selections to the database.');
 
         //Json Version NOT YET IN USE
         var jsonPostData = {
             auth: auth,
             username: user,
-            currentGoal: currentTab,
-            sortChoice: document.getElementById('sortButton') ? document.getElementById('sortButton').dataset.sortState || '0' : '0',
-            showCompletedChoice: window.showCompletedSkills !== undefined ? window.showCompletedSkills : true,
+            currentGoal: (function(){
+                const input = document.getElementById('goalNameInput');
+                const goalValue = input ? String(input.value).trim() : '';
+                return goalValue.length > 0 ? goalValue : 'max';
+            })(),
+            chosenCape: chosenCapeValue,
+            sortChoice: (function(){
+                const btn = document.getElementById('sortButton');
+                const raw = btn ? btn.dataset.sortState : '0';
+                const n = Number(raw);
+                return Number.isInteger(n) ? n : 0;
+            })(),
+            showCompletedChoice: window.showCompletedSkills !== undefined ? Boolean(window.showCompletedSkills) : true,
             hoursPerDay: (function() {
                 const hoursInput = document.getElementById('hoursPerDayInput');
-                const value = hoursInput ? parseFloat(hoursInput.value) : '';
-                return isNaN(value) || value <= 0 ? '1' : value.toString();
+                const value = hoursInput ? parseFloat(hoursInput.value) : NaN;
+                return (isNaN(value) || value <= 0) ? 1 : value;
             })()
         };
         //console.log("Initial JSON data to post: ", jsonPostData);
 
-        //Loop through each dropdown
-        //get the skill name, get the text value, get the xp, get the gp
-
-        let trainingMethodsToSave = [];
-        // 1. Find all training method parents and loop through them
-        $('.trainingSelectionParent').each(function() {
-            // $(this) refers to the current parent div
-            //console.log("Parent ID:", this.id);
-
-            if(this.id === "Row"){
+        if (Array.isArray(userTrainingChoices) && userTrainingChoices.length > MAX_STANDARD_TRAINING_METHODS) {
+            const errorMessage = `You may save a maximum of ${MAX_STANDARD_TRAINING_METHODS} training methods to keep the database running smoothly!`;
+            console.warn(errorMessage);
+            if (typeof showNotification === 'function') {
+                showNotification(errorMessage, 'warning');
+            }
+            $("#result").html(errorMessage);
+            $("#result").removeClass("success").addClass("fail");
             return;
-            }
-            console.log("Processing training method parent div with ID:", this.id);
+        }
 
+        // Build trainingMethods from the in-memory `userTrainingChoices` array
+        // Only include the fields the server expects: name, xpPerHour, profitPerXp, skill
+        const trainingMethodsToSave = Array.isArray(userTrainingChoices) ? userTrainingChoices.map(choice => {
+            return {
+                name: choice.name || 'Custom Method',
+                xpPerHour: Number(choice.xpPerHour) >= 0 ? Number(choice.xpPerHour) : 0,
+                profitPerXp: Number(choice.profitPerXp) || 0,
+                skill: choice.skill || '',
+                startLevel: Number(choice.startLevel) >= 1 && Number(choice.startLevel) <= 99 ? Number(choice.startLevel) : 1,
+                goalLevel: Number(choice.goalLevel) >= 1 && Number(choice.goalLevel) <= 99 ? Number(choice.goalLevel) : 99
+            };
+        }).filter(m => m.skill && m.name && typeof m.xpPerHour === 'number' && m.xpPerHour >= 0 && m.startLevel >=1 && m.goalLevel >=1) : [];
 
+        // Add farming data as a training method
+        const farmingStartLevel = (function() {
+            const input = document.getElementById('farming_1_startLvl');
+            const value = input ? Number(input.value) : NaN;
+            return value >= 1 && value <= 99 ? value : 1;
+        })();
 
+        const farmingGoalLevel = (function() {
+            const input = document.getElementById('farming_1_CustomGoal');
+            const value = input ? Number(input.value) : NaN;
+            return value >= 1 && value <= 99 ? value : 99;
+        })();
 
-            let selectedMethod = "";
+        const farmingSeedChoice = (function() {
+            const dropdown = document.getElementById('seedDropdown');
+            const value = dropdown ? Number(dropdown.value) : NaN;
+            // Dropdown values are 1, 2, 3; convert to 0, 1, 2 for seedChoice index
+            return value >= 1 && value <= 3 ? value - 1 : 0;
+        })();
 
-            // Inner loop: iterates through immediate child input divs of the current parent
-            $(this).find('input').each(function() {
-                //console.log($(this).val());
-                // $(this) now refers to the current child div
-                if(this.classList.contains('trainingMethodSelector')) {                    
-                    //console.log("Child Text:", $(this).text() || $(this).val()); // Use .text() for divs and .val() for inputs
-                    const selectedMethodName = $(this).val();
-                    const skillName = this.id.replace("trainingMethodSelector", "");
-                    //Get the skill details based on the dropdown text from the training methods array
-                    if(selectedMethodName == null){
-                        selectedMethodName = "Custom Method";
-                    }
-                    selectedMethod = trainingMethods.find(method => method.name === selectedMethodName && method.skill === skillName);
-                    //log the details of the selected method (or undefined if no match was found)
-                    if(selectedMethod == null || selectedMethod == undefined) {
-                        //console.error("Selected training method does not match a known method. A custom method with 100k XP/hr and 0 gp/xp was saved.");
-                        selectedMethod = {name: selectedMethodName, xpPerHour: 100000, profitPerXp: 0, skill: skillName};
-                    }
-                    //console.log("Selected method details: ", selectedMethod);
-                }                            
-            });
-            
-            //console.log("Selected method details outside of loop: ", selectedMethod);
+        const farmingNumPatches = (function() {
+            const dropdown = document.getElementById('patchesDropdown');
+            const value = dropdown ? Number(dropdown.value) : NaN;
+            // Dropdown values are 1-6, which map directly to numPatches
+            return value >= 1 && value <= 6 ? value : 5;
+        })();
 
-            //Get the expanded section
-            //console.log($(this).next().attr('id'));;
-            $(this).next().find('input').each(function() {
-                //console.log("Found input in expanded section: " + this.id + " with value: " + $(this).val());
-                var idAsString = $(this).attr("id");
-                if(idAsString.includes("Boost")){ 
-                  selectedMethod.levelsBoosted = $(this).val();
-                }
-                if(idAsString.includes("CustomXp")){ 
-                  selectedMethod.xpPerHour = $(this).val();
-                }
-                if(idAsString.includes("CustomGp")){ 
-                  selectedMethod.profitPerXp = $(this).val();
-                }
+        const farmingMethod = {
+            name: 'farming trees',
+            skill: 'farming',
+            xpPerHour: farmingSeedChoice,  // seedChoice stored in xpPerHour
+            profitPerXp: farmingNumPatches,  // numPatches stored in profitPerXp
+            startLevel: farmingStartLevel,
+            goalLevel: farmingGoalLevel
+        };
 
-            });
-            if(selectedMethod.name == null || selectedMethod.name == undefined || selectedMethod.name.trim() === "") {
-                selectedMethod.name = "Custom Method";
-            }
+        trainingMethodsToSave.push(farmingMethod);
 
-            //trainingMethodsToSave[selectedMethod.skill + "Data"] = selectedMethod;
-            trainingMethodsToSave.push({
-                name: selectedMethod.name,
-                xpPerHour: Number(selectedMethod.xpPerHour),
-                profitPerXp: Number(selectedMethod.profitPerXp),
-                skill: selectedMethod.skill,
-                levelsBoosted: Number(selectedMethod.levelsBoosted)
-            });
+        console.log("Attempting to save the following choices (including farming):", trainingMethodsToSave);
 
-        });
         jsonPostData["trainingMethods"] = trainingMethodsToSave;
         console.log("Final JSON data to post: ", jsonPostData);
 
@@ -128,7 +135,8 @@ function SaveChoicesToDatabase() {
                 console.log('Submit returned errors');
                 // Guard against responseJSON being undefined on crash
                 var jsonErrorMessage = XMLHttpRequest.responseJSON ? XMLHttpRequest.responseJSON.error : "Unknown error";
-                $("#result").html("An error occurred. One of your inputs may be invalid, or the server may be experiencing a problem. " + errorThrown + ".");
+                console.error('Save choices server response:', XMLHttpRequest.responseJSON || XMLHttpRequest.responseText || errorThrown);
+                $("#result").html("An error occurred. One of your inputs may be invalid, or the server may be experiencing a problem. " + jsonErrorMessage + ".");
                 $("#result").removeClass("success");
                 $("#result").addClass("fail");
                 return false;

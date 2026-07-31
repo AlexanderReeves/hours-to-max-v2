@@ -32,4 +32,18 @@ Please reach out via email if you would like to contribute, grab a coffee, or ar
 
 **********************************************
 
+***********TO DO***********
+Mobile layout
+Check for bugs
+***************************
+
+***********Future**********
+Mobile vs desktop layout
+Page colour changes
+100 training methods for paid users
+Multiple goal support?
+Multiple character support?
+Xp Per GP calculations via API
+***************************
+
 

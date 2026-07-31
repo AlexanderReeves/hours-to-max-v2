@@ -1,111 +1,56 @@
-function getSkillRowsContainer(){
-    const sampleRow = document.querySelector('.row[id$="Row"]');
-    return sampleRow ? sampleRow.parentElement : null;
-}
-
-function reorderSkillRowsBySkillsOrder(){
-    //Re-orders all skill rows in order chosen by user
-    const parent = getSkillRowsContainer();
-    //Gets the main parent container
-    if (!parent) {
-        console.error('Skill rows container not found');
-        return;
-    }
-    //Loop through each skill
-    skills.forEach(skill => {
-        //Get the skill row
-        const row = document.getElementById(`${skill.name}Row`);
-        if (row) {
-            parent.appendChild(row);
-        }
-
-        const expanded = document.getElementById(`${skill.name}Expanded`);
-        if (expanded) {
-            parent.appendChild(expanded);
-        }
-    });
-
-    // Move farmingPatchesRow directly below farmingRow
-    const farmingRow = document.getElementById('farmingRow');
-    const farmingPatchesRow = document.getElementById('farmingPatchesRow');
-    if (farmingRow && farmingPatchesRow) {
-        farmingRow.insertAdjacentElement('afterend', farmingPatchesRow);
-    }
-}
-
 function Sort(toggleState = true){
-    //If toggle state is true, toggle the current choice, then sort
-    //If false, sort by the existing choice without toggling (used when switching tabs to maintain sorting choice)
-    //console.log('Attempting to sort');
-    const sortButton = document.getElementById('sortButton');
-    
+    //togglestate decides if we should move to the next state before sorting, or just sort with the current value.
+    var sortButton = document.getElementById('sortButton');
     if (!sortButton) {
-        console.error('sortButton element not found');
         return;
     }
-    
-    // Get current state (default to 0)
-    let currentState = parseInt(sortButton.dataset.sortState || '0');
-    
-    // Define the sorting options
-    const sortOptions = ['Sorting by skill', 'Sorting by level', 'Sorting by cost', 'Sorting by hours'];
 
-       var skillOrder = ["attack", "strength", "defence", "ranged", "prayer", "magic", "runecraft", "construction", "hitpoints", "agility", "herblore", "thieving", "crafting", "fletching", "hunter", "mining", "smithing", "fishing", "cooking", "firemaking", "woodcutting", "sailing", "slayer", "farming"];
-    
-    // Move to next state (cycle back to 0 if at the end)
-    if(toggleState){
-        currentState = (currentState + 1) % sortOptions.length;
+    var sortStates = [
+        {name: 'default', label: 'Sorting by default'},
+        {name: 'hours', label: 'Sorting by hours'},
+        {name: 'profit', label: 'Sorting by profit'}
+    ];
+
+    var currentState = parseInt(sortButton.dataset.sortState || '0');
+    if (isNaN(currentState)) {
+        currentState = 0;
     }
-    
-    // Update button text
-    sortButton.value = sortOptions[currentState];
-    
-    // Store the new state
+    //Change state, or just sort with current value
+    if (toggleState) {
+        currentState = (currentState + 1) % sortStates.length;
+    }
+
+    currentState = currentState % sortStates.length;
+
     sortButton.dataset.sortState = currentState;
+    sortButton.value = sortStates[currentState].label;
+    window.sortOrder = sortStates[currentState].name;
+    console.log("Sort order updated to: " + window.sortOrder);
 
-    const sortOption = sortOptions[currentState];
-    //console.log(`Sorting skills by option: ${sortOption}`);
+    // Now sort the rows based on the new sort order
+    SortRows(window.sortOrder);
+}
 
-    skills.sort((a, b) => {
-        if (currentState === 0) {
-            const aIndex = skillOrder.indexOf(a.name);
-            const bIndex = skillOrder.indexOf(b.name);
-            return aIndex - bIndex;
-        }
 
-        if (currentState === 1) {
-            const aXp = a.xp ?? a.currentXp ?? 0;
-            const bXp = b.xp ?? b.currentXp ?? 0;
-            return bXp - aXp;
-        }
 
-        if (currentState === 2) {
-            const aCost = typeof a.GetRemainingCost === 'function' ? a.GetRemainingCost() : 0;
-            const bCost = typeof b.GetRemainingCost === 'function' ? b.GetRemainingCost() : 0;
-            return bCost - aCost;
-        }
+function getSkillRowsContainer(){
+    return document.getElementById('loadSkillsHere') || document.getElementById('AllSkills');
+}
 
-        if (currentState === 3) {
-            const aHours = typeof a.GetRemainingHours === 'function' ? a.GetRemainingHours() : 0;
-            const bHours = typeof b.GetRemainingHours === 'function' ? b.GetRemainingHours() : 0;
-            return bHours - aHours;
-        }
 
-        return 0;
-    });
-
-    reorderSkillRowsBySkillsOrder();
-
-    ////console.log('Skills sorted:', skills.map(skill => ({ name: skill.name, xp: skill.xp ?? skill.currentXp })));
+function IsChoiceCompleted(choice){
+    const startXp = Number(choice.startXp) || 0;
+    const startLevel = Number(choice.startLevel) || 1;
+    const goalLevel = Number(choice.goalLevel) || 99;
+    const effectiveStartXp = Math.max(startXp, ConvertLevelToXp(startLevel));
+    const remainingXp = ConvertLevelToXp(goalLevel) - effectiveStartXp;
+    return remainingXp <= 0;
 }
 
 function ShowAndHideCompleted(doToggle = true){
-    //console.log('Toggling completed skills visibility');
-    
-    // Get or initialize the show state
     let showCompleted = window.showCompletedSkills !== undefined ? window.showCompletedSkills : true;
     if(doToggle){
-        showCompleted = !showCompleted; // Toggle the state
+        showCompleted = !showCompleted;
     }
     window.showCompletedSkills = showCompleted;
 
@@ -114,41 +59,90 @@ function ShowAndHideCompleted(doToggle = true){
         showHideButton.value = showCompleted ? 'Showing completed' : 'Hiding completed';
     }
 
-    const farmingPatchesRow = document.getElementById('farmingPatchesRow');
+    if (typeof ShadeRows === 'function') {
+        ShadeRows();
+    }
+}
 
-    // Iterate through all skills and show/hide based on completion status
-    skills.forEach(skill => {
-        const row = document.getElementById(`${skill.name}Row`);
-        const expanded = document.getElementById(`${skill.name}Expanded`);
-        
-        // Check if skill is completed (remaining hours and cost are both 0)
-        const remainingHours = typeof skill.GetRemainingHours === 'function' ? skill.GetRemainingHours() : 0;
-        const remainingCost = typeof skill.GetRemainingCost === 'function' ? skill.GetRemainingCost() : 0;
-        const isCompleted = remainingHours === 0 && remainingCost === 0;
-        
-        if (isCompleted) {
-            // If completed and showCompleted is false, hide it
-            if (!showCompleted) {
-                if (row) row.style.display = 'none';
-                if (expanded) expanded.style.display = 'none';
-            } else {
-                if (row) row.style.display = '';
-                if (expanded) expanded.style.display = '';
-            }
-        } else {
-            // If not completed, always show it
-            if (row) row.style.display = '';
-            if (expanded) expanded.style.display = '';
-        }
+function SortRows(sortOrder){
+    var parent = getSkillRowsContainer();
+    if (!parent) {
+        return;
+    }
 
-        if (skill.name === 'farming' && farmingPatchesRow) {
-            if (row && row.style.display === 'none') {
-                farmingPatchesRow.style.display = 'none';
-            } else {
-                farmingPatchesRow.style.display = '';
-            }
+    var containers = [];
+    skillNames.forEach(function(skillName){
+        var container = document.getElementById(skillName + '_container');
+        if (container) {
+            containers.push(container);
         }
     });
-    
-    //console.log(`Completed skills ${showCompleted ? 'shown' : 'hidden'}`);
+
+    containers.sort(function(a, b){
+        var aSkill = a.id.replace('_container', '');
+        var bSkill = b.id.replace('_container', '');
+
+        if (sortOrder === 'hours') {
+            var aHours = 0;
+            var bHours = 0;
+            var aHourElements = a.querySelectorAll('[id$="_Hours"]');
+            var bHourElements = b.querySelectorAll('[id$="_Hours"]');
+            aHourElements.forEach(function(element){
+                var value = parseFloat(element.textContent || element.innerText || '0');
+                if (!isNaN(value)) {
+                    aHours += value;
+                }
+            });
+            bHourElements.forEach(function(element){
+                var value = parseFloat(element.textContent || element.innerText || '0');
+                if (!isNaN(value)) {
+                    bHours += value;
+                }
+            });
+            return bHours - aHours;
+        }
+
+        if (sortOrder === 'profit') {
+            var aProfit = 0;
+            var bProfit = 0;
+            var aProfitElements = a.querySelectorAll('[id$="_Cost"]');
+            var bProfitElements = b.querySelectorAll('[id$="_Cost"]');
+            aProfitElements.forEach(function(element){
+                var value = parseFloat((element.textContent || element.innerText || '0').replace(/[^0-9.-]/g, ''));
+                if (!isNaN(value)) {
+                    aProfit += value;
+                }
+            });
+            bProfitElements.forEach(function(element){
+                var value = parseFloat((element.textContent || element.innerText || '0').replace(/[^0-9.-]/g, ''));
+                if (!isNaN(value)) {
+                    bProfit += value;
+                }
+            });
+            return bProfit - aProfit;
+        }
+
+        var aIndex = skillNames.indexOf(aSkill);
+        var bIndex = skillNames.indexOf(bSkill);
+        if (aIndex === -1) {
+            aIndex = 9999;
+        }
+        if (bIndex === -1) {
+            bIndex = 9999;
+        }
+        return aIndex - bIndex;
+    });
+
+    var currentChildren = Array.from(parent.children);
+    currentChildren.forEach(function(child){
+        if (child.id && child.id.endsWith('_container')) {
+            parent.removeChild(child);
+        }
+    });
+
+    containers.forEach(function(container){
+        parent.appendChild(container);
+    });
+
+    console.log('Sort rows complete for order: ' + sortOrder);
 }

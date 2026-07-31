@@ -2,13 +2,24 @@ var graphChart = null;
 var graphChartData = [];
 var graphChartMinZero = true;
 
+function GetCurrentGoalName(){
+    var goalInput = document.getElementById('goalNameInput');
+    if (!goalInput) {
+        return 'max';
+    }
+
+    var goalText = String(goalInput.value || '').trim();
+    return goalText.length > 0 ? goalText : 'max';
+}
+
 function UpdateChart(){
+    console.log("Updating Chart");
     var now = moment();
     graphChartData = [];
 
     graphChartData.push({
         x: now.toDate(),
-        y: percentOfGoal
+        y: $("#totalXpCompleted").text().trim().slice(0, -1)
     });
 
     function getYAxisMin(data) {
@@ -110,7 +121,7 @@ function UpdateChart(){
             }
         }
     }
-
+    console.log("auth or something");
     var auth = $.cookie("authorization");
     var saveButton = document.getElementById("saveProgressButton");
     var saveResult = document.getElementById("saveProgressResult");
@@ -137,14 +148,18 @@ function UpdateChart(){
         }
     }
 
-    if (auth && typeof user !== 'undefined' && user && typeof currentTab !== 'undefined' && currentTab) {
-        const postData = '&auth=' + auth + '&currentGoal=' + encodeURIComponent(currentTab) + '&playerId=' + encodeURIComponent(user);
+    
+    if (auth && typeof user !== 'undefined' && user) {
+        var currentGoal = GetCurrentGoalName();
+        const postData = '&auth=' + auth + '&currentGoal=' + encodeURIComponent(currentGoal) + '&playerId=' + encodeURIComponent(user);
         $.ajax({
             type: "POST",
             url: "/find/snapshots",
             data: postData,
             success: function (data) {
+                console.log("retreived data");
                 if (data && data.snapshots && data.snapshots.length) {
+                    console.log(data);
                     data.snapshots.forEach(function (snapshot) {
                         if (snapshot && snapshot.entryDate != null && snapshot.percentOfGoal != null) {
                             graphChartData.push({
@@ -169,6 +184,7 @@ function UpdateChart(){
             },
             error: function () {
                 // if fetching snapshots fails, allow saving (don't leave button disabled)
+                console.log("no snapshots found");
                 enableRecentSaveButton();
                 renderChart(graphChartData);
             }
@@ -221,7 +237,15 @@ function SaveProgress(){
         return;
     }
 
-    const postData = '&auth=' + auth + '&currentGoal=' + encodeURIComponent(currentTab) + '&percentOfGoal=' + encodeURIComponent(percentOfGoal) + '&playerId=' + encodeURIComponent(user);
+    const percentText = $("#totalXpCompleted").text();
+    let percentToSave = parseFloat(String(percentText).replace('%', ''));
+    if (isNaN(percentToSave) || percentToSave < 0) {
+        percentToSave = 0;
+    }
+
+    var currentGoal = GetCurrentGoalName();
+
+    const postData = '&auth=' + auth + '&currentGoal=' + encodeURIComponent(currentGoal) + '&percentOfGoal=' + encodeURIComponent(percentToSave) + '&playerId=' + encodeURIComponent(user);
 
     $.ajax({
         type: "POST",

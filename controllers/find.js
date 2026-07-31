@@ -11,63 +11,98 @@ const {getPayloadFromAccessToken} = require('../helpers/jwt_helper')
 
 //find/user route
 exports.findUser = async (req, res , next) => {
-    const { authCode } = req.body;
-    // console.log("/find is finding user from jwt via auth code: " + authCode)
-    //Get user id from jwt
-    payload = getPayloadFromAccessToken(authCode)
-    console.log("Found user with id: " + payload.aud)
-    if(!payload){
-        res.status(422).json({'error': `token was invalid`})
-        return
-    }
-    const user = await User.findById(payload.aud).populate('chosenMethods');
-    if(!user){
-        res.status(422).json({'error': `user was not found`})
-        return
-    }
-    console.log(user + " was found in the database. Sending user data as json.##############################")
-    jsonUser = {
-        //Result is a JSON containing user data.
-        "user":[{
-            "username":user.username,
-            "email":user.email,
-            "currentGoal":user.currentGoal,
-            "sortChoice":user.sortChoice,
-            "showCompletedChoice":user.showCompletedChoice,
-            "customLevelsString":user.customLevelsString,
-            "hoursPerDay": user.hoursPerDay,
-            "seedChoice": user.seedChoice,
-            "patchesChoice": user.patchesChoice,
-            "chosenMethods": user.chosenMethods
-        }]
+    try {
+        const { authCode } = req.body;
+        // console.log("/find is finding user from jwt via auth code: " + authCode)
+        //Get user id from jwt
+        const payload = getPayloadFromAccessToken(authCode)
+        if(!payload){
+            res.status(422).json({'error': `token was invalid`})
+            return
         }
-    res.send(jsonUser)
+
+        console.log("Found user with id: " + payload.aud)
+        const user = await User.findById(payload.aud).populate('chosenMethods');
+        if(!user){
+            res.status(422).json({'error': `user was not found`})
+            return
+        }
+
+        console.log(user + " was found in the database. Sending user data as json.##############################")
+        const jsonUser = {
+            //Result is a JSON containing user data.
+            "user":[{
+                "username":user.username,
+                "email":user.email,
+                "currentGoal":user.currentGoal,
+                "sortChoice":user.sortChoice,
+                "showCompletedChoice":user.showCompletedChoice,
+                "customLevelsString":user.customLevelsString,
+                "hoursPerDay": user.hoursPerDay,
+                "chosenCape": user.chosenCape,
+                "chosenMethods": user.chosenMethods
+            }]
+            }
+        res.send(jsonUser)
+    } catch (error) {
+        next(error)
+    }
 }
 
 exports.findSnapshots = async (req, res , next) => {
-    const { authCode, auth, currentGoal, playerId } = req.body;
-    const accessToken = auth || authCode;
-    if(!accessToken){
-        res.status(422).json({ error: 'token was invalid' })
-        return
+    try {
+        const { authCode, auth, currentGoal, playerId } = req.body;
+        const accessToken = auth || authCode;
+        if(!accessToken){
+            res.status(422).json({ error: 'token was invalid' })
+            return
+        }
+
+        const payload = getPayloadFromAccessToken(accessToken)
+        if(!payload){
+            res.status(422).json({ error: 'token was invalid' })
+            return
+        }
+
+        if(!currentGoal || !playerId){
+            res.status(422).json({ error: 'missing required query data' })
+            return
+        }
+
+        const snapshots = await Snapshot.find({
+            email: payload.email,
+            currentGoal,
+            playerId
+        }).sort({ entryDate: 1 })
+
+        res.json({ snapshots })
+    } catch (error) {
+        next(error)
     }
+}
 
-    const payload = getPayloadFromAccessToken(accessToken)
-    if(!payload){
-        res.status(422).json({ error: 'token was invalid' })
-        return
+exports.findAllSnapshots = async (req, res, next) => {
+    try {
+        const { authCode, auth } = req.body;
+        const accessToken = auth || authCode;
+
+        if(!accessToken){
+            res.status(422).json({ error: 'token was invalid' })
+            return
+        }
+
+        const payload = getPayloadFromAccessToken(accessToken)
+        if(!payload){
+            res.status(422).json({ error: 'token was invalid' })
+            return
+        }
+
+        const snapshots = await Snapshot.find({
+            email: payload.email
+        }).sort({ entryDate: -1 })
+
+        res.json({ snapshots })
+    } catch (error) {
+        next(error)
     }
-
-    if(!currentGoal || !playerId){
-        res.status(422).json({ error: 'missing required query data' })
-        return
-    }
-
-    const snapshots = await Snapshot.find({
-        email: payload.email,
-        currentGoal,
-        playerId
-    }).sort({ entryDate: 1 })
-
-    res.json({ snapshots })
 }

@@ -1,5 +1,4 @@
 * {
-    font-family: myFirstFont;
     font-size: 16px;
     margin:0px;
 }
@@ -23,25 +22,81 @@
 
 #logoimage {text-align: left !important; background-image: "logo.png";height:56px; margin-top: 10px}	
 
-body {color: black; background-color:white; border: #1a1a1a;}
+body {border: #1a1a1a; font-family: "Segoe UI", Arial, sans-serif;}
 
-header {
- height:80px;
+#notification-container {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: calc(100vw - 32px);
+}
+
+.notification-toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    min-width: 280px;
+    max-width: 400px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+    background: rgba(255,255,255,0.96);
+    border: 1px solid rgba(0,0,0,0.08);
+    color: #1f2937;
+    transition: opacity 0.25s ease;
+}
+
+.notification-warning {
+    border-left: 4px solid #f59e0b;
+    background: rgba(254, 243, 199, 0.96);
+}
+
+.notification-error {
+    border-left: 4px solid #ef4444;
+    background: rgba(254, 226, 226, 0.96);
+}
+
+.notification-success {
+    border-left: 4px solid #10b981;
+    background: rgba(220, 252, 231, 0.96);
+}
+
+.notification-message {
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #111827;
+}
+
+.notification-close {
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.notification-close:hover {
+    color: #111827;
 }
 
 .redbody{
-background: rgb(159,0,0);
-background: linear-gradient(90deg, rgba(159,0,0,1) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(159,0,0,1) 100%);
+background: linear-gradient(90deg, #2563eb 0%, #0f4fa8 100%);
 }
 
 .greenbody{
-background: rgb(0,159,58);
-background: linear-gradient(90deg, rgba(0,159,58,1) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,159,58,1) 100%);
+background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
 }
 
 .bluebody{
-background: rgb(0,139,159);
-background: linear-gradient(90deg, rgba(0,139,159,1) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, rgba(0,139,159,1) 100%);
+background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
 }
 
 
@@ -57,6 +112,27 @@ background: linear-gradient(90deg, rgba(0,139,159,1) 0%, rgba(0,0,0,1) 6%, rgba(
 
 .row{
  overflow: hidden;
+}
+
+.row[id$="Row2"],
+.row[id$="Row3"],
+.row[id$="Row4"],
+.row[id$="Row5"],
+.row[id$="Row6"],
+.row[id$="Row7"],
+.row[id$="Row8"],
+.row[id$="Row9"],
+.row[id$="Row10"],
+.row[id$="Expanded2"],
+.row[id$="Expanded3"],
+.row[id$="Expanded4"],
+.row[id$="Expanded5"],
+.row[id$="Expanded6"],
+.row[id$="Expanded7"],
+.row[id$="Expanded8"],
+.row[id$="Expanded9"],
+.row[id$="Expanded10"] {
+ background-color: #f5f5f5;
 }
 
 .OutcomeColA{
@@ -116,7 +192,9 @@ background-size: 10%;/*13 on mobile, 10 on desktop*/
 
 }
 
- 
+.rowDetails {
+    display: none;
+}
 
 
 
@@ -129,13 +207,15 @@ background-size: 10%;/*13 on mobile, 10 on desktop*/
       }
 
 .searcharea{
-     background-color: #0000;
+
      max-width: 600px;
      margin-left: auto;
      margin-right: auto;
- border-radius: 1px;
+ border-radius: 8px;
  padding: 10px;
- text-align: center
+ text-align: center;
+
+ font-family: "Trebuchet MS", "Segoe UI", sans-serif;
       }
 
 .center {text-align: center}
@@ -176,18 +256,69 @@ text-align: left;
 }
 .columnB {
 float: left;
-width: 73%;
+width: 68%;
 
 }
+
+.farmingColumnBeforeB {
+float: left;
+width: 5%;
+}
+
+.farmingColumnB {
+float: left;
+width: 15.5%;
+}
+
+.farmingColumnF {
+float: left;
+width: 10%;
+}
+
+.farmingColumnG {
+float: left;
+width: 10%;
+}
+
+.hoursColumnB {
+float: left;
+width: 23.25%;
+}
+
+.hoursColumnC {
+float: left;
+width: 49.25%;
+}
+
+.farmingColumnC {
+float: left;
+width: 30%;
+}
+
 .columnC {
-width: 13%;
-Padding-top:10px;
-padding-right:10px;
-float:right;
+width: 12%;
+Padding-top:15px;
+padding-right:0px;
+float:left;
 }
 
-.columnD {
-    width: 2%;
+.columnAdd {
+    width: 5%;
+    margin:8px 0;
+    padding-right:5px;
+    float:left;
+}
+
+.duplicateButton{
+    width: 100%;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius:10px;
+    border: 1px solid #ccc;
+}
+
+.columnE {
+    width: 3%;
     Padding-top:22px;
     padding-right:10px;
     padding-bottom:17px;
@@ -195,20 +326,14 @@ float:right;
 }
 
 
-.columnE {
-    float: left;
-    width: 12%;
-    text-align: center;
-    padding: 20px 3px 0px 3px;
-    font-size: 20px;
-}
 .columnF {
     float: left;
     width: 12%;
     text-align: center;
-    padding: 0px 3px 0px 3px;
     font-size: 20px;
+    height:100%;
 }
+
 
 .columnG {
     float: left;
@@ -219,21 +344,67 @@ float:right;
 }
 .columnH {
     float: left;
-    width: 18%;
+    width: 20.5%;
     text-align: center;
 }
 
 .columnI {
     float: left;
-    width: 12%;
+    width: 10%;
     text-align: center;
     padding: 20px 3px 0px 3px;
     font-size: 20px;
 }
 .columnJ {
     float: left;
-    width: 19%;
+    width: 10%;
     text-align: center;
+}
+
+.columnK {
+    float: left;
+    width: 8%;
+    text-align: center;
+    padding: 20px 3px 0px 3px;
+    font-size: 20px;
+}
+
+.columnL {
+    float: left;
+    width: 8%;
+    text-align: center;
+}
+
+.columnM {
+    float: left;
+    width: 8%;
+    text-align: center;
+    padding: 20px 3px 0px 3px;
+    font-size: 20px;
+}
+
+.columnN {
+    float: left;
+    width: 8%;
+    text-align: center;
+}
+
+/* Container must be relative so the rectangle can anchor to its left edge */
+.child-row {
+    position: relative;
+}
+
+/* Creates the floating grey rectangle */
+.child-row::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 6px;                  /* Width of your grey rectangle */
+    background-color: #888888;   /* Clean mid-grey color */
+    border-radius: 4px 0 0 4px;  /* Softens the left corners to match cards */
+    z-index: 5;                  /* Keeps it sitting on top of background panels */
 }
 
 .arrow {
@@ -429,13 +600,21 @@ color: blue;
 
 
 
+.w3-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .max{
 background-image: url("Max_cape.webp");
-width: 25%;
+width: 120px;
+min-width: 120px;
 border-top-left-radius: 15px;
+border-top-right-radius: 15px;
 background-repeat:no-repeat;
 background-position: center center;
-background-size: 10%;
+background-size: 60px auto;
 line-height:11;
 }
 
@@ -504,21 +683,21 @@ color: white;
 padding: 14px 20px;
 margin: 0px;
 border: none;
-border-radius: 0px;
+border-radius: 10px;
 cursor: pointer;
 height:50px;
-border-radius: 0px;;
+border-radius: 10px;
 }
 .sortbutton{
-width: 40%;
-color: rgb(82, 82, 82);
-padding: 14px 20px;
-margin: 0px;
-border: 1px solid #ccc;
-cursor: pointer;
-height:50px;
-border-radius: 8px;;
-background-color:white;
+    width: 40%;
+    color: rgb(255, 255, 255);
+    padding: 14px 20px;
+    margin: 0px;
+    border: 0px solid #ccc;
+    cursor: pointer;
+    height: 50px;
+    border-radius: 10px;
+    background-color: white;
 }
 
 .showHideButton{
@@ -529,7 +708,7 @@ margin: 0px;
 border: 1px solid #ccc;
 cursor: pointer;
 height:50px;
-border-radius: 8px;;
+border-radius: 10px;
 background-color:white;
 }
 
@@ -690,6 +869,14 @@ display: inline;
 display:none;
 }
 
+.mobileTopPad70{
+    padding-top: 70px;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+
 .meter {
 height: 45px; /* Can be anything */
 }
@@ -706,11 +893,43 @@ padding: 20px 20px;
 .textbox{
 height:130px;
 border-radius: 15px;;
+box-sizing: border-box;
 }
 
 .colorbutton{
 height:130px;
-border-radius: 15px;;
+border-radius: 20px;
+box-sizing: border-box;
+}
+
+.sortbutton{
+border-radius: 20px;
+box-sizing: border-box;
+}
+
+.showHideButton{
+border-radius: 20px;
+box-sizing: border-box;
+}
+
+.trainingMethodSelector{
+height: 95px !important;
+}
+
+.duplicateButton{
+height: 95px;
+}
+
+.columnAdd {
+    width: 10%;
+    margin: 8px 0;
+    padding-right: 5px;
+    float: left;
+}
+
+#myChart {
+    max-width: 100%;
+    padding-right: 0 !important;
 }
 
 .refreshbutton{
@@ -749,35 +968,38 @@ text-align: left;
 }
 .columnB {
 float: left;
-width: 64%;
+width: 53%;
 
 }
 .columnC {
-float: right;
+float: left;
 /* width: 10%; */
 /*Padding-top:10px;*/
 padding-right:0px;
 }
 .columnD {
     float: right;
-    width: 10%;
+    width: 5cqmax;
     /*Padding-top:10px;*/
     padding-right:0px;
     text-align: center;
-    }
+}
 
 .columnE {
-    float: left;
-    width: 12%;
+    float: right;
+    width: 5%;
+    /*Padding-top:10px;*/
+    padding-right:0px;
     text-align: center;
-    padding-top:28px
 }
 
 .columnF {
     float: left;
-    width: 12%;
+    width: 24%;
     text-align: center;
 }
+
+
 
 .columnG p{
     float: left;

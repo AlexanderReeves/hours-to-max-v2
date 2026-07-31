@@ -11,7 +11,7 @@ class Skill {
   gpPerXpRates = []; //The cost per xp for each training method
   customXpRate = 100000; //A custom Xp per hour rate, default of 100k
   customGpPerXp = 0;//Cost per xp of the custom rate
-  levelsBoosted = 0;
+
 
   //Farming exclusive variables
   seedChoice = 0;
@@ -50,14 +50,13 @@ class Skill {
     //Display the exsiting custom values on the webpage
     $('#'+this.name + 'CustomXp').val(this.customXpRate);
     $('#'+this.name + 'CustomGp').val(this.customGpPerXp);
-    $('#'+this.name + 'Boost').val(this.levelsBoosted);
+
   }
 
-  UpdateCustomisations(customXp, customGpPerXp, levelsBoosted){
+  UpdateCustomisations(customXp, customGpPerXp){
     //Update this objects custom values to match the ones entered on the webpage
     this.customXpRate = customXp;
     this.customGpPerXp = customGpPerXp;
-    this.levelsBoosted = levelsBoosted;
   }
 
   UpdateTrainingMethod(index){
@@ -108,11 +107,10 @@ class Skill {
     }
 
     if(currentTab == "quest" || currentTab == "achievement"){
-      goalLevel = goalLevel - this.levelsBoosted;
+      goalLevel = goalLevel
     }
 
     if(currentTab == "max"){
-      //If the goal is to max, boosts are useless and the end result is always 99
       goalLevel = 99;
     }
     return goalLevel;
@@ -241,15 +239,8 @@ class Skill {
   DisplayLevels(){
     var message = document.getElementById(this.name + 'LevelDisplay');
     //console.log("Displaying levels for " + this.name + ". Current level: " + this.currentLevel + ", Goal level: " + this.GetGoalLevel());
-    //Display boosted skills, and only on the corect tabs
-    if(this.levelsBoosted > 0 && (currentTab != "max" && currentTab !="custom")){
-      var originalGoal = this.GetGoalLevel() + +this.levelsBoosted;
-      originalGoal = originalGoal + '';
-      originalGoal = originalGoal.split('').map(char => char + '\u0336').join('');
-      message.innerHTML= '<p>' + this.currentLevel + '/'  + '  ' + this.GetGoalLevel() + ' ' +originalGoal;
-      console.log("Skill: " + this.name + ", current level: " + this.currentLevel + ", goal level: " + this.GetGoalLevel());
-    }else{
-      //In all other cases, boosts do not display.
+    //Display skills on the corect tabs
+
       if(currentTab == "custom"){
         message.innerHTML= '<p style="text-decoration: underline;">' + this.currentLevel + '</p>';
       }
@@ -261,8 +252,6 @@ class Skill {
       }
       if(currentTab == "quest"){
         message.innerHTML= '<p >' + this.currentLevel + '/' + this.GetGoalLevel() + '</p>';
-      }
-
       
     }
     

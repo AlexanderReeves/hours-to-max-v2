@@ -10,5 +10,6 @@ const router = express.Router();
 // which will then be processed by the corresponding controller functions in saveController.
 router.post('/choices', saveController.saveChoices);
 router.post('/progress', saveController.saveProgress);
+router.post('/snapshot-delete', saveController.deleteSnapshot);
 
 module.exports = router;
