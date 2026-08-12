@@ -82,23 +82,41 @@ function SortRows(sortOrder){
         var aSkill = a.id.replace('_container', '');
         var bSkill = b.id.replace('_container', '');
 
+        function getRemainingHoursForSkill(skillName) {
+            if (!Array.isArray(userTrainingChoices)) {
+                return 0;
+            }
+
+            return userTrainingChoices
+                .filter(function(choice){ return choice.skill === skillName; })
+                .reduce(function(total, choice){
+                    var xpPerHour = Number(choice.xpPerHour) || 1;
+                    var startLevel = Number(choice.startLevel) || 1;
+                    var goalLevel = Number(choice.goalLevel) || 99;
+
+                    var trainingMethodStartXp = ConvertLevelToXp(startLevel);
+                    var trainingMethodEndXp = ConvertLevelToXp(goalLevel);
+
+                    var startXp = Number(choice.startXp) || 0;
+                    if (startXp > 13034431) {
+                        startXp = 13034431;
+                    }
+                    if (startXp > trainingMethodEndXp) {
+                        startXp = trainingMethodEndXp;
+                    }
+
+                    var remainingXp = trainingMethodEndXp - startXp;
+                    if (remainingXp < 0) {
+                        remainingXp = 0;
+                    }
+
+                    return total + (remainingXp / xpPerHour);
+                }, 0);
+        }
+
         if (sortOrder === 'hours') {
-            var aHours = 0;
-            var bHours = 0;
-            var aHourElements = a.querySelectorAll('[id$="_Hours"]');
-            var bHourElements = b.querySelectorAll('[id$="_Hours"]');
-            aHourElements.forEach(function(element){
-                var value = parseFloat(element.textContent || element.innerText || '0');
-                if (!isNaN(value)) {
-                    aHours += value;
-                }
-            });
-            bHourElements.forEach(function(element){
-                var value = parseFloat(element.textContent || element.innerText || '0');
-                if (!isNaN(value)) {
-                    bHours += value;
-                }
-            });
+            var aHours = getRemainingHoursForSkill(aSkill);
+            var bHours = getRemainingHoursForSkill(bSkill);
             return bHours - aHours;
         }
 

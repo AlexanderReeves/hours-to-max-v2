@@ -517,7 +517,28 @@ function SubmitUsername(){
     user = $('#usernameInput').val();
     //Refresh a bunch of things!
     //Pull the playerdata from the Jagex API if player was in db
-    if(user != ""){PullFromJagex();}
+    if(user != ""){
+        PullFromJagex();
+    }
+
+    //PopulateRowsWithUserData(dbuser); //variable is true or false based on if db user was found. False will populate with default values.
+
+
+    //Update training methods array
+    userTrainingChoices.forEach(choice => {
+            if (typeof jagexPlayerSkillData !== 'undefined' && jagexPlayerSkillData[choice.skill] && jagexPlayerSkillData[choice.skill].xp != null) {
+            choice.startXp = jagexPlayerSkillData[choice.skill].xp;
+        }
+    });
+
+
+    //Refresh All Calculations
+    CalculateAndDisplayHoursAndCost();
+    ShadeRows();
+    InitialiseCapeRotation();
+    Sort(false);
+    UpdateChart();
+
 }
 
 
