@@ -916,6 +916,12 @@ box-sizing: border-box;
 height: 95px !important;
 }
 
+.skillFillDisplay{
+border: none;
+opacity: 1;
+-webkit-text-fill-color: initial;
+}
+
 .duplicateButton{
 height: 95px;
 }

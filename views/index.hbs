@@ -257,10 +257,15 @@
 
         </div>
 
+        <br>
+        <br>
+
+
         <!-- *************end skill rows *************--> 
         <div class="row" id="hoursPerDayRow1" style="margin-bottom: -20px;">
             <div class="columnA">
-                    <p id="" style="text-align:center"> &nbsp; </p>
+                    {{!-- <p id="" style="text-align:center"> &nbsp; </p> --}}
+                    <img style="margin-top:10px" height="30" class="ico" src="icons/time_icon.webp" alt="" name="" id="">
             </div>
                 <div class="hoursColumnB" style=" display: flex; align-items: center; justify-content: rigleftht;height: 60px;">
                     <p id="" class="mobileTopPad70" style="text-align:left;padding-right:10px;"> Average daily skilling hours</p>
@@ -276,9 +281,11 @@
 
 
         <!-- *************end skill rows *************--> 
+
         <div class="row" id="hoursPerDayRow1" style="margin-bottom: -20px; margin-top:15px;">
             <div class="columnA">
-                    <p id="" style="text-align:center"> &nbsp; </p>
+                    
+                    <img style="margin-top:10px" height="30" class="ico" src="icons/trophy.jpg" alt="" name="" id="">
             </div>
                 <div class="hoursColumnB" style=" display: flex; align-items: center; justify-content: rigleftht;height: 60px;">
                     <p id="" class="mobileTopPad70" style="text-align:left;padding-right:10px;"> Name your goal </p>
@@ -590,15 +597,25 @@
                         <div class="columnB">
                             {{!-- DROPDOWN AREA
                             ###################################################################################################################--}}
-                            <div class="dropdown">
+
+                            <div class="dropdown" style="display: grid;">
+                                {{!-- Colour fill behind the input to show how much of this goal is completed --}}
+                                <input type="text" id="skillFillDisplay" name="skillFillDisplay" disabled tabindex="-1"
+                                    class="trainingMethodSelector fullw minimal skillFillDisplay"
+                                    style="grid-column: 1; grid-row: 1; background-color: #e0ffe0; border:0px;" autocomplete="off">
+
                                 <input type="text" id="trainingMethodSelector" name="trainingMethodSelector"
                                     placeholder="Select a training method..."
                                     onfocus="storeAndClearTrainingMethodInput(this); updateTrainingMethodList(this)"
                                     oninput="filterTrainingMethodList(this)"
                                     onblur="scheduleCloseTrainingMethodList(this); UpdateTrainingMethod(this)"
-                                    class="trainingMethodSelector fullw minimal" style="height:50px" autocomplete="off">
+                                    class="trainingMethodSelector fullw minimal"
+                                    style="grid-column: 1; grid-row: 1; background-color: transparent;" autocomplete="off">
+
                                 <div id="myDropdown" class="dropdown-content"></div>
                             </div>
+
+
                             {{!-- DROPDOWN AREA END
                             ###################################################################################################################--}}
                         </div>

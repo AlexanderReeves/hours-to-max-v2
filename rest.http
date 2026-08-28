@@ -28,3 +28,13 @@ Content-Type: application/json
 ### 
 Get https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=Arrgs
 Content-Type: application/json
+
+###
+
+POST https://api-m.sandbox.paypal.com/v1/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic <base64-encoded-client-id:secret>
+
+{
+    "grant_type": "client_credentials"
+}

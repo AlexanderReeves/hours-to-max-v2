@@ -1,7 +1,7 @@
 
 
 // This function creates the saved training choice rows on the page.
-function PopulateRowsWithUserData(userIsLoggedIn){
+function PopulateRowsWithUserData(userIsLoggedIn, clearExistingRows = false) {
 // 1. Define the master list of default training choices so we can reference them in both places.
     const defaultTrainingChoices = [        
         {name: "Wacking Baddies", xpPerHour: 100000, profitPerXp: 0, skill: "attack", startLevel: 1, goalLevel: 98, startXp: 0},   
@@ -178,7 +178,7 @@ function AddTrainingRow(methodName, xpPerHour, profitPerXp, skillName, startLeve
         }
         if(currentId == "CustomXp" || currentId == "LevelDisplay" || currentId == "trainingMethodSelector"
              ||currentId == "Hours"   ||currentId == "Cost" || currentId == "CustomGp" ||currentId == "CustomGoal" || currentId == "skillIcon"
-             || currentId == "startLvl" ){                
+             || currentId == "startLvl" || currentId == "skillFillDisplay" ){                
             var newId = skillName + "_" + occurrence + "_" + currentId;
             $(this).attr("id", newId);
         }
@@ -289,11 +289,20 @@ function ShadeRows() {
         }
 
         if(choice.goalLevel <= choice.startLevel && jagexPlayerSkillData[choice.skill] && jagexPlayerSkillData[choice.skill].level >= choice.startLevel){
-            $rowWrapper.find('.row').css('background-color', '#d9eedd'); 
+            // $rowWrapper.find('.row').css('background-color', '#d9eedd'); 
         }
         if(jagexPlayerSkillData[choice.skill] && jagexPlayerSkillData[choice.skill].xp >= ConvertLevelToXp(choice.goalLevel)){
-            $rowWrapper.find('.row').css('background-color', '#d9eedd'); 
+            // $rowWrapper.find('.row').css('background-color', '#d9eedd'); 
         }
+
+        //Fill the coloured bar behind the training method selector to show % of this goal completed
+        const fillStartXp = ConvertLevelToXp(Number(choice.startLevel) || 1);
+        const fillGoalXp = ConvertLevelToXp(Number(choice.goalLevel) || 99);
+        const fillCurrentXp = Number(choice.startXp) || 0;
+        const fillRequiredXp = fillGoalXp - fillStartXp;
+        let fillPercent = fillRequiredXp > 0 ? ((fillCurrentXp - fillStartXp) / fillRequiredXp) * 100 : 100;
+        fillPercent = Math.min(100, Math.max(0, fillPercent));
+        $rowWrapper.find('.skillFillDisplay').css('width', `${fillPercent}%`);
     });
 
     //Also show hide farming
@@ -308,7 +317,7 @@ function ShadeRows() {
         }else{
             console.log("Farming goal achieved and hidden");
             $('#farmingRow').show();
-            $('#farmingRow').css('background-color', '#d9eedd');
+            // $('#farmingRow').css('background-color', '#d9eedd');
         }
 
     }else{
