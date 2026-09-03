@@ -522,6 +522,13 @@ box-sizing: border-box;
 border-radius: 10px;
 }
 
+.skillFillDisplay{
+border: none;
+opacity: 1;
+-webkit-text-fill-color: initial;
+padding:0px !important;
+}
+
 footer{
 bottom: 0;
 width: 100%;
@@ -537,7 +544,7 @@ width: 47px;
 height: 20px;
 }
 
-.switch input {display:none;}
+
 
 .slider {
 position: absolute;
@@ -698,6 +705,16 @@ border-radius: 10px;
     height: 50px;
     border-radius: 10px;
     background-color: white;
+}
+
+.finalOutcomeContainer{
+    padding:10px;
+     height: 430px;
+     margin-left: 10%;
+     margin-right:10%;
+      border-style:solid; 
+      border: 1px solid #ccc;
+      border-radius: 10px;
 }
 
 .showHideButton{
@@ -916,11 +933,7 @@ box-sizing: border-box;
 height: 95px !important;
 }
 
-.skillFillDisplay{
-border: none;
-opacity: 1;
--webkit-text-fill-color: initial;
-}
+
 
 .duplicateButton{
 height: 95px;
@@ -1069,6 +1082,13 @@ display:inline;
 .OutcomeBar{
 width: 80%;
 display:inline;
+}
+
+.finalOutcomeContainer{
+
+     margin-left: 3%;
+     margin-right:3%;
+     height:800px;
 }
 
 

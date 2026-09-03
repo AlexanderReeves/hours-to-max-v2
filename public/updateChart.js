@@ -3,13 +3,7 @@ var graphChartData = [];
 var graphChartMinZero = true;
 
 function GetCurrentGoalName(){
-    var goalInput = document.getElementById('goalNameInput');
-    if (!goalInput) {
-        return 'max';
-    }
-
-    var goalText = String(goalInput.value || '').trim();
-    return goalText.length > 0 ? goalText : 'max';
+    return 'max';
 }
 
 function UpdateChart(){

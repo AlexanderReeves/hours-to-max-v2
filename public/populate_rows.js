@@ -245,12 +245,9 @@ function ShadeRows() {
     const showCompleted = window.showCompletedSkills !== undefined ? window.showCompletedSkills : true;
 
     $('[id*="_selection_"]').find('.row').css('background-color', '');
-    $('[data-userTrainingChoiceId]').each(function(){
-        $(this).show();
-        $(this).find('.rowDetails').show();
-    });
 
     const choicesCopy = [...userTrainingChoices];
+    //Find the rows with the highest goal level for each skill
     const highestLevelRowIds = [];
     const uniqueSkills = [...new Set(choicesCopy.map(item => item.skill))];
     uniqueSkills.forEach(skillName => {
@@ -264,6 +261,8 @@ function ShadeRows() {
         }
     });
 
+    console.log("Highest level row IDs: ", highestLevelRowIds);
+
     choicesCopy.forEach(choice => {
         const $rowWrapper = $(`[data-userTrainingChoiceId="${choice.rowId}"]`);
         if ($rowWrapper.length === 0) {
@@ -275,18 +274,23 @@ function ShadeRows() {
 
         if (shouldHide) {
             $rowWrapper.hide();
-            $rowWrapper.find('.rowDetails').hide();
-            return;
+        } else {
+            $rowWrapper.show();
         }
 
-        $rowWrapper.show();
-        $rowWrapper.find('.rowDetails').hide();
-
+        //There is a bug here where sometimes the Delete is on every row.
         if (!highestLevelRowIds.includes(choice.rowId)) {
             $rowWrapper.find('.row').addClass('child-row');       
             $rowWrapper.find('.duplicateButton').val(`-`);         
             $rowWrapper.find('.duplicateButton').attr(`onClick`, `DeleteRow(${choice.rowId})`); 
+        }else{
+            $rowWrapper.find('.row').removeClass('child-row');       
+            $rowWrapper.find('.duplicateButton').val(`+`);         
+            $rowWrapper.find('.duplicateButton').attr(`onClick`, `DuplicateRow(${choice.rowId})`); 
         }
+        //If not the highest level row, mark it as a child row and adjust the duplicate button accordingly
+
+
 
         if(choice.goalLevel <= choice.startLevel && jagexPlayerSkillData[choice.skill] && jagexPlayerSkillData[choice.skill].level >= choice.startLevel){
             // $rowWrapper.find('.row').css('background-color', '#d9eedd'); 

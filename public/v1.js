@@ -139,6 +139,8 @@ window.onload = function(){
     ShadeRows();
     InitialiseCapeRotation();
     Sort(false);
+    
+    
     UpdateChart();
 }
 
@@ -148,6 +150,10 @@ function SetFinalCapeImage(fileName){
     }
     currentCapeFileName = fileName;
     $('#finalCapeContainer').css('background-image', 'url("./icons/' + fileName + '")');
+    $('.capeOption').each(function() {
+        const isSelected = $(this).data('cape') === fileName;
+        $(this).toggleClass('selected', isSelected).attr('aria-pressed', isSelected);
+    });
     if (typeof ApplyCapeTheme === 'function') {
         ApplyCapeTheme(fileName);
     }
@@ -159,8 +165,8 @@ function RotateFinalCapeImage(){
 }
 
 function InitialiseCapeRotation(){
-    var container = document.getElementById('finalCapeContainer');
-    if(!container){
+    var selector = document.getElementById('capeSelector');
+    if(!selector){
         return;
     }
 
@@ -173,7 +179,9 @@ function InitialiseCapeRotation(){
     }
 
     SetFinalCapeImage(capeImages[currentCapeIndex]);
-    $('#finalCapeContainer').off('click').on('click', RotateFinalCapeImage);
+    $('.capeOption').off('click').on('click', function() {
+        SetFinalCapeImage($(this).data('cape'));
+    });
 }
 
 function InitialiseSkills(){
@@ -353,7 +361,13 @@ function PullFromDatabase(){
             user = dbuser.username;
             //Insert the username into the search box on the page
             $('#usernameInput').val(user);
-            // setTab(dbuser.currentGoal);
+
+            if (dbuser.currentGoal && document.getElementById('goalNameInput')) {
+                document.getElementById('goalNameInput').value = dbuser.currentGoal;
+            }
+            if (typeof UpdateGoalName === 'function') {
+                UpdateGoalName();
+            }
 
             if (dbuser.chosenCape && capeImages.indexOf(dbuser.chosenCape) !== -1) {
                 currentCapeFileName = dbuser.chosenCape;
@@ -378,13 +392,10 @@ function PullFromDatabase(){
             const sortButton = document.getElementById('sortButton');
             //If button found
             if (sortButton) {
-                //Map any legacy value into current sort states: default(0), hours(1), profit(2)
+                //Map any legacy value into current sort states: default(0), hours(1), profit(2), percent(3)
                 let savedSortState = parseInt(dbuser.sortChoice);
-                if (isNaN(savedSortState) || savedSortState < 0) {
+                if (isNaN(savedSortState) || savedSortState < 0 || savedSortState > 3) {
                     savedSortState = 0;
-                }
-                if (savedSortState > 2) {
-                    savedSortState = savedSortState === 3 ? 1 : 0;
                 }
 
                 //Set the state only; sorting is applied after all rows are populated
@@ -395,8 +406,6 @@ function PullFromDatabase(){
         // Set the show completed choice
         if (dbuser.showCompletedChoice !== undefined) {
             window.showCompletedSkills = dbuser.showCompletedChoice;
-            // Apply the show/hide without toggling
-            ShowAndHideCompleted(false);
         }
 
         // // Set the custom levels

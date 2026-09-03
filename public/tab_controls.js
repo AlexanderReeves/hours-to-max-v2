@@ -24,6 +24,7 @@ function ApplyCapeTheme(capeFileName) {
 
   var selectedCape = capeThemeMap[capeFileName] ? capeFileName : "Max_cape.webp";
   var selectedTheme = capeThemeMap[selectedCape];
+  document.body.dataset.capeTheme = selectedCape;
 
   var themedElements = document.getElementsByClassName("theme");
   for (var i = 0; i < themedElements.length; i++) {
@@ -33,13 +34,21 @@ function ApplyCapeTheme(capeFileName) {
 
   var introEl = document.getElementById('intro');
   if (introEl) {
-    introEl.innerText = selectedTheme.introText;
+    // introEl.innerText = selectedTheme.introText;
   }
 
+  UpdateGoalName();
+}
+
+function UpdateGoalName() {
+  var goalInput = document.getElementById('goalNameInput');
   var goalCapeEl = document.getElementById('goalCapeDisplay');
-  if (goalCapeEl) {
-    goalCapeEl.innerText = selectedTheme.displayName;
+  if (!goalCapeEl) {
+    return;
   }
+
+  var goalName = goalInput ? String(goalInput.value || '').trim() : '';
+  goalCapeEl.innerText = goalName || 'Max Cape';
 }
 
 // Backward compatible wrapper if old code still calls setTab.

@@ -1,4 +1,5 @@
 function Sort(toggleState = true){
+    //This seems to be unhiding completed rows
     //togglestate decides if we should move to the next state before sorting, or just sort with the current value.
     var sortButton = document.getElementById('sortButton');
     if (!sortButton) {
@@ -8,14 +9,15 @@ function Sort(toggleState = true){
     var sortStates = [
         {name: 'default', label: 'Sorting by default'},
         {name: 'hours', label: 'Sorting by hours'},
-        {name: 'profit', label: 'Sorting by profit'}
+        {name: 'profit', label: 'Sorting by profit'},
+        {name: 'percent', label: 'Sorting by % complete'}
     ];
 
     var currentState = parseInt(sortButton.dataset.sortState || '0');
     if (isNaN(currentState)) {
         currentState = 0;
     }
-    //Change state, or just sort with current value
+    //if toggleState, move to the next sort option before sorting (Otherwise re-sort with the old sort option)
     if (toggleState) {
         currentState = (currentState + 1) % sortStates.length;
     }
@@ -48,20 +50,37 @@ function IsChoiceCompleted(choice){
 }
 
 function ShowAndHideCompleted(doToggle = true){
+
     let showCompleted = window.showCompletedSkills !== undefined ? window.showCompletedSkills : true;
     if(doToggle){
         showCompleted = !showCompleted;
     }
     window.showCompletedSkills = showCompleted;
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Show completed skills: " + window.showCompletedSkills);
 
     const showHideButton = document.getElementById('showHideButton');
     if (showHideButton) {
         showHideButton.value = showCompleted ? 'Showing completed' : 'Hiding completed';
     }
 
-    if (typeof ShadeRows === 'function') {
-        ShadeRows();
-    }
+    // console.log("Show completed skills: " + showCompleted);
+    console.log(userTrainingChoices);
+
+    //At this stage, loop through all training methods and hide completed ones
+    userTrainingChoices.forEach(choice => {
+        console.log("Checking if choice is completed for row: " + choice.rowId);
+        
+            console.log(choice);
+        if(ConvertLevelToXp(choice.goalLevel) <= choice.startXp){
+            const rowElement = $('[data-usertrainingchoiceid="' + choice.rowId + '"]');
+            if (rowElement.length) {
+                console.log("Toggling display for row: " + choice.rowId);
+                rowElement.css('display', showCompleted ? '' : 'none');
+            }
+        }
+    });
+
+
 }
 
 function SortRows(sortOrder){
@@ -69,7 +88,7 @@ function SortRows(sortOrder){
     if (!parent) {
         return;
     }
-
+    //Get each skill container (the thing that will be sorted, as containers are sorted, not individual elements within them)
     var containers = [];
     skillNames.forEach(function(skillName){
         var container = document.getElementById(skillName + '_container');
@@ -140,6 +159,47 @@ function SortRows(sortOrder){
             return bProfit - aProfit;
         }
 
+        function getPercentCompleteForSkill(skillName) {
+            if (!Array.isArray(userTrainingChoices)) {
+                return 0;
+            }
+
+            var skillChoices = userTrainingChoices.filter(function(choice){ return choice.skill === skillName; });
+            if (skillChoices.length === 0) {
+                return 0;
+            }
+
+            var startXpValues = skillChoices.map(function(choice){
+                return ConvertLevelToXp(Number(choice.startLevel) || 1);
+            });
+            var goalXpValues = skillChoices.map(function(choice){
+                return ConvertLevelToXp(Number(choice.goalLevel) || 99);
+            });
+
+            var lowestStartXp = Math.min.apply(null, startXpValues);
+            var highestGoalXp = Math.max.apply(null, goalXpValues);
+
+            var currentXp = jagexPlayerSkillData[skillName] && jagexPlayerSkillData[skillName].xp != null
+                ? jagexPlayerSkillData[skillName].xp
+                : lowestStartXp;
+
+            var totalXpNeeded = highestGoalXp - lowestStartXp;
+            if (totalXpNeeded <= 0) {
+                return 100;
+            }
+
+            var percent = ((currentXp - lowestStartXp) / totalXpNeeded) * 100;
+            return Math.min(100, Math.max(0, percent));
+        }
+
+        if(sortOrder === 'percent'){
+            var aPercent = getPercentCompleteForSkill(aSkill);
+            var bPercent = getPercentCompleteForSkill(bSkill);
+            return aPercent - bPercent;
+        }
+
+
+
         var aIndex = skillNames.indexOf(aSkill);
         var bIndex = skillNames.indexOf(bSkill);
         if (aIndex === -1) {
@@ -163,4 +223,5 @@ function SortRows(sortOrder){
     });
 
     console.log('Sort rows complete for order: ' + sortOrder);
+    ShowAndHideCompleted(false);
 }

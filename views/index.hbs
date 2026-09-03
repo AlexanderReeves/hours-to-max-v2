@@ -3,7 +3,7 @@
 
 <title>Hours To Max</title>
 <meta name="description"
-    content="Find how many hours it will take you to max your Old School Runescape Account with training methods that you choose!">
+    content="Find how many hours you are from reaching your Old School Runescape goal.">
 
 <meta name="keywords" content="Hours, To, Max, Old, School, Runescape, Account, Long, Gp, Time">
 <meta name="author" content="Mapex Games">
@@ -75,22 +75,13 @@
     <!-- ************* MAIN CONTENT *************-->
     <div class="maxw whitebg" id="maincontent">
 
-        <!-- ***NAVIGATION TABS *** -->
+        {{!-- <!-- ***NAVIGATION TABS *** -->
         <div class="w3-bar w3-black" style="height:100px;font-size:0px">
             <button class="typebutton max active" id="max" onclick="setTab('max')"
                 style="background-image: url(icons/Max_cape.webp);background-size: contain; height:80px;">
             </button>
-            {{!-- <button class="typebutton achievement" id="achievement" onclick="setTab('achievement')"
-                style="background-image: url(icons/achievement_cape.webp)">
-            </button>
-            <button class="typebutton quest" id="quest" onclick="setTab('quest')"
-                style="background-image: url(icons/quest_cape.webp)">
-            </button>
-            <button class="typebutton custom" id="custom" onclick="setTab('custom')"
-                style="background-image: url(icons/custom_cape.webp)">
-            </button> --}}
         </div>
-        <!-- *****Navigation tabs***** -->
+        <!-- *****Navigation tabs***** --> --}}
 
         <!-- *******INTRO TEXT DESCRIPTION*********-->
         <br>
@@ -100,24 +91,40 @@
 
         <div class="center " id="intro" style="padding-left:10px;padding-right:10px">
 
-            <bold style="font-weight: bold;">Find how long it will take to reach your Old School Runescape goal.</bold>
+            <bold style="font-weight: bold;">Find how many hours and gp you are from reaching your Old School Runescape goal.</bold>
         </div>
         <div class="center" id="disclaimer">
             <br>
+            <br>
+            1. Select your goal
+            <br>
 
-            Enter your username and favourite training methods to find the cost and time to reach your goal!
             <br>
+            <div id="capeSelector" class="capeSelector" role="group" aria-label="Choose a goal cape">
+                <button type="button" class="capeOption" data-cape="Max_cape.webp" aria-label="Max Cape">
+                    <img src="icons/Max_cape.webp" alt="">
+                </button>
+                <button type="button" class="capeOption" data-cape="achievement_cape.webp" aria-label="Achievement Cape">
+                    <img src="icons/achievement_cape.webp" alt="">
+                </button>
+                <button type="button" class="capeOption" data-cape="quest_cape.webp" aria-label="Quest Cape">
+                    <img src="icons/quest_cape.webp" alt="">
+                </button>
+                <button type="button" class="capeOption" data-cape="custom_cape.webp" aria-label="Custom Cape">
+                    <img src="icons/custom_cape.webp" alt="">
+                </button>
+            </div>
             <br>
 
-            Modify your choices to optimise the path to your goals!
-            <br>
+            2. Enter your username to load your stats from Old School Runescape hiscores page.
+            {{!-- <br>
             <br>
             This tool assumes melee skills will be trained passively during slayer.
             <br>
             Select a training method from the dropdown, or type in a custom method!
             <br>
             Join the new <a href="https://discord.gg/UVz8h7Jt4w" target="_blank">Discord</a> to chat with other players
-            about your goals, training methods and achievements!
+            about your goals, training methods and achievements! --}}
 
 
         </div>
@@ -130,18 +137,36 @@
             <form id="myform">
                 <input type="text" class="textbox" id="usernameInput" name="usernameInput" style="text-align:center;"
                     placeholder="Enter your username">
-
                 <input type="button" class="colorbutton theme themered" value="Submit" onClick="SubmitUsername()">
             </form>
             <br>
-            <input type="button" id="sortButton" class="sortbutton theme" value="Sorting by skill" onClick="Sort()">
-            <input type="button" id="showHideButton" class="sortbutton theme" value="Showing completed"
-                onClick="ShowAndHideCompleted()">
-            <br>
+            </br>
         </div>
+        <br>
+
+        <div class="center">
+            3. Select training methods from the dropdown, or type in your own custom method!
+
+            
+        </div>        
+        <div class="center">
+            (Use the arrow to show/edit details of your method, such as goal level and profit)
+            
+        </div>
+        </br>
+        <div class="searcharea maxw" onsubmit="console.log('You clicked submit.'); SubmitUsername(); return false">
+        <input type="button" id="sortButton" class="sortbutton theme" value="Sorting by skill" onClick="Sort()">
+        <input type="button" id="showHideButton" class="sortbutton theme" value="Showing completed"
+        onClick="ShowAndHideCompleted()">
+        <br>
+        </div>
+
+
         <!-- ************* Search *************-->
 
         <p id="displayUsername" class="center"></p>
+
+        
 
         <!-- ################################ Start Skill Rows########################### -->
         <div id="AllSkills">
@@ -276,7 +301,7 @@
                     placeholder="Enter your average hours played per day" onchange="ValidateHoursPerDay(this)">
             </div>
 
-            <div class="columnC center" id=""> &nbsp; </div>
+            
         </div>  
 
 
@@ -296,7 +321,7 @@
                     placeholder="Max Cape" onchange="UpdateGoalName()">
             </div>
 
-            <div class="columnC center" id=""> &nbsp; </div>
+            
         </div>  
 
         </br>
@@ -306,7 +331,7 @@
 
         <!-- ************* ENd Info *************-->
         <!-- Final Outome Area -->
-                <div style="padding:10px; height: 430px; margin-left: 10%;margin-right:10%; border-style:solid; border: 1px solid #ccc;border-radius: 10px;">
+                <div class="finalOutcomeContainer">
 
             <div style="border-radius:50px;padding-top:50px;">
                 <div>
@@ -318,11 +343,7 @@
                         style="float: left;text-align:left; font-size:60px;line-height: 70px;">
                         PlayerName
                     </div>
-                    <div id="finalCapeContainer" class="OutcomeColC finalMax" style="float: left; text-align: right; display: flex; align-items: center; justify-content: right; height: 60px; cursor: pointer; background-size: contain; background-repeat: no-repeat; background-position: right; padding-right: 40px;">
-
-                        <i id="Arrow" class="arrow right"></i>
-
-                    </div>
+                    <div id="finalCapeContainer" class="OutcomeColC finalMax" style="float: left; text-align: right; display: flex; align-items: center; justify-content: right; height: 60px; background-size: contain; background-repeat: no-repeat; background-position: right; padding-right: 40px;"></div>
 
                     <div class="OutcomeColD" style="float:left;line-height: 70px;">
                         &nbsp;
@@ -518,12 +539,13 @@
         <!-- end card -->
         <br><br class="desktoponly">
         <div class="maxw searcharea">
-
+        <p id="hours" class="center">Register for an account to save your changes! You can register in another tab so
+            your current choices aren't lost!</p>
+            </br>
             <input type="button" class="colorbutton theme themered" value="Save choices!" onClick="SaveChoicesToDatabase()">
             <div id="result" style="margin-top:10px">&nbsp;</div>
         </div>
-        <p id="hours" class="center">Register for an account to save your changes! You can register in another tab so
-            your current choices aren't lost!</p>
+
         <!-- *************end info *************-->
 
         <br>
@@ -531,7 +553,7 @@
         <!-- GRAPHS-->
 
 
-        <p id="hours" class="center">Your progress over time.</p>
+        <p id="hours" class="center">Graph your weekly progress on the chart below!</p>
         <div class="maxw searcharea">
             <input type="button" id="graphMinButton" class="sortbutton theme" value="Starting from 0%"
                 onClick="GraphMinToggle()" style="color:white">
@@ -541,7 +563,7 @@
         {{#if signedin}}
 
         <div class="maxw"
-            style="padding:0% 20%; background-color:#f0f0f0; border-radius:10px; margin-left:auto;margin-right:auto;">
+            style="padding:0% 20%;border-radius:10px; margin-left:auto;margin-right:auto;">
             <input type="button" id="saveProgressButton" class="colorbutton theme themered"
                 value="Save this weeks progress point!" onClick="SaveProgress()">
             <div id="saveProgressResult" style="margin-top:10px">&nbsp;</div>
@@ -570,13 +592,12 @@
     <footer>
         <div>
             <br><br>
-            <input type="button" class="colorbutton theme themered" value="About me!" onclick="location.href='/author'"
-                style="max-width:200px">
+            {{!-- <input type="button" class="colorbutton theme themered" value="About me!" onclick="location.href='/author'"
+                style="max-width:200px"> --}}
             <br><br>
-            <p id="footer">2024 Arrgs - reevesgamedev@gmail.com</p>
-            <p id="footer">*Cost per XP is an estimate only from early 2026*</p>
-            <p id="footer">More features coming soon!</p>
-            <p id="footer">Hours To Max v2.0</p>
+            <p id="footer">2024 Arrgs</p>
+            <p id="footer">Contact: reevesgamedev@gmail.com</p>
+            <p id="footer">Hours To Max v3.1</p>
         </div>
     </footer>
 
@@ -606,7 +627,7 @@
                                 {{!-- Colour fill behind the input to show how much of this goal is completed --}}
                                 <input type="text" id="skillFillDisplay" name="skillFillDisplay" disabled tabindex="-1"
                                     class="trainingMethodSelector fullw minimal skillFillDisplay"
-                                    style="grid-column: 1; grid-row: 1; background-color: #e0ffe0; border:0px;" autocomplete="off">
+                                    style="grid-column: 1; grid-row: 1; border:0px;" autocomplete="off">
 
                                 <input type="text" id="trainingMethodSelector" name="trainingMethodSelector"
                                     placeholder="Select a training method..."
@@ -627,7 +648,7 @@
                             <input name="Duplicator"  type="button" class="duplicateButton" value="+"
                                 onClick="">
                         </div>
-                        <div class="columnC righttext expandOnClick" name="Final" id="Final" onClick="ExpandSection()">
+                        <div class="columnC righttext" name="Final" id="Final" onClick="ExpandSection()">
                             <div>
                                 <nobr>
                                     <div id="Cost" class="righttext displayProfit">? Gp</div>
@@ -642,7 +663,7 @@
                         </div>
                     </div>
                     <!-- *************custom CUSTOM*************-->
-                    <div id="" class="row rowDetails">
+                    <div id="" class="row rowDetails" style="display:none;">
                         {{!-- <div class=" columnF center">
                         </div> --}}
                         <div class=" columnG center">

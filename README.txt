@@ -33,8 +33,8 @@ Please reach out via email if you would like to contribute, grab a coffee, or ar
 **********************************************
 
 ***********TO DO***********
-Mobile layout
-Check for bugs
+Add a sort by % completed option
+Fix hide bug
 ***************************
 
 ***********Future**********

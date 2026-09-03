@@ -335,12 +335,17 @@ function selectTrainingMethod(methodName, input) {
 
 
 function UpdateTrainingMethodSpecifics(rowId, whatsChanging, newValue){
+    //Update a row when a property is changed
+
+    //What is the new number?
     newValue = parseInt(newValue);
     //Recalculate all values based on changes to a training method
     //Validate the input, the process it, then refresh all
     console.log("Updating training method for rowId: " + rowId + ", changing: " + whatsChanging + ", new value: " + newValue);
         //Once the row is identified, update the userTrainingChoices
     const targetRow = userTrainingChoices.find(row => row.rowId === rowId);
+
+    
     //Find the row in the userTrainingChoices array that matches the provided rowId
     if (targetRow) {
             //Update the specific property of the targetRow based on whatsChanging

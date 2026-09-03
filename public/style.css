@@ -99,4 +99,61 @@ header {
 
 .dropdown { overflow: visible; }
 
+.capeSelector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 12px auto;
+}
+
+.capeOption {
+  width: 75px;
+  height: 75px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.capeOption img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.capeOption:hover,
+.capeOption:focus-visible {
+  border-color: var(--brand-blue);
+}
+
+.capeOption.selected {
+  border-color: transparent;
+  background-color: #dbeafe;
+}
+
+body[data-cape-theme="Max_cape.webp"] .skillFillDisplay {
+  background-color: #ffe0e8 !important;
+}
+
+body[data-cape-theme="achievement_cape.webp"] .skillFillDisplay {
+  background-color: #e0ffe0 !important;
+}
+
+body[data-cape-theme="quest_cape.webp"] .skillFillDisplay {
+  background-color: #e0f8ff !important;
+}
+
+body[data-cape-theme="custom_cape.webp"] .skillFillDisplay {
+  background-color: #f7e0f7 !important;
+}
+
+@media (max-width: 420px) {
+  .capeSelector {
+    gap: 4px;
+  }
+}
+
 
